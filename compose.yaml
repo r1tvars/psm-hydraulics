@@ -46,6 +46,15 @@ services:
     entrypoint: ["composer"]
     profiles: ["tools"]
 
+  node:
+    image: node:22-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-node
+    working_dir: /var/www/html/web/themes/custom/psmhydraulics
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+    command: sh -lc "npm install && npm run dev"
+
   db:
     image: mariadb:11.4
     container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-db

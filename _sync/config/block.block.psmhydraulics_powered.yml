@@ -1,0 +1,22 @@
+uuid: 287ee9f6-86fa-4177-bc96-a62c511c146e
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - psmhydraulics
+_core:
+  default_config_hash: eYL19CLDyinGTWYQfBD1DswWzglEotE_kHnHx3AxTXM
+id: psmhydraulics_powered
+theme: psmhydraulics
+region: sidebar_first
+weight: 0
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  label_display: '0'
+  provider: system
+visibility: {  }

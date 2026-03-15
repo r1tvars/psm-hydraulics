@@ -1,0 +1,5 @@
+{
+    "name": "drupal/psmhydraulics",
+    "description": "Custom Tailwind CSS theme for PSM Hydraulics.",
+    "type": "drupal-theme"
+}
