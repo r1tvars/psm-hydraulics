@@ -1,0 +1,54 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-app
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${DRUPAL_PORT:-8080}:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      PHP_MEMORY_LIMIT: 512M
+      PHP_UPLOAD_MAX_FILESIZE: 64M
+      PHP_POST_MAX_SIZE: 64M
+
+  composer:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-composer
+    user: "${UID:-1000}:${GID:-1000}"
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    environment:
+      COMPOSER_HOME: /var/www/html/.composer
+    entrypoint: ["composer"]
+    profiles: ["tools"]
+
+  db:
+    image: mariadb:11.4
+    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-drupal}
+      MARIADB_USER: ${DB_USER:-drupal}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-drupal}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-drupal_root}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  db-data:
