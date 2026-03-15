@@ -1,7 +1,19 @@
 name: PSM Hydraulics
 description: Custom Tailwind CSS theme for PSM Hydraulics.
-core_version_requirement: ^8 || ^9 || ^10 ||^11
+core_version_requirement: ^10 || ^11
 type: theme
 base theme: stable9
 libraries:
   - psmhydraulics/global-styling
+regions:
+  header_top: Header Top
+  header: Header
+  primary_menu: Primary Menu
+  secondary_menu: Secondary Menu
+  highlighted: Highlighted
+  breadcrumb: Breadcrumb
+  help: Help
+  content: Content
+  sidebar_first: Sidebar First
+  sidebar_second: Sidebar Second
+  footer: Footer

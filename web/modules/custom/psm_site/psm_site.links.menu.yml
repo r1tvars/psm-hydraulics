@@ -1,0 +1,5 @@
+psm_site.settings:
+  title: 'PSM site settings'
+  description: 'Manage contact details shown in the frontend header.'
+  route_name: psm_site.settings
+  parent: system.admin_config_system

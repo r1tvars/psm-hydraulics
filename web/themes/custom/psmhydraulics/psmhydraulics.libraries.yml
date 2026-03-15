@@ -1,4 +1,6 @@
 global-styling:
   css:
     base:
+      https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap: { type: external }
+      https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css: { type: external, minified: true }
       dist/tailwind.css: {}

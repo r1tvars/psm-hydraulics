@@ -1,0 +1,7 @@
+psm_site.settings:
+  path: '/admin/config/system/psm-site'
+  defaults:
+    _form: '\Drupal\psm_site\Form\SiteSettingsForm'
+    _title: 'PSM site settings'
+  requirements:
+    _permission: 'administer site configuration'

@@ -1,0 +1,43 @@
+{% import _self as menus %}
+
+{{ menus.menu_links(items, attributes, 0) }}
+
+{% macro menu_links(items, attributes, menu_level) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% if menu_level == 0 %}
+      <ul{{ attributes.addClass('menu-level--0') }}>
+    {% else %}
+      <ul class="menu-level--sub">
+    {% endif %}
+    {% for item in items %}
+      {% set item_classes = ['menu-item'] %}
+      {% if item.below %}
+        {% set item_classes = item_classes|merge(['group']) %}
+      {% endif %}
+      {% set link_classes = [menu_level == 0 ? 'menu-link' : 'menu-link--sub'] %}
+      {% if item.in_active_trail %}
+        {% set link_classes = link_classes|merge(['is-active']) %}
+      {% endif %}
+      {% if item.below %}
+        {% set link_classes = link_classes|merge(['has-children']) %}
+      {% endif %}
+      <li{{ item.attributes.addClass(item_classes) }}>
+        {{ link(item.title, item.url, {'class': link_classes}) }}
+        {% if item.below %}
+          {% if menu_level == 0 %}
+            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs text-steel-400 xl:right-2">
+              <i class="fa-solid fa-angle-down" aria-hidden="true"></i>
+            </span>
+          {% else %}
+            <span class="pointer-events-none absolute right-0 top-2 text-[0.65rem] text-steel-400">
+              <i class="fa-solid fa-angle-right" aria-hidden="true"></i>
+            </span>
+          {% endif %}
+          {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

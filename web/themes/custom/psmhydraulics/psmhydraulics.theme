@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Theme hooks and preprocessors for the PSM Hydraulics theme.
+ */
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function psmhydraulics_preprocess_page(array &$variables): void {
+  $config = \Drupal::config('psm_site.settings');
+
+  $variables['psm_site_contact'] = [
+    'phone' => (string) $config->get('phone'),
+    'email' => (string) $config->get('email'),
+    'location' => (string) $config->get('location'),
+  ];
+}

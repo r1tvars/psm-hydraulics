@@ -1,0 +1,5 @@
+name: PSM Site
+type: module
+description: Site settings for the PSM Hydraulics frontend.
+package: Custom
+core_version_requirement: ^10 || ^11
