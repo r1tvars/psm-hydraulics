@@ -1,0 +1,13 @@
+http:
+  routers:
+    psmhydraulics:
+      entryPoints:
+        - web
+      rule: Host(`psmhydraulics.local`)
+      service: psmhydraulics
+
+  services:
+    psmhydraulics:
+      loadBalancer:
+        servers:
+          - url: http://nginx:80

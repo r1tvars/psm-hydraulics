@@ -1,7 +1,6 @@
-FROM php:8.3-apache
+FROM php:8.3-fpm
 
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/web \
-    COMPOSER_ALLOW_SUPERUSER=1 \
+ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/tmp/composer-cache
 
 RUN apt-get update \
@@ -16,8 +15,6 @@ RUN apt-get update \
         libzip-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j"$(nproc)" gd intl opcache pdo_mysql zip \
-    && a2enmod rewrite headers expires \
-    && sed -ri "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
