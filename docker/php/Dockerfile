@@ -20,4 +20,10 @@ RUN apt-get update \
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/zz-drupal.ini
 
+RUN printf '%s\n' \
+    '#!/bin/sh' \
+    'exec /var/www/html/vendor/bin/drush "$@"' \
+    > /usr/local/bin/drush \
+    && chmod +x /usr/local/bin/drush
+
 WORKDIR /var/www/html
