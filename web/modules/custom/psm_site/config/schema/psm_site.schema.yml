@@ -11,3 +11,15 @@ psm_site.settings:
     location:
       type: string
       label: 'Location'
+    facebook_url:
+      type: string
+      label: 'Facebook URL'
+    instagram_url:
+      type: string
+      label: 'Instagram URL'
+    linkedin_url:
+      type: string
+      label: 'LinkedIn URL'
+    x_url:
+      type: string
+      label: 'X URL'
