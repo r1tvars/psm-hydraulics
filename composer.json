@@ -16,12 +16,13 @@
     ],
     "require": {
         "composer/installers": "^2.3",
+        "drupal/core-composer-scaffold": "^11.3",
+        "drupal/core-project-message": "^11.3",
+        "drupal/core-recipe-unpack": "^11.3",
+        "drupal/core-recommended": "^11.3",
         "drupal/gin": "^5.0",
         "drupal/gin_login": "^2.1",
-        "drupal/core-composer-scaffold": "^11.3",
-        "drupal/core-recipe-unpack": "^11.3",
-        "drupal/core-project-message": "^11.3",
-        "drupal/core-recommended": "^11.3",
+        "drupal/paragraphs": "^1.20",
         "drupal/tailwindcss": "^5.0@alpha"
     },
     "conflict": {
