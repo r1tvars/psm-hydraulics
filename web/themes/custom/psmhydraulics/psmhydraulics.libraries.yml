@@ -4,3 +4,14 @@ global-styling:
       https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap: { type: external }
       https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css: { type: external, minified: true }
       dist/tailwind.css: {}
+
+splide:
+  css:
+    component:
+      /libraries/splidejs--splide/dist/css/splide.min.css: {}
+  js:
+    /libraries/splidejs--splide/dist/js/splide.min.js: { minified: true }
+    js/splide-init.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

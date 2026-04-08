@@ -12,6 +12,10 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
         }
     ],
     "require": {
@@ -23,7 +27,9 @@
         "drupal/gin": "^5.0",
         "drupal/gin_login": "^2.1",
         "drupal/paragraphs": "^1.20",
-        "drupal/tailwindcss": "^5.0@alpha"
+        "drupal/tailwindcss": "^5.0@alpha",
+        "npm-asset/splidejs--splide": "^4.1",
+        "oomphinc/composer-installers-extender": "^2.0"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -36,6 +42,7 @@
             "drupal/core-composer-scaffold": true,
             "drupal/core-recipe-unpack": true,
             "drupal/core-project-message": true,
+            "oomphinc/composer-installers-extender": true,
             "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": true,
@@ -49,12 +56,18 @@
                 "web-root": "web/"
             }
         },
+        "installer-types": [
+            "bower-asset",
+            "npm-asset"
+        ],
         "installer-paths": {
             "web/core": [
                 "type:drupal-core"
             ],
             "web/libraries/{$name}": [
-                "type:drupal-library"
+                "type:drupal-library",
+                "type:bower-asset",
+                "type:npm-asset"
             ],
             "web/modules/contrib/{$name}": [
                 "type:drupal-module"

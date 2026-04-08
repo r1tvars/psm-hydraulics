@@ -10,3 +10,4 @@
 /.composer/
 /.idea/
 /.vscode/
+/web/sites/development.services.yml
