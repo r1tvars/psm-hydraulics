@@ -1,0 +1,19 @@
+display:
+  default:
+    display_options:
+      fields:
+        name:
+          label: Autors
+      filters:
+        langcode:
+          expose:
+            label: Valoda
+  page_unapproved:
+    display_options:
+      fields:
+        name:
+          label: Autors
+      filters:
+        langcode:
+          expose:
+            label: Valoda

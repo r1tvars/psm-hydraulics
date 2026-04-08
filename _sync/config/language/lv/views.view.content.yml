@@ -1,0 +1,22 @@
+display:
+  default:
+    display_options:
+      fields:
+        title:
+          label: Nosaukums
+        type:
+          label: 'Satura veids'
+        name:
+          label: Autors
+        langcode:
+          label: Valoda
+      filters:
+        title:
+          expose:
+            label: Nosaukums
+        type:
+          expose:
+            label: 'Satura veids'
+        langcode:
+          expose:
+            label: Valoda

@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        filename:
+          label: Nosaukums
+        filemime:
+          label: 'MIME tips'
+      filters:
+        filemime:
+          expose:
+            label: 'MIME tips'

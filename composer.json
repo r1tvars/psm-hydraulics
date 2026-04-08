@@ -27,7 +27,9 @@
         "drupal/gin": "^5.0",
         "drupal/gin_login": "^2.1",
         "drupal/paragraphs": "^1.20",
+        "drupal/pathauto": "^1.12",
         "drupal/tailwindcss": "^5.0@alpha",
+        "drupal/token": "^1.15",
         "npm-asset/flag-icons": "^7",
         "npm-asset/splidejs--splide": "^4.1",
         "oomphinc/composer-installers-extender": "^2.0"

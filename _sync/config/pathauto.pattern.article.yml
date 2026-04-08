@@ -1,0 +1,23 @@
+uuid: 71c8f85c-a145-4ba5-b6d8-b6b1f9480001
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - pathauto
+id: article
+label: 'Article alias pattern'
+type: 'canonical_entities:node'
+pattern: 'articles/[node:title]'
+selection_criteria:
+  6f2f9d93-6ef1-4a8a-9a3f-2ef0bfe10001:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 6f2f9d93-6ef1-4a8a-9a3f-2ef0bfe10001
+    context_mapping:
+      node: node
+    bundles:
+      article: article
+selection_logic: and
+weight: -5
+relationships: {  }
