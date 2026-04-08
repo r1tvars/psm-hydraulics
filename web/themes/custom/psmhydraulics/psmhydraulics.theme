@@ -19,3 +19,61 @@ function psmhydraulics_preprocess_page(array &$variables): void {
     'location' => (string) $config->get('location'),
   ];
 }
+
+/**
+ * Implements hook_preprocess_links__language_block().
+ */
+function psmhydraulics_preprocess_links__language_block(array &$variables): void {
+  $current_language = \Drupal::languageManager()->getCurrentLanguage();
+  $current_language_id = $current_language->getId();
+  $localized_labels = [
+    'en' => [
+      'en' => 'English',
+      'en-gb' => 'English',
+      'lv' => 'Latvian',
+    ],
+    'en-gb' => [
+      'en' => 'English',
+      'en-gb' => 'English',
+      'lv' => 'Latvian',
+    ],
+    'lv' => [
+      'en' => 'Angļu',
+      'en-gb' => 'Angļu',
+      'lv' => 'Latviešu',
+    ],
+  ];
+
+  $flag_class_map = [
+    'en' => 'fi fi-gb',
+    'en-gb' => 'fi fi-gb',
+    'lv' => 'fi fi-lv',
+  ];
+
+  $label_map = $localized_labels[$current_language_id] ?? $localized_labels['en-gb'];
+  $current_label = $label_map[$current_language_id] ?? ($label_map['en-gb'] ?? $current_language->getName());
+
+  $variables['psm_language_switcher'] = [
+    'current_label' => $current_label,
+    'current_flag_class' => $flag_class_map[$current_language_id] ?? 'fi',
+    'items' => [],
+  ];
+
+  foreach ($variables['links'] as $langcode => $item) {
+    $label = $label_map[$langcode] ?? $item['text'];
+    $link = $item['link'] ?? NULL;
+
+    if (is_array($link)) {
+      $link['#title'] = $label;
+      $link['#options']['attributes']['class'][] = 'language-switcher__link';
+    }
+
+    $variables['psm_language_switcher']['items'][] = [
+      'flag_class' => $flag_class_map[$langcode] ?? 'fi',
+      'label' => $label,
+      'is_active' => $langcode === $current_language_id,
+      'link' => $link,
+      'text' => $item['text'],
+    ];
+  }
+}

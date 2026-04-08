@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "66f36b6e5f14bc48d4bfb47c7048452e",
+    "content-hash": "2ce7c55b2ab441c8ff865ceaf23ae6bb",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1644,6 +1644,18 @@
                 "source": "https://github.com/mck89/peast/tree/v1.17.5"
             },
             "time": "2026-03-15T10:47:07+00:00"
+        },
+        {
+            "name": "npm-asset/flag-icons",
+            "version": "7.5.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/flag-icons/-/flag-icons-7.5.0.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "npm-asset/splidejs--splide",
