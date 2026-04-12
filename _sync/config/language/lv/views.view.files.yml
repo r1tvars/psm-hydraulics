@@ -1,12 +1,42 @@
+label: Faili
 display:
   default:
+    display_title: Noklusējuma
     display_options:
+      title: Faili
       fields:
         filename:
           label: Nosaukums
         filemime:
           label: 'MIME tips'
+        operations:
+          label: Darbības
+      pager:
+        options:
+          tags:
+            next: 'Nākamais ›'
+            previous: '‹ Iepriekšējais'
+      exposed_form:
+        options:
+          reset_button_label: Attīrīt
       filters:
+        filename:
+          expose:
+            label: 'Faila nosaukums'
         filemime:
           expose:
             label: 'MIME tips'
+  page_1:
+    display_options:
+      menu:
+        title: Faili
+  page_2:
+    display_options:
+      fields:
+        type:
+          label: 'Entītijas veids'
+      pager:
+        options:
+          tags:
+            next: 'Nākamais ›'
+            previous: '‹ Iepriekšējais'

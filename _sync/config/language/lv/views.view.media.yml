@@ -1,12 +1,19 @@
+label: Multivide
 display:
   default:
     display_title: Noklusējuma
     display_options:
+      title: Multivide
       fields:
-        name:
+        uid:
           label: Autors
         operations:
           label: Darbības
+      pager:
+        options:
+          tags:
+            next: 'Nākamais ›'
+            previous: '‹ Iepriekšējais'
       exposed_form:
         options:
           reset_button_label: Attīrīt
@@ -14,14 +21,8 @@ display:
         langcode:
           expose:
             label: Valoda
-  page_unapproved:
+  media_page_list:
+    display_title: Multivide
     display_options:
-      fields:
-        name:
-          label: Autors
-        operations:
-          label: Darbības
-      filters:
-        langcode:
-          expose:
-            label: Valoda
+      menu:
+        title: Multivide

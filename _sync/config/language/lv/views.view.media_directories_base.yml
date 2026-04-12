@@ -1,12 +1,6 @@
 display:
   default:
-    display_title: Noklusējuma
     display_options:
-      fields:
-        roles_target_id:
-          label: Lomas
-        operations:
-          label: Darbības
       pager:
         options:
           tags:

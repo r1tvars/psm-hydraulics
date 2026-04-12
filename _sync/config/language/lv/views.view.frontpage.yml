@@ -2,11 +2,11 @@ display:
   default:
     display_title: Noklusējuma
     display_options:
-      fields:
-        title:
-          label: Nosaukums
-        name:
-          label: Autors
+      pager:
+        options:
+          tags:
+            next: 'Nākamais ›'
+            previous: '‹ Iepriekšējais'
       exposed_form:
         options:
           reset_button_label: Attīrīt

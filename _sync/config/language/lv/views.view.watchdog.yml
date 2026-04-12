@@ -3,10 +3,8 @@ display:
     display_title: Noklusējuma
     display_options:
       fields:
-        title:
-          label: Nosaukums
-        name:
-          label: Autors
+        link:
+          label: Darbības
       exposed_form:
         options:
           reset_button_label: Attīrīt

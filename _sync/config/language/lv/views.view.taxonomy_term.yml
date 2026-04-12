@@ -2,11 +2,6 @@ display:
   default:
     display_title: Noklusējuma
     display_options:
-      fields:
-        title:
-          label: Nosaukums
-        name:
-          label: Autors
       exposed_form:
         options:
           reset_button_label: Attīrīt

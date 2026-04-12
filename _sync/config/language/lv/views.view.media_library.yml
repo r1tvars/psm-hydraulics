@@ -1,0 +1,39 @@
+display:
+  default:
+    display_title: Noklusējuma
+    display_options:
+      title: Multivide
+      exposed_form:
+        options:
+          reset_button_label: Attīrīt
+      filters:
+        name:
+          expose:
+            label: Nosaukums
+        langcode:
+          expose:
+            label: Valoda
+  page:
+    display_options:
+      fields:
+        edit_media:
+          text: Labot
+        delete_media:
+          text: Dzēst
+  widget:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: Nosaukums
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: Nosaukums
+        uid:
+          label: Autors
+      filters:
+        name:
+          expose:
+            label: Nosaukums

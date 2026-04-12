@@ -1,5 +1,6 @@
 display:
   default:
+    display_title: Noklusējuma
     display_options:
       fields:
         title:
@@ -10,6 +11,16 @@ display:
           label: Autors
         langcode:
           label: Valoda
+        operations:
+          label: Darbības
+      pager:
+        options:
+          tags:
+            next: 'Nākamais ›'
+            previous: '‹ Iepriekšējais'
+      exposed_form:
+        options:
+          reset_button_label: Attīrīt
       filters:
         title:
           expose:
