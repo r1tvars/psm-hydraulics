@@ -989,9 +989,69 @@ input {
   margin-bottom: 1rem;
 }
 
-[id$="-local-tasks"] ul {
-  list-style-position: inside;
-  list-style-type: disc;
+[id$="-local-tasks"] {
+  margin-bottom: 1.5rem;
+}
+
+[id$="-local-tasks"] > ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 1.5rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  padding: 0.75rem;
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+[id$="-local-tasks"] > ul > li {
+  margin: 0px;
+  list-style-type: none;
+}
+
+[id$="-local-tasks"] > ul > li > a,
+  [id$="-local-tasks"] > ul > li > span {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity, 1));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(51 65 85 / var(--tw-text-opacity, 1));
+}
+
+[id$="-local-tasks"] > ul > li > a:hover,
+  [id$="-local-tasks"] > ul > li > span:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(240 165 0 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 165 0 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+[id$="-local-tasks"] > ul > li > a.is-active,
+  [id$="-local-tasks"] > ul > li > span.is-active {
+  --tw-border-opacity: 1;
+  border-color: rgb(240 165 0 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 165 0 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 .messages {

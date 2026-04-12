@@ -146,8 +146,26 @@
     @apply mb-4 leading-normal;
   }
 
-  [id$="-local-tasks"] ul {
-    @apply list-disc list-inside;
+  [id$="-local-tasks"] {
+    @apply mb-6;
+  }
+
+  [id$="-local-tasks"] > ul {
+    @apply flex flex-wrap items-center gap-3 rounded-[1.5rem] border border-steel-200 bg-white p-3 shadow-sm;
+  }
+
+  [id$="-local-tasks"] > ul > li {
+    @apply m-0 list-none;
+  }
+
+  [id$="-local-tasks"] > ul > li > a,
+  [id$="-local-tasks"] > ul > li > span {
+    @apply inline-flex items-center rounded-full border border-steel-200 px-4 py-2 text-sm font-semibold text-steel-700 hover:border-brand hover:bg-brand hover:text-white;
+  }
+
+  [id$="-local-tasks"] > ul > li > a.is-active,
+  [id$="-local-tasks"] > ul > li > span.is-active {
+    @apply border-brand bg-brand text-white;
   }
 
   .messages {
