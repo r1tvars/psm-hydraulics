@@ -1,13 +1,13 @@
-uuid: 9fa7ce0e-6f31-49af-b17f-275be27b146f
+uuid: ef8e1374-5f7f-49a4-8dc1-dc9686903e70
 langcode: en-gb
 status: true
 dependencies:
   module:
     - media
-    - node
-id: node.field_image
+    - paragraphs
+id: paragraph.field_image
 field_name: field_image
-entity_type: node
+entity_type: paragraph
 type: entity_reference
 settings:
   target_type: media

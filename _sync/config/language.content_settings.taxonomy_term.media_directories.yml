@@ -1,0 +1,11 @@
+uuid: d6a22d7d-cff2-4c74-85c3-61aca7c5649d
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.media_directories
+id: taxonomy_term.media_directories
+target_entity_type_id: taxonomy_term
+target_bundle: media_directories
+default_langcode: site_default
+language_alterable: false

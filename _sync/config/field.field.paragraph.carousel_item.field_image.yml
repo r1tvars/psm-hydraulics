@@ -1,15 +1,15 @@
-uuid: b5ccc606-c56e-46b2-a461-8b98dca1e563
+uuid: 74078202-bfc2-48b3-ab84-ced4216877e6
 langcode: en-gb
 status: true
 dependencies:
   config:
-    - field.storage.node.field_image
+    - field.storage.paragraph.field_image
     - media.type.image
-    - node.type.article
-id: node.article.field_image
+    - paragraphs.paragraphs_type.carousel_item
+id: paragraph.carousel_item.field_image
 field_name: field_image
-entity_type: node
-bundle: article
+entity_type: paragraph
+bundle: carousel_item
 label: Image
 description: ''
 required: false

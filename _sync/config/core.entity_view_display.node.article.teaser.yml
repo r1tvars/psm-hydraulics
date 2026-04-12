@@ -9,10 +9,8 @@ dependencies:
     - field.field.node.article.field_content_sections
     - field.field.node.article.field_image
     - field.field.node.article.field_tags
-    - image.style.medium
     - node.type.article
   module:
-    - image
     - text
     - user
 _core:
@@ -31,13 +29,11 @@ content:
     weight: 0
     region: content
   field_image:
-    type: image
+    type: entity_reference_entity_view
     label: hidden
     settings:
-      image_link: content
-      image_style: medium
-      image_loading:
-        attribute: lazy
+      view_mode: media_library
+      link: false
     third_party_settings: {  }
     weight: -1
     region: content
