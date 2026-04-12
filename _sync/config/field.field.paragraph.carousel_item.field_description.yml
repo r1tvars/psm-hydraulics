@@ -1,0 +1,22 @@
+uuid: 7c4e33df-58e6-45f8-8bd4-009b92d745cd
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_description
+    - paragraphs.paragraphs_type.carousel_item
+  module:
+    - text
+id: paragraph.carousel_item.field_description
+field_name: field_description
+entity_type: paragraph
+bundle: carousel_item
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

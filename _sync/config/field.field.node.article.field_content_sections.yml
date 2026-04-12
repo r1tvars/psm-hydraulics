@@ -1,0 +1,34 @@
+uuid: c7e89b90-927e-4885-b916-aa2615267136
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_content_sections
+    - node.type.article
+    - paragraphs.paragraphs_type.carousel
+  module:
+    - entity_reference_revisions
+id: node.article.field_content_sections
+field_name: field_content_sections
+entity_type: node
+bundle: article
+label: 'Content sections'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      carousel: carousel
+    negate: 0
+    target_bundles_drag_drop:
+      carousel:
+        weight: 3
+        enabled: true
+      carousel_item:
+        weight: 4
+        enabled: false
+field_type: entity_reference_revisions

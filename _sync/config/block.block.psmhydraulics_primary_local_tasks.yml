@@ -2,6 +2,8 @@ uuid: f99f0d0b-d3a6-480d-945a-684a8df0f22b
 langcode: en-gb
 status: true
 dependencies:
+  module:
+    - system
   theme:
     - psmhydraulics
 _core:
@@ -19,4 +21,8 @@ settings:
   provider: core
   primary: true
   secondary: false
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: '<front>'

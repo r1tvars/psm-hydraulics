@@ -1,0 +1,10 @@
+uuid: 03aadd9c-65f2-49a0-9798-b321bd6b1c7b
+langcode: en-gb
+status: true
+dependencies: {  }
+id: carousel
+label: Carousel
+icon_uuid: null
+icon_default: null
+description: 'Container paragraph for a slider with multiple custom slides.'
+behavior_plugins: {  }
