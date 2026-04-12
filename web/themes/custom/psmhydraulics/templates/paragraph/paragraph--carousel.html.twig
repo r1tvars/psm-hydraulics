@@ -1,0 +1,7 @@
+{{ attach_library('psmhydraulics/splide') }}
+
+<section{{ attributes.addClass('carousel-block', 'splide') }} data-splide='{"type":"loop","perPage":1,"perMove":1,"drag":false,"arrows":false,"pagination":true,"autoplay":false,"interval":10000,"speed":800,"breakpoints":{"767":{"drag":true}}}'>
+  <div class="splide__track">
+    {{ content.field_carousel_slides }}
+  </div>
+</section>

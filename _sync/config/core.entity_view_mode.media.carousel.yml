@@ -1,0 +1,13 @@
+uuid: 44f98556-b0a4-4f7e-8f95-3b9b6fb44549
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - media
+_core:
+  default_config_hash: 6wl8Vhy3vA1-Z7E2lX6w2rmtu5v2uY15Jr0e1EhcwE8
+id: media.carousel
+label: Carousel
+description: null
+targetEntityType: media
+cache: true

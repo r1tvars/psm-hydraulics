@@ -72,26 +72,37 @@
 #}
 <article{{ attributes.addClass('node') }}>
 
-  {{ title_prefix }}
-  {% if not page %}
-    <h2{{ title_attributes }}>
-      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-    </h2>
-  {% endif %}
-  {{ title_suffix }}
+  {% set sectioned_content = content.field_content_sections|render %}
+  {% set constrained_content = content|without('field_content_sections') %}
 
-  {% if display_submitted %}
-    <footer>
-      {{ author_picture }}
-      <div{{ author_attributes }}>
-        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-        {{ metadata }}
-      </div>
-    </footer>
-  {% endif %}
+  <div class="site-section">
+    {{ title_prefix }}
+    {% if not page %}
+      <h2{{ title_attributes }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
 
-  <div{{ content_attributes.addClass('node-content') }}>
-    {{ content }}
+    {% if display_submitted %}
+      <footer>
+        {{ author_picture }}
+        <div{{ author_attributes }}>
+          {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+          {{ metadata }}
+        </div>
+      </footer>
+    {% endif %}
+
+    <div{{ content_attributes.addClass('node-content') }}>
+      {{ constrained_content }}
+    </div>
   </div>
+
+  {% if sectioned_content %}
+    <div>
+      {{ sectioned_content }}
+    </div>
+  {% endif %}
 
 </article>

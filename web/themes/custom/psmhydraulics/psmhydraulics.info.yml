@@ -6,14 +6,9 @@ base theme: stable9
 libraries:
   - psmhydraulics/global-styling
 regions:
-  header_top: Header Top
   header: Header
   primary_menu: Primary Menu
   secondary_menu: Secondary Menu
-  highlighted: Highlighted
   breadcrumb: Breadcrumb
-  help: Help
   content: Content
-  sidebar_first: Sidebar First
-  sidebar_second: Sidebar Second
   footer: Footer

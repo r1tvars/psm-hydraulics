@@ -1,0 +1,23 @@
+uuid: 9f87d4e6-853d-4b8f-b2c8-95b21cfb11aa
+langcode: en-gb
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: iQ9GMc_6Q9tXQb2Vqx_G8J2i9vD7S4x2QkpxeH2uKj8
+name: carousel_hero
+label: 'Carousel hero (2400x1600)'
+effects:
+  0a03de85-faf8-4f8a-b489-ec245f0e3549:
+    uuid: 0a03de85-faf8-4f8a-b489-ec245f0e3549
+    id: image_scale
+    weight: 0
+    data:
+      width: 2400
+      height: 1600
+      upscale: false
+  3e5dd90c-97ef-47e3-bf65-c1d40ccb6b84:
+    uuid: 3e5dd90c-97ef-47e3-bf65-c1d40ccb6b84
+    id: image_convert_avif
+    weight: 1
+    data:
+      extension: webp

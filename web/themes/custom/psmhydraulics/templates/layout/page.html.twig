@@ -81,14 +81,8 @@
     </div>
   </header>
 
-  {% if page.highlighted %}
-    <div class="site-section pt-6">
-      {{ page.highlighted }}
-    </div>
-  {% endif %}
-
-  {% if page.breadcrumb or page.help %}
-    <div class="site-section pt-6">
+  {% if page.breadcrumb %}
+    <div class="site-section">
       {{ page.breadcrumb }}
       {{ page.help }}
     </div>
@@ -97,21 +91,14 @@
   <main class="content-shell" role="main">
     <a id="main-content" tabindex="-1"></a>
 
-    <div class="site-section">
-      {{ messages }}
-    </div>
-
-    <div class="site-section mt-6 grid gap-8 xl:grid-cols-[minmax(0,1fr)_18rem]">
-      <div class="min-w-0">
-        {{ page.content }}
+    {% if messages %}
+      <div class="site-section pt-6">
+        {{ messages }}
       </div>
+    {% endif %}
 
-      {% if page.sidebar_first or page.sidebar_second %}
-        <aside class="space-y-6" role="complementary">
-          {{ page.sidebar_first }}
-          {{ page.sidebar_second }}
-        </aside>
-      {% endif %}
+    <div>
+      {{ page.content }}
     </div>
   </main>
 

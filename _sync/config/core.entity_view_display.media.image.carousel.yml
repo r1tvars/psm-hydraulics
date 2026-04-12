@@ -1,0 +1,33 @@
+uuid: f9b7a04b-38fb-4e9f-b7e8-f3450d0c0865
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.carousel
+    - field.field.media.image.field_media_image
+    - image.style.carousel_hero
+    - media.type.image
+  module:
+    - image
+id: media.image.carousel
+targetEntityType: media
+bundle: image
+mode: carousel
+content:
+  field_media_image:
+    type: image
+    label: hidden
+    settings:
+      image_style: carousel_hero
+      image_link: ''
+      image_loading:
+        attribute: eager
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true
