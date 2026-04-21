@@ -114,11 +114,22 @@
   }
 
   .menu-link {
-    @apply flex items-center justify-between gap-2 rounded-full px-4 py-3 font-display text-base font-semibold uppercase tracking-[0.12em] text-steel-900 hover:bg-brand hover:text-white xl:px-3 xl:py-4 xl:text-[0.95rem];
+    @apply relative flex items-center justify-between gap-2 px-4 py-3 font-display text-base font-semibold uppercase tracking-[0.12em] text-steel-900 hover:text-brand focus-visible:text-brand xl:px-3 xl:py-4 xl:text-[0.95rem];
+  }
+
+  .menu-link::after {
+    @apply absolute bottom-1 left-3 right-3 h-0.5 origin-left scale-x-0 bg-brand transition-transform duration-300 ease-out;
+    content: '';
+  }
+
+  .menu-link:hover::after,
+  .menu-link:focus-visible::after,
+  .menu-link.is-active::after {
+    @apply scale-x-100;
   }
 
   .menu-link--sub {
-    @apply rounded-xl px-0 py-1 font-sans text-sm font-semibold uppercase tracking-[0.08em] text-steel-700 hover:bg-transparent hover:text-brand xl:px-2;
+    @apply rounded-xl px-0 py-1 font-sans text-sm font-semibold uppercase tracking-[0.08em] text-steel-700 hover:bg-transparent hover:text-brand focus-visible:text-brand xl:px-2;
   }
 
   .menu-link.is-active,
@@ -131,9 +142,6 @@
     @apply pr-0;
   }
 
-  .content-shell {
-    @apply py-8 lg:py-12;
-  }
 
   .carousel-block {
     @apply relative overflow-hidden bg-steel-900 shadow-panel;
