@@ -1,0 +1,10 @@
+uuid: 26b15007-feaa-4d1e-ab04-bcd5f083b4c8
+langcode: en-gb
+status: true
+dependencies: {  }
+id: informational_block_item
+label: 'Informational block item'
+icon_uuid: null
+icon_default: null
+description: 'Small standout segment used inside informational blocks.'
+behavior_plugins: {  }

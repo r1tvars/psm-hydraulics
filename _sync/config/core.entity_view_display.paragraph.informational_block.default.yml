@@ -1,0 +1,54 @@
+uuid: 048892bb-2710-4abd-bf79-3f067b8858f4
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.informational_block.field_description
+    - field.field.paragraph.informational_block.field_heading
+    - field.field.paragraph.informational_block.field_image
+    - field.field.paragraph.informational_block.field_image_position
+    - field.field.paragraph.informational_block.field_info_items
+    - paragraphs.paragraphs_type.informational_block
+  module:
+    - entity_reference_revisions
+    - text
+id: paragraph.informational_block.default
+targetEntityType: paragraph
+bundle: informational_block
+mode: default
+content:
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_heading:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_info_items:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  field_image_position: true

@@ -1,0 +1,27 @@
+uuid: e2158cbd-8617-4869-8e9e-14daf9913c03
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_info_items
+    - paragraphs.paragraphs_type.informational_block
+    - paragraphs.paragraphs_type.informational_block_item
+  module:
+    - entity_reference_revisions
+id: paragraph.informational_block.field_info_items
+field_name: field_info_items
+entity_type: paragraph
+bundle: informational_block
+label: 'Info segments'
+description: 'Optional standout information blocks. Maximum 2.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      informational_block_item: informational_block_item
+    negate: 0
+field_type: entity_reference_revisions

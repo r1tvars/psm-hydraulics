@@ -1,0 +1,33 @@
+{% set has_image = not paragraph.field_image.isEmpty() %}
+{% set image_position = paragraph.field_image_position.value|default('right') %}
+{% set block_classes = [
+  'informational-block',
+  has_image ? 'informational-block--has-image' : 'informational-block--no-image',
+  has_image and image_position == 'left' ? 'informational-block--image-left' : 'informational-block--image-right',
+] %}
+
+<section{{ attributes.addClass(block_classes) }}>
+  <div class="informational-block__content">
+    {% if not paragraph.field_heading.isEmpty() %}
+      <h2 class="informational-block__heading">
+        {{ content.field_heading }}
+      </h2>
+    {% endif %}
+
+    {% if not paragraph.field_description.isEmpty() %}
+      <div class="informational-block__description">
+        {{ content.field_description }}
+      </div>
+    {% endif %}
+
+    {% if not paragraph.field_info_items.isEmpty() %}
+      {{ content.field_info_items }}
+    {% endif %}
+  </div>
+
+  {% if has_image %}
+    <div class="informational-block__media">
+      {{ content.field_image }}
+    </div>
+  {% endif %}
+</section>

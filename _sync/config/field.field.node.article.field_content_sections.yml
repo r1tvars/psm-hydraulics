@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_content_sections
     - node.type.article
     - paragraphs.paragraphs_type.carousel
+    - paragraphs.paragraphs_type.informational_block
   module:
     - entity_reference_revisions
 id: node.article.field_content_sections
@@ -23,12 +24,19 @@ settings:
   handler_settings:
     target_bundles:
       carousel: carousel
+      informational_block: informational_block
     negate: 0
     target_bundles_drag_drop:
       carousel:
-        weight: 3
+        weight: 4
         enabled: true
       carousel_item:
-        weight: 4
+        weight: 5
+        enabled: false
+      informational_block:
+        weight: 6
+        enabled: true
+      informational_block_item:
+        weight: 7
         enabled: false
 field_type: entity_reference_revisions

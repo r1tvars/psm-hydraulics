@@ -231,6 +231,88 @@
     @apply inline-flex items-center rounded-md bg-brand px-7 py-4 font-display text-sm font-semibold uppercase tracking-[0.18em] text-white hover:bg-brand-dark;
   }
 
+  .informational-block {
+    @apply mx-auto flex max-w-shell flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8 xl:flex-row xl:items-center xl:gap-10;
+  }
+
+  .informational-block--image-left {
+    @apply xl:flex-row-reverse;
+  }
+
+  .informational-block__content {
+    @apply flex flex-col gap-5 xl:basis-2/3;
+  }
+
+  .informational-block--no-image .informational-block__content {
+    @apply xl:basis-full;
+  }
+
+  .informational-block__heading {
+    @apply max-w-4xl font-display text-3xl font-bold uppercase leading-tight tracking-[0.08em] text-steel-900 sm:text-4xl;
+  }
+
+  .informational-block__heading .field,
+  .informational-block__heading .field__item {
+    @apply contents;
+  }
+
+  .informational-block__description {
+    @apply max-w-4xl text-base leading-8 text-steel-500;
+  }
+
+  .informational-block__description p {
+    @apply mb-4 last:mb-0;
+  }
+
+  .informational-block__items {
+    @apply mt-3 grid gap-5;
+  }
+
+  .informational-block__items:has(.informational-block-item:nth-child(2)) {
+    @apply md:grid-cols-2;
+  }
+
+  .informational-block-item {
+    @apply min-w-0;
+  }
+
+  .informational-block-item__heading {
+    @apply mb-3 font-display text-lg font-bold uppercase tracking-[0.12em] text-steel-900;
+  }
+
+  .informational-block-item__heading .field,
+  .informational-block-item__heading .field__item {
+    @apply contents;
+  }
+
+  .informational-block-item__description {
+    @apply text-sm leading-7 text-steel-500;
+  }
+
+  .informational-block-item__description p {
+    @apply mb-3 last:mb-0;
+  }
+
+  .informational-block__media {
+    @apply relative xl:basis-1/3;
+  }
+
+  .informational-block__media::before {
+    @apply absolute -left-4 -top-4 h-3/4 w-3/4 border-[0.875rem] border-brand;
+    content: '';
+  }
+
+  .informational-block__media .field,
+  .informational-block__media .field__item,
+  .informational-block__media .media,
+  .informational-block__media .media__content {
+    @apply relative h-full;
+  }
+
+  .informational-block__media img {
+    @apply relative z-10 h-auto w-full shadow-panel;
+  }
+
   .block,
   .node {
     @apply mb-4;

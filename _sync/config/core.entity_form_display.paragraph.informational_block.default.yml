@@ -1,0 +1,85 @@
+uuid: 1df9b644-8ec1-4ca4-9a0d-34fe6742c7ac
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.media_directories_modal
+    - field.field.paragraph.informational_block.field_description
+    - field.field.paragraph.informational_block.field_heading
+    - field.field.paragraph.informational_block.field_image
+    - field.field.paragraph.informational_block.field_image_position
+    - field.field.paragraph.informational_block.field_info_items
+    - paragraphs.paragraphs_type.informational_block
+  module:
+    - entity_browser
+    - options
+    - paragraphs
+    - text
+id: paragraph.informational_block.default
+targetEntityType: paragraph
+bundle: informational_block
+mode: default
+content:
+  field_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_heading:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_image:
+    type: entity_browser_entity_reference
+    weight: 2
+    region: content
+    settings:
+      entity_browser: media_directories_modal
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      field_widget_replace: false
+      open: true
+      field_widget_display_settings:
+        view_mode: media_library
+      selection_mode: selection_append
+    third_party_settings: {  }
+  field_image_position:
+    type: options_buttons
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_info_items:
+    type: paragraphs
+    weight: 4
+    region: content
+    settings:
+      title: 'Info segment'
+      title_plural: 'Info segments'
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+  translation:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

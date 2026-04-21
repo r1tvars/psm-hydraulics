@@ -1,0 +1,7 @@
+{% if items %}
+  <div class="informational-block__items">
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  </div>
+{% endif %}
