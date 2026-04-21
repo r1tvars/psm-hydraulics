@@ -6,7 +6,7 @@
   <div class="carousel-slide__overlay"></div>
 
   <div class="carousel-slide__content">
-    {% if content.field_eyebrow %}
+    {% if not paragraph.field_eyebrow.isEmpty() %}
       <div class="carousel-slide__eyebrow">
         {{ content.field_eyebrow }}
       </div>
