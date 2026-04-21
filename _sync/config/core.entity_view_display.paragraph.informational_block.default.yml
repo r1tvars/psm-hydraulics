@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.informational_block.field_heading
     - field.field.paragraph.informational_block.field_image
     - field.field.paragraph.informational_block.field_image_position
+    - field.field.paragraph.informational_block.field_show_image_mobile
     - field.field.paragraph.informational_block.field_info_items
     - paragraphs.paragraphs_type.informational_block
   module:
@@ -52,3 +53,4 @@ content:
     region: content
 hidden:
   field_image_position: true
+  field_show_image_mobile: true

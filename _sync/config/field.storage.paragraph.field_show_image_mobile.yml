@@ -1,0 +1,18 @@
+uuid: ebe06f50-6e92-4b70-804b-1d14df53ed7e
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_show_image_mobile
+field_name: field_show_image_mobile
+entity_type: paragraph
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

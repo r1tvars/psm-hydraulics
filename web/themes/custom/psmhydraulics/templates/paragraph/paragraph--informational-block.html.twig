@@ -1,5 +1,6 @@
 {% set has_image = not paragraph.field_image.isEmpty() %}
 {% set image_position = paragraph.field_image_position.value|default('right') %}
+{% set hide_image_mobile = paragraph.field_show_image_mobile.value|default('0') == '1' %}
 {% set block_classes = [
   'informational-block',
   has_image ? 'informational-block--has-image' : 'informational-block--no-image',
@@ -26,7 +27,7 @@
   </div>
 
   {% if has_image %}
-    <div class="informational-block__media">
+    <div class="informational-block__media{{ hide_image_mobile ? ' hidden sm:block' : '' }}">
       {{ content.field_image }}
     </div>
   {% endif %}

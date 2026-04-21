@@ -1,0 +1,23 @@
+uuid: b8d5eae2-3bec-41f2-9ea3-c42734158184
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_show_image_mobile
+    - paragraphs.paragraphs_type.informational_block
+id: paragraph.informational_block.field_show_image_mobile
+field_name: field_show_image_mobile
+entity_type: paragraph
+bundle: informational_block
+label: 'Hide image on mobile'
+description: 'Enable to hide the image on screens below 640px. Disable to keep the image visible on mobile and larger screens.'
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
