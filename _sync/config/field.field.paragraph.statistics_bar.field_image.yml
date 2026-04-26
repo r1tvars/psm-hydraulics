@@ -1,0 +1,25 @@
+uuid: 9e5228ce-f291-4313-812e-be07f09c8078
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image
+    - media.type.image
+    - paragraphs.paragraphs_type.statistics_bar
+id: paragraph.statistics_bar.field_image
+field_name: field_image
+entity_type: paragraph
+bundle: statistics_bar
+label: 'Background image'
+description: 'Optional image shown behind the statistics cards.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    auto_create: false
+field_type: entity_reference

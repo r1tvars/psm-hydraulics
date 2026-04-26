@@ -29,6 +29,10 @@ module.exports = {
       boxShadow: {
         panel: "0 24px 60px rgba(15, 23, 42, 0.12)",
       },
+      backgroundImage: {
+        "statistics-fallback":
+          "radial-gradient(circle at top left, rgba(240, 165, 0, 0.18), transparent 32%), radial-gradient(circle at bottom right, rgba(148, 163, 184, 0.14), transparent 30%), linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 55%, rgba(19, 34, 56, 0.92) 100%)",
+      },
       fontFamily: {
         sans: ["Barlow", "ui-sans-serif", "system-ui", "sans-serif"],
         display: ["Barlow Condensed", "ui-sans-serif", "system-ui", "sans-serif"],

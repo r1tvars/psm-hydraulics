@@ -1,0 +1,21 @@
+{{ attach_library('psmhydraulics/statistics-bar') }}
+
+{% set has_image = not paragraph.field_image.isEmpty() %}
+{% set section_classes = [
+  'statistics-bar',
+  has_image ? 'statistics-bar--has-image' : 'statistics-bar--no-image',
+  not has_image ? 'bg-statistics-fallback',
+] %}
+
+<section{{ attributes.addClass(section_classes) }}>
+  {% if has_image %}
+    <div class="statistics-bar__media">
+      {{ content.field_image }}
+    </div>
+    <div class="statistics-bar__overlay"></div>
+  {% endif %}
+
+  <div class="statistics-bar__inner">
+    {{ content.field_statistics_items }}
+  </div>
+</section>

@@ -1,0 +1,58 @@
+uuid: 90520c68-6523-4b08-846b-3b3a4240f132
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.media_directories_modal
+    - field.field.paragraph.statistics_bar.field_image
+    - field.field.paragraph.statistics_bar.field_statistics_items
+    - paragraphs.paragraphs_type.statistics_bar
+  module:
+    - entity_browser
+    - paragraphs
+id: paragraph.statistics_bar.default
+targetEntityType: paragraph
+bundle: statistics_bar
+mode: default
+content:
+  field_image:
+    type: entity_browser_entity_reference
+    weight: 0
+    region: content
+    settings:
+      entity_browser: media_directories_modal
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      field_widget_replace: false
+      open: true
+      field_widget_display_settings:
+        view_mode: media_library
+      selection_mode: selection_append
+    third_party_settings: {  }
+  field_statistics_items:
+    type: paragraphs
+    weight: 1
+    region: content
+    settings:
+      title: 'Statistics block'
+      title_plural: 'Statistics blocks'
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: statistics_bar_item
+      features:
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+  translation:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

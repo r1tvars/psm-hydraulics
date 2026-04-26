@@ -1,0 +1,10 @@
+uuid: f0f976d2-d92f-4d6d-a3a3-acfa264bdee7
+langcode: en-gb
+status: true
+dependencies: {  }
+id: statistics_bar_item
+label: 'Statistics bar item'
+icon_uuid: null
+icon_default: null
+description: 'Single statistics card containing a value, label, and short description.'
+behavior_plugins: {  }

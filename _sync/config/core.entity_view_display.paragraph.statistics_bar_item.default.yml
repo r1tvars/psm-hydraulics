@@ -1,0 +1,44 @@
+uuid: 64d1d798-52f6-4962-88d3-0270d9ca77a5
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.statistics_bar_item.field_description
+    - field.field.paragraph.statistics_bar_item.field_heading
+    - field.field.paragraph.statistics_bar_item.field_link
+    - field.field.paragraph.statistics_bar_item.field_open_in_new_tab
+    - field.field.paragraph.statistics_bar_item.field_stat_value
+    - paragraphs.paragraphs_type.statistics_bar_item
+  module:
+    - text
+id: paragraph.statistics_bar_item.default
+targetEntityType: paragraph
+bundle: statistics_bar_item
+mode: default
+content:
+  field_stat_value:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_heading:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  field_link: true
+  field_open_in_new_tab: true

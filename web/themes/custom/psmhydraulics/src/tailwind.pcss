@@ -320,6 +320,101 @@
     @apply relative z-10 h-full w-full object-cover object-center shadow-panel xl:h-auto;
   }
 
+  .statistics-bar {
+    @apply relative isolate overflow-hidden py-10 sm:py-14 xl:py-20;
+  }
+
+  .statistics-bar__media,
+  .statistics-bar__media .field,
+  .statistics-bar__media .field__item,
+  .statistics-bar__media .media,
+  .statistics-bar__media .media__content {
+    @apply absolute inset-0 h-full;
+  }
+
+  .statistics-bar__media img {
+    @apply h-full w-full object-cover object-center;
+  }
+
+  .statistics-bar__overlay {
+    @apply absolute inset-0;
+    background-image: linear-gradient(
+      90deg,
+      rgba(15, 23, 42, 0.84) 0%,
+      rgba(15, 23, 42, 0.72) 50%,
+      rgba(15, 23, 42, 0.82) 100%
+    );
+  }
+
+  .statistics-bar__inner {
+    @apply relative z-10 mx-auto max-w-shell px-4 sm:px-6 lg:px-8;
+  }
+
+  .statistics-bar__items {
+    @apply flex flex-wrap justify-center gap-5 lg:gap-6;
+  }
+
+  .statistics-bar-item {
+    @apply relative w-full max-w-[26rem] rounded-[1rem] px-6 py-8 text-center text-white shadow-panel backdrop-blur-sm sm:px-8 sm:py-10;
+    background-color: rgba(19, 34, 56, 0.9);
+    flex: 1 1 100%;
+  }
+
+  .statistics-bar-item:hover .statistics-bar-item__indicator {
+    @apply border-brand/70 bg-brand text-white;
+  }
+
+  .statistics-bar-item:hover .statistics-bar-item__indicator::before {
+    transform: translate3d(2px, -2px, 0);
+  }
+
+  @media (min-width: 768px) {
+    .statistics-bar-item {
+      flex-basis: calc(50% - 0.75rem);
+      max-width: calc(50% - 0.75rem);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .statistics-bar-item {
+      flex-basis: calc(25% - 1.125rem);
+      max-width: calc(25% - 1.125rem);
+    }
+  }
+
+  .statistics-bar-item__value {
+    @apply mb-3 font-display text-4xl font-bold leading-none tracking-[0.02em] text-white sm:text-5xl;
+  }
+
+  .statistics-bar-item__value .field,
+  .statistics-bar-item__value .field__item,
+  .statistics-bar-item__heading .field,
+  .statistics-bar-item__heading .field__item {
+    @apply contents;
+  }
+
+  .statistics-bar-item__heading {
+    @apply mb-3 font-sans text-xl font-semibold text-white;
+  }
+
+  .statistics-bar-item__indicator {
+    @apply absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-[0] text-steel-100 transition duration-200;
+  }
+
+  .statistics-bar-item__indicator::before {
+    @apply text-sm font-semibold;
+    content: '\2197';
+    transition: transform 0.2s ease;
+  }
+
+  .statistics-bar-item__description {
+    @apply mx-auto max-w-[20rem] text-sm leading-8 text-steel-200 sm:text-base;
+  }
+
+  .statistics-bar-item__description p {
+    @apply m-0;
+  }
+
   .block,
   .node {
     @apply mb-4;

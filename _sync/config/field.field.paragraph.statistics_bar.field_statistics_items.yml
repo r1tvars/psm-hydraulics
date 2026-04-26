@@ -1,0 +1,27 @@
+uuid: 2a4cc088-9e50-4959-b697-6d657e66e73d
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_statistics_items
+    - paragraphs.paragraphs_type.statistics_bar
+    - paragraphs.paragraphs_type.statistics_bar_item
+  module:
+    - entity_reference_revisions
+id: paragraph.statistics_bar.field_statistics_items
+field_name: field_statistics_items
+entity_type: paragraph
+bundle: statistics_bar
+label: 'Statistics blocks'
+description: 'Add the key figures to show in the statistics bar.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      statistics_bar_item: statistics_bar_item
+    negate: 0
+field_type: entity_reference_revisions

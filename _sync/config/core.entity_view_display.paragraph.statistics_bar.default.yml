@@ -1,0 +1,34 @@
+uuid: d05a0020-57cc-4478-86da-e464619f1b18
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.statistics_bar.field_image
+    - field.field.paragraph.statistics_bar.field_statistics_items
+    - paragraphs.paragraphs_type.statistics_bar
+  module:
+    - entity_reference_revisions
+id: paragraph.statistics_bar.default
+targetEntityType: paragraph
+bundle: statistics_bar
+mode: default
+content:
+  field_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: carousel
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_statistics_items:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

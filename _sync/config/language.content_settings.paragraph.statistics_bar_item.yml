@@ -1,0 +1,16 @@
+uuid: 678d3d64-94c2-4bb7-860b-d44d8bdf9c46
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.statistics_bar_item
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: paragraph.statistics_bar_item
+target_entity_type_id: paragraph
+target_bundle: statistics_bar_item
+default_langcode: site_default
+language_alterable: false

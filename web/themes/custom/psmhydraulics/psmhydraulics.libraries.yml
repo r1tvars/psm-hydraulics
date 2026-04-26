@@ -16,6 +16,13 @@ splide:
     - core/drupal
     - core/once
 
+statistics-bar:
+  js:
+    js/statistics-bar.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
 language-switcher:
   css:
     component:

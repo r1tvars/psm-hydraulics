@@ -1,0 +1,19 @@
+uuid: 1040c3c2-79f9-47a4-95d8-72b318d9a57d
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_stat_value
+    - paragraphs.paragraphs_type.statistics_bar_item
+id: paragraph.statistics_bar_item.field_stat_value
+field_name: field_stat_value
+entity_type: paragraph
+bundle: statistics_bar_item
+label: Value
+description: 'Examples: 5.4M+, 99.9%, 24/7.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

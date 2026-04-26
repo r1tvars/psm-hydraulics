@@ -1,0 +1,10 @@
+uuid: 84335840-1569-4045-b276-a08043acaf46
+langcode: en-gb
+status: true
+dependencies: {  }
+id: statistics_bar
+label: 'Statistics bar'
+icon_uuid: null
+icon_default: null
+description: 'Full-width statistics cards with an optional background image.'
+behavior_plugins: {  }

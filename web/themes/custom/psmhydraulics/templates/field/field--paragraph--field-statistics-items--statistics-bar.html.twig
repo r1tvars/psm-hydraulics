@@ -1,0 +1,7 @@
+{% if items %}
+  <div class="statistics-bar__items">
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  </div>
+{% endif %}
