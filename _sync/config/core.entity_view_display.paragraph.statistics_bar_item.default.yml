@@ -16,13 +16,12 @@ targetEntityType: paragraph
 bundle: statistics_bar_item
 mode: default
 content:
-  field_stat_value:
-    type: string
+  field_description:
+    type: text_default
     label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 2
     region: content
   field_heading:
     type: string
@@ -32,12 +31,13 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  field_description:
-    type: text_default
+  field_stat_value:
+    type: string
     label: hidden
-    settings: {  }
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
-    weight: 2
+    weight: 0
     region: content
 hidden:
   field_link: true

@@ -1,0 +1,28 @@
+uuid: a7b59cf6-6351-40ca-a721-ad680eecff17
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_product_category
+    - node.type.catalogue_item
+    - taxonomy.vocabulary.product_category
+id: node.catalogue_item.field_product_category
+field_name: field_product_category
+entity_type: node
+bundle: catalogue_item
+label: 'Product category'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      product_category: product_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+field_type: entity_reference

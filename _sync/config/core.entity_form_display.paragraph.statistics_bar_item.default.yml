@@ -17,12 +17,12 @@ targetEntityType: paragraph
 bundle: statistics_bar_item
 mode: default
 content:
-  field_stat_value:
-    type: string_textfield
-    weight: 0
+  field_description:
+    type: text_textarea
+    weight: 2
     region: content
     settings:
-      size: 30
+      rows: 3
       placeholder: ''
     third_party_settings: {  }
   field_heading:
@@ -31,14 +31,6 @@ content:
     region: content
     settings:
       size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_description:
-    type: text_textarea
-    weight: 2
-    region: content
-    settings:
-      rows: 3
       placeholder: ''
     third_party_settings: {  }
   field_link:
@@ -55,6 +47,14 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  field_stat_value:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 30
+      placeholder: ''
     third_party_settings: {  }
   translation:
     weight: 10

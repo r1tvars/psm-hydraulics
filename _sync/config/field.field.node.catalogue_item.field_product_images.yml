@@ -1,0 +1,25 @@
+uuid: f579b611-857b-4e56-8596-7d4f2e76f15b
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_product_images
+    - media.type.image
+    - node.type.catalogue_item
+id: node.catalogue_item.field_product_images
+field_name: field_product_images
+entity_type: node
+bundle: catalogue_item
+label: Images
+description: 'Upload product images. The first image will be treated as the main image.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    auto_create: false
+field_type: entity_reference

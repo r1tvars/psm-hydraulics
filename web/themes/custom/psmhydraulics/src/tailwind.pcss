@@ -415,6 +415,132 @@
     @apply m-0;
   }
 
+  .catalogue-view__layout {
+    @apply grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start xl:gap-12;
+  }
+
+  .catalogue-view__main {
+    @apply min-w-0;
+  }
+
+  .catalogue-view__sidebar {
+    @apply order-first lg:order-none;
+  }
+
+  .catalogue-view__toolbar {
+    @apply mb-8 flex flex-col gap-4 border-b border-steel-200 pb-6 md:flex-row md:items-center md:justify-between;
+  }
+
+  .catalogue-view__summary {
+    @apply text-sm text-steel-500;
+  }
+
+  .catalogue-sort {
+    @apply flex items-center gap-3 self-start md:self-auto;
+  }
+
+  .catalogue-sort__label {
+    @apply sr-only;
+  }
+
+  .catalogue-sort__control {
+    @apply relative min-w-[16rem];
+  }
+
+  .catalogue-sort__select {
+    @apply h-14 w-full appearance-none border border-steel-200 bg-white pl-5 pr-16 font-sans text-sm font-medium text-steel-700 shadow-sm outline-none transition focus:border-brand;
+  }
+
+  .catalogue-sort__icon {
+    @apply pointer-events-none absolute inset-y-0 right-0 inline-flex w-14 items-center justify-center bg-steel-900 text-sm text-white;
+  }
+
+  .catalogue-grid {
+    @apply grid gap-6 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3;
+  }
+
+  .catalogue-grid__item {
+    @apply min-w-0;
+  }
+
+  .catalogue-sidebar-card {
+    @apply border border-steel-200 bg-white shadow-sm;
+  }
+
+  .catalogue-sidebar-card__title {
+    @apply border-b border-steel-200 px-5 py-5 font-display text-3xl font-semibold text-steel-900;
+  }
+
+  .catalogue-search {
+    @apply p-5;
+  }
+
+  .catalogue-search__control {
+    @apply flex;
+  }
+
+  .catalogue-search__input {
+    @apply h-14 min-w-0 flex-1 border border-steel-200 border-r-0 bg-white px-4 text-sm text-steel-700 outline-none placeholder:text-steel-400 focus:border-brand;
+  }
+
+  .catalogue-search__submit {
+    @apply inline-flex h-14 w-14 items-center justify-center bg-brand text-white transition hover:bg-brand-dark;
+  }
+
+  .catalogue-card {
+    @apply mb-0 h-full border border-steel-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-panel;
+  }
+
+  .catalogue-card__link {
+    @apply flex h-full flex-col;
+  }
+
+  .catalogue-card__media {
+    @apply relative flex min-h-[18rem] items-center justify-center overflow-hidden bg-white p-8 sm:min-h-[22rem];
+  }
+
+  .catalogue-card__badge {
+    @apply absolute right-4 top-4 z-10 inline-flex items-center rounded-sm bg-steel-900 px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white;
+  }
+
+  .catalogue-card__image {
+    @apply h-full max-h-[20rem] w-full object-contain;
+  }
+
+  .catalogue-card__placeholder {
+    @apply flex h-full min-h-[14rem] w-full items-center justify-center bg-steel-100 font-display text-lg uppercase tracking-[0.12em] text-steel-400;
+  }
+
+  .catalogue-card__body {
+    @apply flex flex-1 flex-col gap-2 border-t border-steel-200 px-5 py-5;
+  }
+
+  .catalogue-card__sku {
+    @apply text-xs font-semibold uppercase tracking-[0.16em] text-steel-400;
+  }
+
+  .catalogue-card__title {
+    @apply font-display text-3xl font-semibold leading-tight text-steel-900;
+  }
+
+  .catalogue-card__price {
+    @apply mt-auto pt-1 text-base font-semibold text-brand;
+  }
+
+  .catalogue-view__pager {
+    @apply mt-10;
+  }
+
+  .catalogue-view__pager .pager__items {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  .catalogue-view__pager .pager__item a,
+  .catalogue-view__pager .pager__item.is-active a,
+  .catalogue-view__pager .pager__item.is-active {
+    @apply inline-flex h-11 min-w-[2.75rem] items-center justify-center border border-steel-200 bg-white px-4 text-sm font-semibold text-steel-700 transition hover:border-brand hover:text-brand;
+  }
+
   .block,
   .node {
     @apply mb-4;

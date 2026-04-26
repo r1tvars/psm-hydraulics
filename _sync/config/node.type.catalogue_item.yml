@@ -1,0 +1,11 @@
+uuid: 6ff2a248-b5a0-4c0b-afe7-1b2661d5448c
+langcode: en-gb
+status: true
+dependencies: {  }
+name: 'Catalogue Item'
+type: catalogue_item
+description: 'Use for products and sellable catalogue entries.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

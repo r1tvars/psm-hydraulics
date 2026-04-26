@@ -1,6 +1,6 @@
 uuid: f99f0d0b-d3a6-480d-945a-684a8df0f22b
 langcode: en-gb
-status: true
+status: false
 dependencies:
   module:
     - system
@@ -10,7 +10,7 @@ _core:
   default_config_hash: nGE3EoPQQaQCuqTUtZgw0-KIzmrqdKDzdNQf2JyPUt4
 id: psmhydraulics_primary_local_tasks
 theme: psmhydraulics
-region: highlighted
+region: header
 weight: -4
 provider: null
 plugin: local_tasks_block

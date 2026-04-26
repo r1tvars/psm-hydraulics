@@ -111,3 +111,92 @@ function psmhydraulics_preprocess_paragraph__statistics_bar_item(array &$variabl
     $url,
   )->toRenderable();
 }
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function psmhydraulics_preprocess_node(array &$variables): void {
+  $node = $variables['node'] ?? NULL;
+  if (!$node instanceof \Drupal\node\NodeInterface || $node->bundle() !== 'catalogue_item') {
+    return;
+  }
+
+  if (($variables['view_mode'] ?? '') !== 'teaser') {
+    return;
+  }
+
+  $variables['catalogue_item_price_status'] = '';
+  $variables['catalogue_item_sku'] = '';
+  $variables['catalogue_item_category'] = '';
+  $variables['catalogue_item_image_uri'] = NULL;
+  $variables['catalogue_item_image_url'] = NULL;
+  $variables['catalogue_item_image_alt'] = $node->label();
+
+  if ($node->hasField('field_price_status') && !$node->get('field_price_status')->isEmpty()) {
+    $variables['catalogue_item_price_status'] = (string) $node->get('field_price_status')->value;
+  }
+
+  if ($node->hasField('field_sku') && !$node->get('field_sku')->isEmpty()) {
+    $variables['catalogue_item_sku'] = (string) $node->get('field_sku')->value;
+  }
+
+  if ($node->hasField('field_product_category') && !$node->get('field_product_category')->isEmpty()) {
+    $term = $node->get('field_product_category')->entity;
+    if ($term) {
+      $variables['catalogue_item_category'] = $term->label();
+    }
+  }
+
+  if ($node->hasField('field_product_images') && !$node->get('field_product_images')->isEmpty()) {
+    $media = $node->get('field_product_images')->first()?->entity;
+    if ($media && $media->hasField('field_media_image') && !$media->get('field_media_image')->isEmpty()) {
+      $image_item = $media->get('field_media_image')->first();
+      $file = $image_item?->entity;
+      if ($file) {
+        $file_uri = $file->getFileUri();
+        $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load('large');
+
+        $variables['catalogue_item_image_uri'] = $file_uri;
+        $variables['catalogue_item_image_url'] = $image_style
+          ? $image_style->buildUrl($file_uri)
+          : \Drupal::service('file_url_generator')->generateString($file_uri);
+        $variables['catalogue_item_image_alt'] = (string) ($image_item->alt ?: $node->label());
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function psmhydraulics_preprocess_views_view(array &$variables): void {
+  $view = $variables['view'] ?? NULL;
+  if (!$view || $view->id() !== 'catalogue' || $view->current_display !== 'page_1') {
+    return;
+  }
+
+  $input = $view->getExposedInput();
+  $pager = $view->pager;
+  $current_page = method_exists($pager, 'getCurrentPage') ? (int) $pager->getCurrentPage() : 0;
+  $items_per_page = method_exists($pager, 'getItemsPerPage') ? (int) $pager->getItemsPerPage() : count($view->result);
+  $result_count = count($view->result);
+  $total = (int) $view->total_rows;
+  $start = $total > 0 ? ($current_page * $items_per_page) + 1 : 0;
+  $end = $total > 0 ? $start + $result_count - 1 : 0;
+
+  $variables['catalogue_view'] = [
+    'search' => (string) ($input['search'] ?? ''),
+    'sort_by' => (string) ($input['sort_by'] ?? 'newest'),
+    'sort_options' => [
+      'newest' => (string) t('Newest first'),
+      'oldest' => (string) t('Oldest first'),
+      'title_asc' => (string) t('Title A-Z'),
+      'title_desc' => (string) t('Title Z-A'),
+    ],
+    'summary' => [
+      'total' => $total,
+      'start' => $start,
+      'end' => $end,
+    ],
+  ];
+}

@@ -1,6 +1,6 @@
 uuid: f4ce3a28-accb-411a-933a-cac85c6aecf0
 langcode: en-gb
-status: true
+status: false
 dependencies:
   theme:
     - psmhydraulics
@@ -8,7 +8,7 @@ _core:
   default_config_hash: Q9_2whdOj1YIomfvsIfopROW4FT_X5pY0DjdOiOaQ5U
 id: psmhydraulics_primary_admin_actions
 theme: psmhydraulics
-region: highlighted
+region: header
 weight: -5
 provider: null
 plugin: local_actions_block

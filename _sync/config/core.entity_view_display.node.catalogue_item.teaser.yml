@@ -1,0 +1,39 @@
+uuid: 87067481-6555-435f-ad83-9ccb6df9b370
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.catalogue_item.body
+    - field.field.node.catalogue_item.field_availability
+    - field.field.node.catalogue_item.field_datasheet
+    - field.field.node.catalogue_item.field_manufacturer
+    - field.field.node.catalogue_item.field_price_status
+    - field.field.node.catalogue_item.field_product_category
+    - field.field.node.catalogue_item.field_product_images
+    - field.field.node.catalogue_item.field_short_description
+    - field.field.node.catalogue_item.field_sku
+    - field.field.node.catalogue_item.field_specifications
+    - node.type.catalogue_item
+  module:
+    - user
+id: node.catalogue_item.teaser
+targetEntityType: node
+bundle: catalogue_item
+mode: teaser
+content:
+  links:
+    weight: 100
+    region: content
+hidden:
+  body: true
+  field_availability: true
+  field_datasheet: true
+  field_manufacturer: true
+  field_price_status: true
+  field_product_category: true
+  field_product_images: true
+  field_short_description: true
+  field_sku: true
+  field_specifications: true
+  langcode: true

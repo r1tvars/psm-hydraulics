@@ -1,0 +1,24 @@
+uuid: 2cd126b9-5f62-4ada-b6c4-29450db8b6d7
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.catalogue_item
+  module:
+    - text
+id: node.catalogue_item.body
+field_name: body
+entity_type: node
+bundle: catalogue_item
+label: 'Full description'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+  allowed_formats: {  }
+field_type: text_with_summary

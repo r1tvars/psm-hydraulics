@@ -1,6 +1,6 @@
 uuid: 06d28f6e-f020-42ce-98fa-b6a122d46137
 langcode: en-gb
-status: true
+status: false
 dependencies:
   theme:
     - psmhydraulics
@@ -8,7 +8,7 @@ _core:
   default_config_hash: 6aOgWsNTXjqrDm98TXSAjP6qd2nCijD1xw45MrnbK-Y
 id: psmhydraulics_page_title
 theme: psmhydraulics
-region: sidebar_first
+region: header
 weight: -5
 provider: null
 plugin: page_title_block

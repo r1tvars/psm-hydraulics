@@ -1,0 +1,69 @@
+<section class="catalogue-view site-section py-10 sm:py-12 lg:py-16">
+  <div class="catalogue-view__layout">
+    <div class="catalogue-view__main">
+      <div class="catalogue-view__toolbar">
+        <p class="catalogue-view__summary">
+          {% if catalogue_view.summary.total %}
+            Showing {{ catalogue_view.summary.start }}-{{ catalogue_view.summary.end }} of {{ catalogue_view.summary.total }} results
+          {% else %}
+            No catalogue items found
+          {% endif %}
+        </p>
+
+        <form class="catalogue-sort" method="get" action="{{ path('view.catalogue.page_1') }}">
+          {% if catalogue_view.search %}
+            <input type="hidden" name="search" value="{{ catalogue_view.search }}">
+          {% endif %}
+          <label class="catalogue-sort__label" for="catalogue-sort">Sort catalogue items</label>
+          <div class="catalogue-sort__control">
+            <select id="catalogue-sort" name="sort_by" class="catalogue-sort__select" onchange="this.form.submit()">
+              {% for value, label in catalogue_view.sort_options %}
+                <option value="{{ value }}"{{ value == catalogue_view.sort_by ? ' selected' : '' }}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            <span class="catalogue-sort__icon" aria-hidden="true">
+              <i class="fa-solid fa-chevron-down"></i>
+            </span>
+          </div>
+        </form>
+      </div>
+
+      {% if rows %}
+        {{ rows }}
+      {% elseif empty %}
+        {{ empty }}
+      {% endif %}
+
+      {% if pager %}
+        <div class="catalogue-view__pager">
+          {{ pager }}
+        </div>
+      {% endif %}
+    </div>
+
+    <aside class="catalogue-view__sidebar">
+      <div class="catalogue-sidebar-card">
+        <h2 class="catalogue-sidebar-card__title">Search</h2>
+        <form class="catalogue-search" method="get" action="{{ path('view.catalogue.page_1') }}">
+          {% if catalogue_view.sort_by %}
+            <input type="hidden" name="sort_by" value="{{ catalogue_view.sort_by }}">
+          {% endif %}
+          <label class="sr-only" for="catalogue-search">Search catalogue</label>
+          <div class="catalogue-search__control">
+            <input
+              id="catalogue-search"
+              class="catalogue-search__input"
+              type="search"
+              name="search"
+              value="{{ catalogue_view.search }}"
+              placeholder="Search catalogue..."
+            >
+            <button class="catalogue-search__submit" type="submit" aria-label="Search catalogue">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </aside>
+  </div>
+</section>

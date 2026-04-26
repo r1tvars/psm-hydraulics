@@ -1,0 +1,110 @@
+uuid: d34dfefc-01dd-4bba-9bbf-3dff54745656
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.node.catalogue_item.body
+    - field.field.node.catalogue_item.field_availability
+    - field.field.node.catalogue_item.field_datasheet
+    - field.field.node.catalogue_item.field_manufacturer
+    - field.field.node.catalogue_item.field_price_status
+    - field.field.node.catalogue_item.field_product_category
+    - field.field.node.catalogue_item.field_product_images
+    - field.field.node.catalogue_item.field_short_description
+    - field.field.node.catalogue_item.field_sku
+    - field.field.node.catalogue_item.field_specifications
+    - node.type.catalogue_item
+    - taxonomy.vocabulary.product_category
+  module:
+    - text
+    - user
+id: node.catalogue_item.default
+targetEntityType: node
+bundle: catalogue_item
+mode: default
+content:
+  body:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: -6
+    region: content
+  field_availability:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: -3
+    region: content
+  field_datasheet:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: -4
+    region: content
+  field_manufacturer:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: -1
+    region: content
+  field_price_status:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: -2
+    region: content
+  field_product_category:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: -8
+    region: content
+  field_product_images:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: -10
+    region: content
+  field_short_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: -7
+    region: content
+  field_sku:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: -9
+    region: content
+  field_specifications:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: -5
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

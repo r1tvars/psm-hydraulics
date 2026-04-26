@@ -1,0 +1,21 @@
+uuid: 65c5b67e-3a3d-4828-b3d8-a5b8facb3568
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_availability
+    - node.type.catalogue_item
+  module:
+    - options
+id: node.catalogue_item.field_availability
+field_name: field_availability
+entity_type: node
+bundle: catalogue_item
+label: Availability
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

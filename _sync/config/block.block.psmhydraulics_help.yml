@@ -1,6 +1,6 @@
 uuid: 4e44f17e-1a2a-44bd-be32-bb6b0edbbbca
 langcode: en-gb
-status: true
+status: false
 dependencies:
   module:
     - help
@@ -10,7 +10,7 @@ _core:
   default_config_hash: VfPFqqxfkomud5CO8DUijw85QIl9GIxh_nIxLOYESxg
 id: psmhydraulics_help
 theme: psmhydraulics
-region: sidebar_first
+region: header
 weight: 0
 provider: null
 plugin: help_block

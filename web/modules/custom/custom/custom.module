@@ -4,3 +4,93 @@
  * @file
  * Primary hook file for the Custom module.
  */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function custom_form_node_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $node = $form_state->getFormObject()->getEntity();
+  if (!$node instanceof NodeInterface || $node->bundle() !== 'catalogue_item') {
+    return;
+  }
+
+  if (!isset($form['field_product_category']['widget'])) {
+    return;
+  }
+
+  $form['custom_add_product_category'] = [
+    '#type' => 'details',
+    '#title' => t('Add new category'),
+    '#open' => FALSE,
+    '#weight' => 2.1,
+    '#tree' => TRUE,
+    '#attributes' => [
+      'class' => ['custom-add-product-category'],
+    ],
+  ];
+
+  $form['custom_add_product_category']['name'] = [
+    '#type' => 'textfield',
+    '#title' => t('Category name'),
+    '#maxlength' => 255,
+    '#description' => t('Create a new product category and select it for this catalogue item.'),
+  ];
+
+  $form['custom_add_product_category']['actions'] = [
+    '#type' => 'actions',
+  ];
+
+  $form['custom_add_product_category']['actions']['add_category'] = [
+    '#type' => 'submit',
+    '#value' => t('Add category'),
+    '#submit' => ['custom_catalogue_item_add_category_submit'],
+    '#limit_validation_errors' => [['custom_add_product_category']],
+  ];
+}
+
+/**
+ * Submit handler for adding a new product category from the node form.
+ */
+function custom_catalogue_item_add_category_submit(array &$form, FormStateInterface $form_state): void {
+  $name = trim((string) $form_state->getValue(['custom_add_product_category', 'name']));
+  if ($name === '') {
+    \Drupal::messenger()->addWarning(t('Enter a category name first.'));
+    $form_state->setRebuild(TRUE);
+    return;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  $existing = $storage->loadByProperties([
+    'vid' => 'product_category',
+    'name' => $name,
+  ]);
+
+  if ($existing) {
+    /** @var \Drupal\taxonomy\TermInterface $term */
+    $term = reset($existing);
+  }
+  else {
+    $term = Term::create([
+      'vid' => 'product_category',
+      'name' => $name,
+      'langcode' => \Drupal::languageManager()->getDefaultLanguage()->getId(),
+    ]);
+    $term->save();
+    \Drupal::messenger()->addStatus(t('Created category %name.', ['%name' => $term->label()]));
+  }
+
+  $form_state->setValue('field_product_category', [$term->id()]);
+
+  $input = $form_state->getUserInput();
+  $input['field_product_category'] = [(string) $term->id()];
+
+  if (isset($input['custom_add_product_category']) && is_array($input['custom_add_product_category'])) {
+    $input['custom_add_product_category']['name'] = '';
+  }
+  $form_state->setUserInput($input);
+  $form_state->setRebuild(TRUE);
+}

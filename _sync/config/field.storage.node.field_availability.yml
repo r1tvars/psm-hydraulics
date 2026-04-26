@@ -1,0 +1,30 @@
+uuid: db256af1-c1b2-4b3f-9815-715c7f362ed1
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_availability
+field_name: field_availability
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: in_stock
+      label: 'In stock'
+    -
+      value: on_request
+      label: 'On request'
+    -
+      value: custom_order
+      label: 'Custom order'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

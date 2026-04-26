@@ -18,8 +18,8 @@ content:
     type: image
     label: hidden
     settings:
-      image_style: carousel_hero
       image_link: ''
+      image_style: carousel_hero
       image_loading:
         attribute: eager
     third_party_settings: {  }
