@@ -145,7 +145,10 @@
 
   .carousel-block {
     @apply relative overflow-hidden bg-steel-900 shadow-panel;
-    height: var(--carousel-height, clamp(32rem, 78dvh, 60rem));
+    /* svh = stable viewport height (chrome fully visible).
+       JS overrides --carousel-height on desktop only. */
+    height: var(--carousel-height, 78svh);
+    min-height: 16rem;
     --carousel-progress-duration: 10s;
   }
 
@@ -176,7 +179,7 @@
   }
 
   .carousel-block .splide__pagination__page.is-active {
-    @apply scale-100 bg-white/25;
+    @apply scale-100 bg-white/25 pointer-events-none cursor-default;
   }
 
   .carousel-block .splide__pagination__page::after {
@@ -190,11 +193,14 @@
   }
 
   .carousel-slide__media,
+  .carousel-slide__media > div,
+  .carousel-slide__media > div > div,
+  .carousel-slide__media > div > div > div,
   .carousel-slide__media .field,
   .carousel-slide__media .field__item,
   .carousel-slide__media .media,
   .carousel-slide__media .media__content {
-    @apply h-full;
+    @apply absolute inset-0;
   }
 
   .carousel-slide__media img {
@@ -203,12 +209,14 @@
     user-select: none;
   }
 
+  /* Mobile: gradient bottom-to-top so text at bottom reads over the image.
+     Desktop: left-to-right to darken behind the text column on the left. */
   .carousel-slide__overlay {
-    @apply absolute inset-0 bg-gradient-to-r from-steel-900/85 via-steel-900/55 to-steel-900/15;
+    @apply absolute inset-0 bg-gradient-to-t from-steel-900/90 via-steel-900/55 to-steel-900/10 md:bg-gradient-to-r md:from-steel-900/85 md:via-steel-900/55 md:to-steel-900/15;
   }
 
   .carousel-slide__content {
-    @apply absolute inset-x-0 bottom-0 z-10 mx-auto flex max-w-shell flex-col gap-5 px-6 py-10 sm:px-8 md:bottom-auto md:top-1/2 md:-translate-y-1/2 lg:px-12 lg:py-12;
+    @apply absolute inset-x-0 bottom-0 z-10 mx-auto flex max-w-shell flex-col gap-5 px-6 pt-8 pb-16 sm:px-8 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:py-10 lg:px-12 lg:py-12;
   }
 
   .carousel-slide__eyebrow {

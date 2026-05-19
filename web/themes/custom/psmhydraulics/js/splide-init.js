@@ -9,9 +9,16 @@
         const desktopMediaQuery = window.matchMedia('(min-width: 768px)');
 
         const syncCarouselHeight = () => {
-          const viewportHeight = window.visualViewport
-            ? window.visualViewport.height
-            : window.innerHeight;
+          // On mobile the CSS svh fallback handles height — no JS needed.
+          // Removing the property lets CSS take control immediately, avoiding
+          // jank from rapid resize events (address bar show/hide on mobile).
+          if (!desktopMediaQuery.matches) {
+            element.style.removeProperty('--carousel-height');
+            return;
+          }
+
+          // On desktop, fill the visible viewport below the carousel's top edge.
+          const viewportHeight = window.innerHeight;
           const topOffset = Math.max(element.getBoundingClientRect().top, 0);
           const availableHeight = Math.max(viewportHeight - topOffset, 520);
 
@@ -30,12 +37,9 @@
         let elapsedBeforePause = 0;
         let isPaused = false;
 
-        syncCarouselHeight();
+        // Defer the first sync so the DOM layout (header, etc.) is fully painted.
+        requestAnimationFrame(syncCarouselHeight);
         window.addEventListener('resize', syncCarouselHeight);
-
-        if (window.visualViewport) {
-          window.visualViewport.addEventListener('resize', syncCarouselHeight);
-        }
 
         const splide = new window.Splide(element, options);
         splide.mount();
@@ -85,7 +89,7 @@
         };
 
         const pauseProgress = () => {
-          if (!desktopMediaQuery.matches || isPaused || !animationFrameId) {
+          if (!desktopMediaQuery.matches || isPaused) {
             return;
           }
 
@@ -107,7 +111,8 @@
           startProgress(elapsedBeforePause);
         };
 
-        splide.on('move', () => {
+        splide.on('move', (newIndex, prevIndex) => {
+          if (newIndex === prevIndex) return;
           isPaused = false;
           elapsedBeforePause = 0;
           resetProgress();
@@ -119,10 +124,7 @@
         });
 
         splide.on('dragged', () => {
-          isPaused = false;
-          elapsedBeforePause = 0;
-          resetProgress();
-          startProgress();
+          resumeProgress();
         });
 
         element
@@ -138,6 +140,8 @@
           });
 
         const handleViewportModeChange = () => {
+          // Sync or clear height whenever the breakpoint crosses 768px.
+          syncCarouselHeight();
           if (!desktopMediaQuery.matches && isPaused) {
             resumeProgress();
           }
