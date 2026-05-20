@@ -5,80 +5,151 @@
  */
 #}
 <div class="site-shell">
-  <header class="border-b border-steel-200 bg-white" role="banner">
-    <div class="border-b border-steel-200 bg-white">
-      <div class="site-section flex flex-col gap-3 text-steel-500 md:flex-row md:items-center md:justify-between">
-        <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2">
-          {% if psm_site_contact.phone %}
-            <a class="header-top-item hover:text-brand" href="tel:{{ psm_site_contact.phone|replace({' ': '', '(': '', ')': '', '-': ''}) }}">
-              <i class="fa-solid fa-phone text-brand" aria-hidden="true"></i>
-              <span>{{ psm_site_contact.phone }}</span>
-            </a>
-          {% endif %}
-          {% if psm_site_contact.email %}
-            <a class="header-top-item hover:text-brand" href="mailto:{{ psm_site_contact.email }}">
-              <i class="fa-solid fa-envelope text-brand" aria-hidden="true"></i>
-              <span>{{ psm_site_contact.email }}</span>
-            </a>
-          {% endif %}
-          {% if psm_site_contact.location %}
-            <div class="header-top-item">
-              <i class="fa-solid fa-location-dot text-brand" aria-hidden="true"></i>
-              <span>{{ psm_site_contact.location }}</span>
-            </div>
-          {% endif %}
-        </div>
+  {{ attach_library('psmhydraulics/nav') }}
+  <header class="site-header" role="banner" data-nav-open="false">
 
-        <div class="flex items-center md:ml-6">
-          <a class="header-icon-link" href="#" aria-label="Facebook">
-            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
-          </a>
-          <a class="header-icon-link" href="#" aria-label="Twitter">
-            <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
-          </a>
-          <a class="header-icon-link" href="#" aria-label="LinkedIn">
-            <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
-          </a>
-          <a class="header-icon-link border-r border-steel-200" href="#" aria-label="Instagram">
-            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
-          </a>
+    {# Utility bar: contacts + socials — hidden on mobile, visible md+ #}
+    <div class="site-header__topbar">
+      <div class="site-section">
+        <div class="flex items-center justify-between py-2.5">
+
+          <div class="flex items-center gap-5">
+            {% if psm_site_contact.phone %}
+              <a class="header-top-item hover:text-white" href="tel:{{ psm_site_contact.phone|replace({' ': '', '(': '', ')': '', '-': ''}) }}">
+                <i class="fa-solid fa-phone text-brand" aria-hidden="true"></i>
+                <span>{{ psm_site_contact.phone }}</span>
+              </a>
+            {% endif %}
+            {% if psm_site_contact.email %}
+              <a class="header-top-item hover:text-white" href="mailto:{{ psm_site_contact.email }}">
+                <i class="fa-solid fa-envelope text-brand" aria-hidden="true"></i>
+                <span>{{ psm_site_contact.email }}</span>
+              </a>
+            {% endif %}
+            {% if psm_site_contact.location %}
+              <div class="header-top-item">
+                <i class="fa-solid fa-location-dot text-brand" aria-hidden="true"></i>
+                <span>{{ psm_site_contact.location }}</span>
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="flex items-center">
+            <a class="header-top-social" href="#" aria-label="Facebook">
+              <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+            </a>
+            <a class="header-top-social" href="#" aria-label="Twitter">
+              <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+            </a>
+            <a class="header-top-social" href="#" aria-label="LinkedIn">
+              <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+            </a>
+            <a class="header-top-social" href="#" aria-label="Instagram">
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            </a>
+          </div>
+
         </div>
       </div>
     </div>
 
-    <div class="site-section py-5 lg:py-0">
-      <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-        <div class="flex items-center justify-between gap-4">
-          {{ page.header }}
-          <a class="header-action-link xl:hidden" href="#main-navigation" aria-label="Jump to site menu">
-            <i class="fa-solid fa-bars" aria-hidden="true"></i>
-          </a>
-        </div>
+    {# Main nav bar — sticky #}
+    <div class="site-header__bar">
+      <div class="site-section">
+        <div class="flex items-center justify-between gap-4 py-4 xl:py-0">
 
-        <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:gap-6 w-full">
-          <nav class="header-nav mr-auto" aria-label="Primary navigation" id="main-navigation">
+          {# Logo #}
+          <div class="flex-shrink-0">
+            {{ page.header }}
+          </div>
+
+          {# Primary navigation — desktop only #}
+          <nav class="hidden xl:flex xl:flex-1 xl:items-center xl:justify-end" aria-label="Primary navigation" id="main-navigation">
             {{ page.primary_menu }}
           </nav>
 
-          <div class="flex items-center justify-between gap-3 xl:justify-end">
+          {# Language switcher (desktop) + hamburger (mobile/tablet) #}
+          <div class="flex items-center gap-3">
             {% if page.secondary_menu %}
-              <div class="header-secondary">
+              <div class="hidden xl:block">
                 {{ page.secondary_menu }}
               </div>
             {% endif %}
 
-            <div class="flex items-center gap-3">
-              <a class="header-action-link" href="/contact" aria-label="Contact page">
-                <i class="fa-regular fa-envelope" aria-hidden="true"></i>
-              </a>
-              <a class="header-action-link" href="/search/node" aria-label="Search">
-                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-              </a>
-            </div>
+            <button class="nav-toggle" type="button"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false"
+                    aria-controls="nav-drawer"
+                    data-nav-toggle>
+              <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
           </div>
+
         </div>
       </div>
     </div>
+
+    {# Drawer backdrop #}
+    <div class="nav-backdrop" data-nav-backdrop aria-hidden="true"></div>
+
+    {# Mobile/tablet slide-in drawer #}
+    <div class="nav-drawer" id="nav-drawer" aria-hidden="true" aria-label="Site navigation">
+
+      <div class="nav-drawer__header">
+        <span class="nav-drawer__title">{{ 'Menu'|t }}</span>
+        <button class="nav-drawer__close" type="button" aria-label="{{ 'Close navigation menu'|t }}" data-nav-close>
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="nav-drawer__body">
+        {{ page.primary_menu }}
+      </div>
+
+      {% if page.secondary_menu %}
+        <div class="nav-drawer__lang-section">
+          {{ page.secondary_menu }}
+        </div>
+      {% endif %}
+
+      <div class="nav-drawer__contact-section">
+        {% if psm_site_contact.phone %}
+          <a class="nav-drawer__contact-item" href="tel:{{ psm_site_contact.phone|replace({' ': '', '(': '', ')': '', '-': ''}) }}">
+            <i class="fa-solid fa-phone text-brand" aria-hidden="true"></i>
+            <span>{{ psm_site_contact.phone }}</span>
+          </a>
+        {% endif %}
+        {% if psm_site_contact.email %}
+          <a class="nav-drawer__contact-item" href="mailto:{{ psm_site_contact.email }}">
+            <i class="fa-solid fa-envelope text-brand" aria-hidden="true"></i>
+            <span>{{ psm_site_contact.email }}</span>
+          </a>
+        {% endif %}
+        {% if psm_site_contact.location %}
+          <div class="nav-drawer__contact-item">
+            <i class="fa-solid fa-location-dot text-brand" aria-hidden="true"></i>
+            <span>{{ psm_site_contact.location }}</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="nav-drawer__socials">
+        <a class="nav-drawer__social-link" href="#" aria-label="Facebook">
+          <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        </a>
+        <a class="nav-drawer__social-link" href="#" aria-label="Twitter">
+          <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+        </a>
+        <a class="nav-drawer__social-link" href="#" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+        </a>
+        <a class="nav-drawer__social-link" href="#" aria-label="Instagram">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
+
   </header>
 
   {% if page.breadcrumb %}

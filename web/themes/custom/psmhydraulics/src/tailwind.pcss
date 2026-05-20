@@ -29,28 +29,121 @@
     @apply mx-auto max-w-shell px-4 sm:px-6 lg:px-8;
   }
 
+  /* ── Header ─────────────────────────────────────── */
+
+  .site-header {
+    @apply relative;
+  }
+
+  .site-header__topbar {
+    @apply hidden md:block bg-brand-ink mb-0;
+  }
+
   .header-top-item {
-    @apply inline-flex items-center gap-2 text-xs font-medium tracking-wide text-steel-500;
+    @apply inline-flex items-center gap-2 text-xs font-medium tracking-wide text-steel-300 transition-colors;
   }
 
-  .header-icon-link {
-    @apply inline-flex h-10 w-10 items-center justify-center border-l border-steel-200 text-sm text-steel-400 hover:bg-brand hover:text-white;
+  .header-top-social {
+    @apply inline-flex h-9 w-9 items-center justify-center border-l border-white/10 text-sm text-steel-400 transition-colors hover:text-brand;
   }
 
-  .header-action-link {
-    @apply inline-flex h-12 w-12 items-center justify-center rounded-sm border border-steel-200 bg-white text-steel-700 hover:border-brand hover:text-brand;
+  .site-header__bar {
+    @apply sticky top-0 z-50 bg-white border-b border-steel-200;
   }
 
-  .header-secondary .menu {
-    @apply flex items-center gap-3;
+  .nav-toggle {
+    @apply inline-flex h-11 w-11 items-center justify-center text-xl text-steel-700 transition-colors hover:text-brand xl:hidden;
   }
 
-  .header-secondary .menu a {
-    @apply text-sm font-semibold uppercase tracking-[0.18em] text-steel-700 hover:text-brand;
+  /* ── Mobile drawer ───────────────────────────────── */
+
+  .nav-backdrop {
+    @apply fixed inset-0 z-40 bg-steel-900/60;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
-  .header-secondary .block-language-blocklanguage-interface {
-    @apply m-0;
+  .site-header[data-nav-open="true"] .nav-backdrop {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-drawer {
+    @apply fixed top-0 right-0 z-50 flex h-full w-[85vw] max-w-[22rem] flex-col overflow-x-hidden overflow-y-auto bg-white;
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+    box-shadow: -6px 0 32px rgba(15, 23, 42, 0.14);
+  }
+
+  .site-header[data-nav-open="true"] .nav-drawer {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .nav-drawer__header {
+    @apply sticky top-0 z-10 flex items-center justify-between border-b border-steel-200 bg-white px-5 py-4;
+  }
+
+  .nav-drawer__title {
+    @apply font-display text-lg font-bold uppercase tracking-[0.12em] text-brand-ink;
+  }
+
+  .nav-drawer__close {
+    @apply inline-flex h-10 w-10 items-center justify-center text-xl text-steel-500 transition-colors hover:text-brand;
+  }
+
+  .nav-drawer__body {
+    @apply px-2 py-2;
+  }
+
+  /* Flatten menu to vertical list inside drawer */
+  .nav-drawer__body .menu-level--0 {
+    @apply flex-col gap-0;
+  }
+
+  .nav-drawer__body .menu-link {
+    @apply border-b border-steel-100 py-4 px-3 xl:px-3 xl:py-4;
+  }
+
+  .nav-drawer__body .menu-link::after {
+    content: none;
+  }
+
+  /* Reset desktop dropdown positioning inside drawer */
+  .nav-drawer__body .menu-level--sub {
+    @apply xl:static xl:top-auto xl:left-auto xl:z-auto xl:mt-0 xl:min-w-0 xl:rounded-none xl:border-0 xl:border-l xl:border-brand/30 xl:bg-transparent xl:p-0 xl:shadow-none xl:opacity-100 xl:visible xl:translate-y-0;
+  }
+
+  .nav-drawer__lang-section {
+    @apply border-t border-steel-200 px-5 py-4;
+  }
+
+  /* Language switcher panel: inline (not absolute) inside drawer */
+  .nav-drawer__lang-section .language-switcher__panel {
+    position: static;
+    width: 100%;
+    margin-top: 0.75rem;
+    box-shadow: none;
+    border-color: theme('colors.steel.200');
+    border-radius: theme('borderRadius.2xl');
+  }
+
+  .nav-drawer__contact-section {
+    @apply flex flex-col gap-3 border-t border-steel-200 px-5 py-5;
+  }
+
+  .nav-drawer__contact-item {
+    @apply inline-flex items-center gap-3 text-sm text-steel-500 transition-colors hover:text-steel-900;
+  }
+
+  .nav-drawer__socials {
+    @apply mt-auto flex items-center gap-2 border-t border-steel-200 px-5 py-5;
+  }
+
+  .nav-drawer__social-link {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-sm border border-steel-200 text-sm text-steel-500 transition-colors hover:border-brand hover:text-brand;
   }
 
   .language-switcher {
@@ -549,7 +642,6 @@
     @apply inline-flex h-11 min-w-[2.75rem] items-center justify-center border border-steel-200 bg-white px-4 text-sm font-semibold text-steel-700 transition hover:border-brand hover:text-brand;
   }
 
-  .block,
   .node {
     @apply mb-4;
   }
