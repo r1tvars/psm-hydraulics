@@ -1,0 +1,44 @@
+uuid: b2109200-0d16-469b-be26-bf9b2340db81
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.partner_logos.field_eyebrow
+    - field.field.paragraph.partner_logos.field_partner_items
+    - paragraphs.paragraphs_type.partner_logos
+  module:
+    - paragraphs
+id: paragraph.partner_logos.default
+targetEntityType: paragraph
+bundle: partner_logos
+mode: default
+content:
+  field_eyebrow:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_partner_items:
+    type: paragraphs
+    weight: 1
+    region: content
+    settings:
+      title: 'Partner logo'
+      title_plural: 'Partner logos'
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: partner_logo_item
+      features:
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

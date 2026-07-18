@@ -1,0 +1,60 @@
+uuid: 33a893f4-ea1c-4367-ac2f-72f0e813e1b6
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.media_directories_modal
+    - field.field.paragraph.partner_logo_item.field_heading
+    - field.field.paragraph.partner_logo_item.field_image
+    - field.field.paragraph.partner_logo_item.field_link
+    - field.field.paragraph.partner_logo_item.field_open_in_new_tab
+    - paragraphs.paragraphs_type.partner_logo_item
+  module:
+    - entity_browser
+    - link
+id: paragraph.partner_logo_item.default
+targetEntityType: paragraph
+bundle: partner_logo_item
+mode: default
+content:
+  field_heading:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_image:
+    type: entity_browser_entity_reference
+    weight: 1
+    region: content
+    settings:
+      entity_browser: media_directories_modal
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      field_widget_replace: false
+      open: true
+      field_widget_display_settings:
+        view_mode: media_library
+      selection_mode: selection_append
+    third_party_settings: {  }
+  field_link:
+    type: link_default
+    weight: 2
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_open_in_new_tab:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

@@ -1,0 +1,20 @@
+uuid: ea181bed-9e7c-4b25-806b-e916dbb1920b
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - paragraphs
+id: paragraph.field_partner_items
+field_name: field_partner_items
+entity_type: paragraph
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,27 @@
+uuid: 5b74efef-f4c7-4908-ade0-dcda335fe7a8
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_partner_items
+    - paragraphs.paragraphs_type.partner_logo_item
+    - paragraphs.paragraphs_type.partner_logos
+  module:
+    - entity_reference_revisions
+id: paragraph.partner_logos.field_partner_items
+field_name: field_partner_items
+entity_type: paragraph
+bundle: partner_logos
+label: 'Partner logos'
+description: 'Add the partners to show in the scrolling row.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      partner_logo_item: partner_logo_item
+    negate: 0
+field_type: entity_reference_revisions

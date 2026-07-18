@@ -1,0 +1,19 @@
+uuid: c777356f-d42e-46fc-a37c-3b1b7360a2db
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_heading
+    - paragraphs.paragraphs_type.partner_logo_item
+id: paragraph.partner_logo_item.field_heading
+field_name: field_heading
+entity_type: paragraph
+bundle: partner_logo_item
+label: 'Partner name'
+description: 'Shown as a styled wordmark when no logo image is set; also used as the accessible name.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

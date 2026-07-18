@@ -1,0 +1,23 @@
+uuid: cd48054e-a83c-4fbd-b3c2-fa7238cf51d5
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_open_in_new_tab
+    - paragraphs.paragraphs_type.partner_logo_item
+id: paragraph.partner_logo_item.field_open_in_new_tab
+field_name: field_open_in_new_tab
+entity_type: paragraph
+bundle: partner_logo_item
+label: 'Open in new tab'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

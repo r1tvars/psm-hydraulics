@@ -1,0 +1,19 @@
+uuid: 49c9b976-f8ab-41c6-9474-76418b3d8af6
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_eyebrow
+    - paragraphs.paragraphs_type.partner_logos
+id: paragraph.partner_logos.field_eyebrow
+field_name: field_eyebrow
+entity_type: paragraph
+bundle: partner_logos
+label: Eyebrow
+description: 'Short label shown above the logos, e.g. "Trusted across industry".'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

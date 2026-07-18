@@ -7,6 +7,7 @@ dependencies:
     - node.type.page
     - paragraphs.paragraphs_type.carousel
     - paragraphs.paragraphs_type.informational_block
+    - paragraphs.paragraphs_type.partner_logos
     - paragraphs.paragraphs_type.statistics_bar
   module:
     - entity_reference_revisions
@@ -27,6 +28,7 @@ settings:
       carousel: carousel
       informational_block: informational_block
       statistics_bar: statistics_bar
+      partner_logos: partner_logos
     negate: 0
     target_bundles_drag_drop:
       carousel:
@@ -41,6 +43,12 @@ settings:
       informational_block_item:
         weight: 7
         enabled: false
+      partner_logo_item:
+        weight: 11
+        enabled: false
+      partner_logos:
+        weight: 10
+        enabled: true
       statistics_bar:
         weight: 8
         enabled: true

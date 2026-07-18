@@ -1,0 +1,26 @@
+{% set has_logo = not paragraph.field_image.isEmpty() %}
+{% set classes = ['partner-logo', has_logo ? 'partner-logo--image' : 'partner-logo--text'] %}
+
+{% if partner_link %}
+  <a{{ attributes.addClass(classes) }} href="{{ partner_link.url }}"{% if partner_link.new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
+{% else %}
+  <div{{ attributes.addClass(classes) }}>
+{% endif %}
+
+  {% if has_logo %}
+    <span class="partner-logo__image">
+      {{ content.field_image }}
+    </span>
+    <span class="visually-hidden">{{ paragraph.field_heading.value }}</span>
+  {% else %}
+    <span class="partner-logo__dotmark" aria-hidden="true"></span>
+    <span class="partner-logo__name">
+      {{ content.field_heading }}
+    </span>
+  {% endif %}
+
+{% if partner_link %}
+  </a>
+{% else %}
+  </div>
+{% endif %}

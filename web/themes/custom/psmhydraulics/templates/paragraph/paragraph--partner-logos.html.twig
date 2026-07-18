@@ -1,0 +1,17 @@
+{% set partner_count = paragraph.field_partner_items|length %}
+
+<section{{ attributes.addClass('partner-logos') }}>
+  <div class="partner-logos__inner">
+    <div class="partner-logos__head">
+      {% if not paragraph.field_eyebrow.isEmpty() %}
+        <span class="eyebrow eyebrow--dark">
+          {{ content.field_eyebrow }}
+        </span>
+      {% endif %}
+      <span class="partner-logos__rule" aria-hidden="true"></span>
+      <span class="partner-logos__count">// {{ '%02d'|format(partner_count) }} {{ 'partners'|t }}</span>
+    </div>
+
+    {{ content.field_partner_items }}
+  </div>
+</section>

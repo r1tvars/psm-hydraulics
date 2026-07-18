@@ -1,0 +1,10 @@
+uuid: 1b063ca3-cb28-4912-ac13-28e0eb4bfc54
+langcode: en-gb
+status: true
+dependencies: {  }
+id: partner_logos
+label: 'Partner logos'
+icon_uuid: null
+icon_default: null
+description: 'Scrolling row of partner names or logos with an optional eyebrow label.'
+behavior_plugins: {  }

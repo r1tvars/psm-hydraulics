@@ -1081,6 +1081,75 @@
     transform: translate3d(2px, -2px, 0);
   }
 
+  /* ── Partner logos marquee ───────────────────────── */
+
+  .partner-logos {
+    @apply border-b border-paper-line bg-white py-11 sm:py-14 xl:py-16;
+  }
+
+  .partner-logos__inner {
+    @apply mx-auto max-w-shell px-5 sm:px-6 lg:px-8;
+  }
+
+  .partner-logos__head {
+    @apply mb-9 flex flex-wrap items-center gap-x-6 gap-y-2;
+  }
+
+  .partner-logos__rule {
+    @apply h-px min-w-[40px] flex-1 bg-paper-line;
+  }
+
+  .partner-logos__count {
+    @apply font-mono text-xs tracking-[0.1em] text-slate-soft;
+  }
+
+  .partner-logos__track {
+    @apply overflow-hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .partner-logos__row {
+    @apply flex w-max;
+    animation: partner-marquee 34s linear infinite;
+  }
+
+  .partner-logos__row:hover {
+    animation-play-state: paused;
+  }
+
+  .partner-logos__group {
+    @apply flex items-center gap-16 pr-16;
+  }
+
+  .partner-logo {
+    @apply flex items-center gap-2.5 whitespace-nowrap font-display text-[22px] font-semibold uppercase tracking-[0.08em] text-[#A9B4BE] opacity-[0.85] transition-all duration-300;
+  }
+
+  .partner-logo:hover {
+    @apply text-ink opacity-100;
+  }
+
+  .partner-logo__dotmark {
+    @apply h-[18px] w-[18px] flex-shrink-0 rotate-45 border-2 border-current;
+  }
+
+  .partner-logo__name .field,
+  .partner-logo__name .field__item {
+    display: contents;
+  }
+
+  .partner-logo__image img {
+    @apply h-10 w-auto max-w-[180px] object-contain transition-all duration-300;
+    filter: grayscale(1);
+    opacity: 0.75;
+  }
+
+  .partner-logo--image:hover img {
+    filter: none;
+    opacity: 1;
+  }
+
   /* ── Footer ──────────────────────────────────────── */
 
   .footer {
@@ -1365,6 +1434,12 @@
   }
 }
 
+@keyframes partner-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 /* Reduced motion: no slide entrances, no marquee-style transitions. */
 @media (prefers-reduced-motion: reduce) {
   .carousel-block .carousel-slide__text > * {
@@ -1377,5 +1452,9 @@
   .navbar .mega,
   .nav-drawer [data-menu-panel] {
     transition: none;
+  }
+
+  .partner-logos__row {
+    animation: none;
   }
 }

@@ -1,0 +1,33 @@
+uuid: 02a94edd-cdd9-452f-97ba-e1be99b6ba20
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.partner_logos.field_eyebrow
+    - field.field.paragraph.partner_logos.field_partner_items
+    - paragraphs.paragraphs_type.partner_logos
+  module:
+    - entity_reference_revisions
+id: paragraph.partner_logos.default
+targetEntityType: paragraph
+bundle: partner_logos
+mode: default
+content:
+  field_eyebrow:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_partner_items:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

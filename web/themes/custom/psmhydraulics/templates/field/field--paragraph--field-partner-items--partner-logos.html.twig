@@ -1,0 +1,20 @@
+{#
+  Marquee track: the row holds two identical groups so the CSS
+  translateX(-50%) loop is seamless. The clone is aria-hidden.
+#}
+{% if items %}
+  <div class="partner-logos__track">
+    <div class="partner-logos__row">
+      <div class="partner-logos__group">
+        {% for item in items %}
+          {{ item.content }}
+        {% endfor %}
+      </div>
+      <div class="partner-logos__group" aria-hidden="true">
+        {% for item in items %}
+          {{ item.content }}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
