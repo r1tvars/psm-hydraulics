@@ -1,0 +1,19 @@
+uuid: e370888b-95b5-45d6-8b6f-29a04fbc7554
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_heading
+    - paragraphs.paragraphs_type.segment_item
+id: paragraph.segment_item.field_heading
+field_name: field_heading
+entity_type: paragraph
+bundle: segment_item
+label: 'Segment name'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

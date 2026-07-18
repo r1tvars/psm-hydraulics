@@ -1,0 +1,10 @@
+uuid: ef5c5c1d-7553-4f5b-b479-576f616a96e3
+langcode: en-gb
+status: true
+dependencies: {  }
+id: segment_item
+label: Segment
+icon_uuid: null
+icon_default: null
+description: 'A single segment card: name, thumbnail, short text, hover preview text and link.'
+behavior_plugins: {  }

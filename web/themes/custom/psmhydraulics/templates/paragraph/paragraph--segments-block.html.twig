@@ -1,0 +1,31 @@
+{% set has_eyebrow = not paragraph.field_eyebrow.isEmpty() %}
+{% set has_heading = not paragraph.field_heading.isEmpty() %}
+{% set has_description = not paragraph.field_description.isEmpty() %}
+
+<section{{ attributes.addClass('segments-block') }}>
+  <div class="segments-block__inner">
+    {% if has_eyebrow or has_heading or has_description %}
+      <div class="segments-block__head">
+        <div class="segments-block__head-main">
+          {% if has_eyebrow %}
+            <span class="eyebrow eyebrow--dark">
+              {{ content.field_eyebrow }}
+            </span>
+          {% endif %}
+          {% if has_heading %}
+            <h2 class="segments-block__heading">
+              {{ content.field_heading }}
+            </h2>
+          {% endif %}
+        </div>
+        {% if has_description %}
+          <div class="segments-block__description">
+            {{ content.field_description }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {{ content.field_segment_items }}
+  </div>
+</section>

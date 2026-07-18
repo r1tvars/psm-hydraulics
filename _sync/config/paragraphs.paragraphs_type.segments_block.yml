@@ -1,0 +1,10 @@
+uuid: 540f1039-408b-449f-9b9e-46561049ea74
+langcode: en-gb
+status: true
+dependencies: {  }
+id: segments_block
+label: Segments
+icon_uuid: null
+icon_default: null
+description: 'Grid of industry segment cards with a hover preview (desktop).'
+behavior_plugins: {  }

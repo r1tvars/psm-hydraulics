@@ -1081,6 +1081,245 @@
     transform: translate3d(2px, -2px, 0);
   }
 
+  /* ── Segments grid ───────────────────────────────── */
+
+  .segments-block {
+    @apply bg-paper py-14 sm:py-16 xl:py-24;
+  }
+
+  .segments-block__inner {
+    @apply mx-auto max-w-shell px-5 sm:px-6 lg:px-8;
+  }
+
+  .segments-block__head {
+    @apply mb-10 flex flex-wrap items-end justify-between gap-x-8 gap-y-5;
+  }
+
+  .segments-block__head-main {
+    @apply flex flex-col items-start gap-3.5;
+  }
+
+  .segments-block__heading {
+    @apply max-w-[18ch] font-display font-bold uppercase text-ink;
+    font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+    line-height: 1.05;
+  }
+
+  .segments-block__heading .field,
+  .segments-block__heading .field__item {
+    display: contents;
+  }
+
+  .segments-block__description {
+    @apply max-w-[44ch] text-sm leading-6 text-slate;
+  }
+
+  .segments-block__description p {
+    @apply m-0;
+  }
+
+  .segments-block__grid {
+    @apply grid gap-5 sm:grid-cols-2 xl:grid-cols-4;
+    counter-reset: segment;
+  }
+
+  /*
+   * Card anatomy (bottom-up): media (absolute, full card) → scrim →
+   * spacer (flexible "thumbnail window") → panel with an ink ::before
+   * cover. Hover dissolves the cover so the image reads as expanding
+   * into the card background.
+   */
+  .segment-card {
+    @apply relative isolate flex min-h-[29rem] flex-col overflow-hidden rounded-brand bg-ink text-white shadow-sm;
+    counter-increment: segment;
+    transition: transform 0.3s theme('transitionTimingFunction.blueprint'), box-shadow 0.3s ease;
+  }
+
+  /* Amber corner brackets */
+  .segment-card::before,
+  .segment-card::after {
+    @apply pointer-events-none absolute z-20 h-5 w-5 border-2 border-amber;
+    content: '';
+  }
+
+  .segment-card::before {
+    @apply left-0 top-0 border-b-0 border-r-0;
+  }
+
+  .segment-card::after {
+    @apply bottom-0 right-0 border-l-0 border-t-0;
+  }
+
+  .segment-card__media {
+    @apply absolute inset-0 z-0 overflow-hidden;
+  }
+
+  /* Stable9 renders field/media wrappers as classless divs — stretch them all. */
+  .segment-card__media div,
+  .segment-card__media picture,
+  .segment-card__media article {
+    @apply absolute inset-0;
+  }
+
+  .segment-card__media img {
+    @apply absolute inset-0 h-full w-full object-cover object-center;
+    transition: transform 0.7s theme('transitionTimingFunction.blueprint');
+  }
+
+  /* Always-on soft scrim keeping the photo → panel seam clean */
+  .segment-card__media::before {
+    @apply absolute inset-0 z-[1];
+    content: '';
+    background: linear-gradient(180deg, transparent 45%, rgba(12, 26, 41, 0.5) 100%);
+  }
+
+  /* Auto-numbered code badge */
+  .segment-card__media::after {
+    @apply absolute left-3.5 top-3.5 z-[2] rounded-sm bg-amber px-2 py-1 font-mono text-[11px] font-medium tracking-[0.16em] text-ink;
+    content: counter(segment, decimal-leading-zero);
+  }
+
+  .segment-card--no-image .segment-card__media {
+    @apply bg-ink-soft;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  /* Hover scrim: darkens the revealed background for text legibility */
+  .segment-card__scrim {
+    @apply pointer-events-none absolute inset-0 z-[1] opacity-0;
+    background: linear-gradient(
+      180deg,
+      rgba(12, 26, 41, 0.5) 0%,
+      rgba(12, 26, 41, 0.25) 30%,
+      rgba(12, 26, 41, 0.6) 60%,
+      rgba(12, 26, 41, 0.9) 100%
+    );
+    transition: opacity 0.5s ease;
+  }
+
+  /* Flexible "thumbnail window" above the panel */
+  .segment-card__spacer {
+    @apply relative z-[2];
+    flex: 1 1 11rem;
+    min-height: 10rem;
+  }
+
+  .segment-card__panel {
+    @apply relative z-10 flex flex-col gap-2.5 p-6;
+  }
+
+  /* The ink cover that dissolves on hover */
+  .segment-card__panel::before {
+    @apply absolute inset-0 bg-ink;
+    content: '';
+    z-index: -1;
+    transition: opacity 0.5s ease;
+  }
+
+  .segment-card__heading {
+    @apply font-display text-[22px] font-semibold uppercase tracking-[0.03em] text-white;
+  }
+
+  .segment-card__heading .field,
+  .segment-card__heading .field__item {
+    display: contents;
+  }
+
+  .segment-card__desc {
+    @apply text-sm leading-6 text-[#AEB9C3];
+  }
+
+  .segment-card__desc p {
+    @apply m-0;
+  }
+
+  /*
+   * Preview text: overlays the revealed image area above the panel.
+   * It takes no layout space, so hovering never resizes anything —
+   * the reveal is purely opacity/transform.
+   */
+  .segment-card__preview {
+    @apply pointer-events-none absolute bottom-full left-0 right-0 px-6 pb-3 opacity-0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s theme('transitionTimingFunction.blueprint');
+  }
+
+  .segment-card__preview-inner {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+  }
+
+  .segment-card__preview-inner p {
+    @apply m-0 text-sm leading-6 text-[#E2E8EE];
+    text-shadow: 0 1px 10px rgba(12, 26, 41, 0.65);
+  }
+
+  .segment-card__link {
+    @apply mt-1.5 inline-flex items-center gap-2.5 self-start border-t border-line-dark pt-3 font-mono text-xs uppercase tracking-[0.14em] text-amber;
+  }
+
+  .segment-card__link i {
+    @apply text-[11px] transition-transform duration-200;
+  }
+
+  .segment-card__link:hover i {
+    @apply translate-x-1;
+  }
+
+  /* Reveal on keyboard focus — any device */
+  .segment-card:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 26px 50px rgba(12, 26, 41, 0.22);
+  }
+
+  .segment-card:focus-within .segment-card__media img {
+    transform: scale(1.04);
+  }
+
+  .segment-card:focus-within .segment-card__panel::before {
+    opacity: 0;
+  }
+
+  .segment-card:focus-within .segment-card__scrim {
+    opacity: 1;
+  }
+
+  .segment-card:focus-within .segment-card__preview {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.08s;
+  }
+
+  /* Reveal on hover — hover-capable fine pointers only */
+  @media (hover: hover) and (pointer: fine) {
+    .segment-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 26px 50px rgba(12, 26, 41, 0.22);
+    }
+
+    .segment-card:hover .segment-card__media img {
+      transform: scale(1.04);
+    }
+
+    .segment-card:hover .segment-card__panel::before {
+      opacity: 0;
+    }
+
+    .segment-card:hover .segment-card__scrim {
+      opacity: 1;
+    }
+
+    .segment-card:hover .segment-card__preview {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.08s;
+    }
+  }
+
   /* ── Partner logos marquee ───────────────────────── */
 
   .partner-logos {
@@ -1456,5 +1695,13 @@
 
   .partner-logos__row {
     animation: none;
+  }
+
+  .segment-card,
+  .segment-card__media img,
+  .segment-card__scrim,
+  .segment-card__panel::before,
+  .segment-card__preview {
+    transition: none;
   }
 }

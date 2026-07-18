@@ -1,0 +1,23 @@
+uuid: 90ef16d3-9e3b-47cf-86d7-898d16d740b9
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_link
+    - paragraphs.paragraphs_type.segment_item
+  module:
+    - link
+id: paragraph.segment_item.field_link
+field_name: field_link
+entity_type: paragraph
+bundle: segment_item
+label: Link
+description: 'Where the card leads. Link text defaults to "Explore segment".'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 1
+  link_type: 17
+field_type: link

@@ -1,0 +1,25 @@
+uuid: 4007138f-71b3-491a-90c8-1ffd280823d6
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image
+    - media.type.image
+    - paragraphs.paragraphs_type.segment_item
+id: paragraph.segment_item.field_image
+field_name: field_image
+entity_type: paragraph
+bundle: segment_item
+label: Thumbnail
+description: 'Card image. Also becomes the full card background on hover.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    auto_create: false
+field_type: entity_reference

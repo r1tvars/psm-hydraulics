@@ -1,0 +1,22 @@
+uuid: 6b6b5f2f-fada-40ea-b3dc-28a1689b8324
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_description
+    - paragraphs.paragraphs_type.segments_block
+  module:
+    - text
+id: paragraph.segments_block.field_description
+field_name: field_description
+entity_type: paragraph
+bundle: segments_block
+label: Description
+description: 'Short introduction shown next to the heading.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

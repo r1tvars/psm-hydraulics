@@ -1,0 +1,27 @@
+uuid: 8eee5796-76ff-4229-9314-3dbacfef6210
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_segment_items
+    - paragraphs.paragraphs_type.segment_item
+    - paragraphs.paragraphs_type.segments_block
+  module:
+    - entity_reference_revisions
+id: paragraph.segments_block.field_segment_items
+field_name: field_segment_items
+entity_type: paragraph
+bundle: segments_block
+label: Segments
+description: 'Add the segment cards to show in the grid.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      segment_item: segment_item
+    negate: 0
+field_type: entity_reference_revisions

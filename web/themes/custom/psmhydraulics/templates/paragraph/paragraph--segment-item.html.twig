@@ -1,0 +1,49 @@
+{#
+  Segment card. The image is always the full-card background: at rest the
+  ink panel covers its lower part so it reads as a thumbnail; on hover
+  (fine pointers only) the panel dissolves, the scrim fades in and the
+  preview text slides up — see .segment-card styles.
+#}
+{% set has_image = not paragraph.field_image.isEmpty() %}
+{% set card_classes = [
+  'segment-card',
+  has_image ? 'segment-card--has-image' : 'segment-card--no-image',
+] %}
+
+<article{{ attributes.addClass(card_classes) }}>
+  <div class="segment-card__media" {{ has_image ? '' : 'aria-hidden="true"' }}>
+    {% if has_image %}
+      {{ content.field_image }}
+    {% endif %}
+  </div>
+
+  <div class="segment-card__scrim" aria-hidden="true"></div>
+  <div class="segment-card__spacer" aria-hidden="true"></div>
+
+  <div class="segment-card__panel">
+    <h3 class="segment-card__heading">
+      {{ content.field_heading }}
+    </h3>
+
+    {% if not paragraph.field_description.isEmpty() %}
+      <div class="segment-card__desc">
+        {{ content.field_description }}
+      </div>
+    {% endif %}
+
+    {% if not paragraph.field_preview_text.isEmpty() %}
+      <div class="segment-card__preview">
+        <div class="segment-card__preview-inner">
+          {{ content.field_preview_text }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if segment_link %}
+      <a class="segment-card__link" href="{{ segment_link.url }}">
+        {{ segment_link.title }}
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    {% endif %}
+  </div>
+</article>

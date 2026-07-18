@@ -1,0 +1,19 @@
+uuid: 605566eb-c3de-42a9-9264-1d950ce25da2
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_heading
+    - paragraphs.paragraphs_type.segments_block
+id: paragraph.segments_block.field_heading
+field_name: field_heading
+entity_type: paragraph
+bundle: segments_block
+label: Heading
+description: 'Section heading, e.g. "Four segments, one engineering standard".'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

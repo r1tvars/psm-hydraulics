@@ -8,6 +8,7 @@ dependencies:
     - paragraphs.paragraphs_type.carousel
     - paragraphs.paragraphs_type.informational_block
     - paragraphs.paragraphs_type.partner_logos
+    - paragraphs.paragraphs_type.segments_block
     - paragraphs.paragraphs_type.statistics_bar
   module:
     - entity_reference_revisions
@@ -29,6 +30,7 @@ settings:
       informational_block: informational_block
       statistics_bar: statistics_bar
       partner_logos: partner_logos
+      segments_block: segments_block
     negate: 0
     target_bundles_drag_drop:
       carousel:
@@ -48,6 +50,12 @@ settings:
         enabled: false
       partner_logos:
         weight: 10
+        enabled: true
+      segment_item:
+        weight: 13
+        enabled: false
+      segments_block:
+        weight: 12
         enabled: true
       statistics_bar:
         weight: 8

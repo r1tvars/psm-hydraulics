@@ -1,0 +1,63 @@
+uuid: 00378522-8222-4f98-b4f9-bda06dcf24bb
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.segments_block.field_description
+    - field.field.paragraph.segments_block.field_eyebrow
+    - field.field.paragraph.segments_block.field_heading
+    - field.field.paragraph.segments_block.field_segment_items
+    - paragraphs.paragraphs_type.segments_block
+  module:
+    - paragraphs
+    - text
+id: paragraph.segments_block.default
+targetEntityType: paragraph
+bundle: segments_block
+mode: default
+content:
+  field_description:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+  field_eyebrow:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_heading:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_segment_items:
+    type: paragraphs
+    weight: 3
+    region: content
+    settings:
+      title: Segment
+      title_plural: Segments
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: segment_item
+      features:
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

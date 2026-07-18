@@ -1,0 +1,51 @@
+uuid: aa806c47-cb53-4af8-a2a1-60ff9a937de9
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.segment_item.field_description
+    - field.field.paragraph.segment_item.field_heading
+    - field.field.paragraph.segment_item.field_image
+    - field.field.paragraph.segment_item.field_link
+    - field.field.paragraph.segment_item.field_preview_text
+    - paragraphs.paragraphs_type.segment_item
+  module:
+    - text
+id: paragraph.segment_item.default
+targetEntityType: paragraph
+bundle: segment_item
+mode: default
+content:
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_heading:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_preview_text:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  field_link: true

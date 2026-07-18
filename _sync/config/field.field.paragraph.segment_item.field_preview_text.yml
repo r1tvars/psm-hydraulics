@@ -1,0 +1,22 @@
+uuid: 6b6715ea-e1fd-4ba0-a3db-c9ded59840d8
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_preview_text
+    - paragraphs.paragraphs_type.segment_item
+  module:
+    - text
+id: paragraph.segment_item.field_preview_text
+field_name: field_preview_text
+entity_type: paragraph
+bundle: segment_item
+label: 'Preview text'
+description: 'Extra text revealed on hover. Desktop only — hidden on touch devices.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

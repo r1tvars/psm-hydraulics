@@ -1,0 +1,22 @@
+uuid: 9c4a60c1-1c26-422b-b297-d8108c341215
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_description
+    - paragraphs.paragraphs_type.segment_item
+  module:
+    - text
+id: paragraph.segment_item.field_description
+field_name: field_description
+entity_type: paragraph
+bundle: segment_item
+label: 'Short description'
+description: 'Always visible on the card.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

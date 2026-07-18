@@ -1,0 +1,16 @@
+uuid: 48d1d3f6-cdce-4a7e-9db0-801f52dc389a
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.segments_block
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: paragraph.segments_block
+target_entity_type_id: paragraph
+target_bundle: segments_block
+default_langcode: site_default
+language_alterable: false
