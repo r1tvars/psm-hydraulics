@@ -7,17 +7,110 @@ declare(strict_types=1);
  * Theme hooks and preprocessors for the PSM Hydraulics theme.
  */
 
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Url;
+
+/**
+ * Builds a flat list of first-level links for the given menu.
+ *
+ * @return array<int, array{title: string, url: string}>
+ */
+function _psmhydraulics_menu_links(string $menu_name): array {
+  $menu_tree = \Drupal::menuTree();
+
+  $parameters = new MenuTreeParameters();
+  $parameters->setMaxDepth(1)->onlyEnabledLinks();
+
+  $tree = $menu_tree->load($menu_name, $parameters);
+  $tree = $menu_tree->transform($tree, [
+    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+    ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+  ]);
+
+  $links = [];
+  foreach ($tree as $element) {
+    if (!$element->access || !$element->access->isAllowed()) {
+      continue;
+    }
+    $links[] = [
+      'title' => (string) $element->link->getTitle(),
+      'url' => $element->link->getUrlObject()->toString(),
+    ];
+  }
+
+  return $links;
+}
+
 /**
  * Implements hook_preprocess_page().
  */
 function psmhydraulics_preprocess_page(array &$variables): void {
   $config = \Drupal::config('psm_site.settings');
+  $site_config = \Drupal::config('system.site');
+
+  $phone = (string) $config->get('phone');
 
   $variables['psm_site_contact'] = [
-    'phone' => (string) $config->get('phone'),
+    'phone' => $phone,
+    'phone_href' => 'tel:' . preg_replace('/[^0-9+]/', '', $phone),
     'email' => (string) $config->get('email'),
     'location' => (string) $config->get('location'),
   ];
+
+  $social_definitions = [
+    'facebook_url' => ['label' => 'Facebook', 'icon' => 'fa-brands fa-facebook-f'],
+    'x_url' => ['label' => 'X', 'icon' => 'fa-brands fa-x-twitter'],
+    'linkedin_url' => ['label' => 'LinkedIn', 'icon' => 'fa-brands fa-linkedin-in'],
+    'instagram_url' => ['label' => 'Instagram', 'icon' => 'fa-brands fa-instagram'],
+  ];
+
+  $variables['psm_site_socials'] = [];
+  foreach ($social_definitions as $key => $definition) {
+    $url = trim((string) $config->get($key));
+    if ($url !== '') {
+      $variables['psm_site_socials'][] = $definition + ['url' => $url];
+    }
+  }
+
+  $variables['psm_site_quote_url'] = trim((string) $config->get('quote_url'));
+
+  // Header search: submits to the catalogue view, suggestions come from
+  // the psm_site JSON endpoint.
+  $variables['psm_site_search'] = [
+    'action' => '',
+    'suggest_url' => '',
+  ];
+  try {
+    $variables['psm_site_search']['action'] = Url::fromRoute('view.catalogue.page_1')->toString();
+    $variables['psm_site_search']['suggest_url'] = Url::fromRoute('psm_site.search_suggest')->toString();
+  }
+  catch (\Exception $exception) {
+    // Catalogue view or suggest route unavailable: the search box is hidden.
+  }
+
+  $variables['psm_site_footer'] = [
+    'site_name' => (string) $site_config->get('name'),
+    'slogan' => (string) $site_config->get('slogan'),
+    'logo' => theme_get_setting('logo.url') ?: '',
+    'text' => (string) $config->get('footer_text'),
+    'year' => date('Y'),
+    'menu' => _psmhydraulics_menu_links('main'),
+    'legal' => _psmhydraulics_menu_links('footer'),
+  ];
+
+  $variables['#cache']['tags'] = array_merge(
+    $variables['#cache']['tags'] ?? [],
+    [
+      'config:psm_site.settings',
+      'config:system.site',
+      'config:system.menu.main',
+      'config:system.menu.footer',
+    ],
+  );
+  $variables['#cache']['contexts'] = array_merge(
+    $variables['#cache']['contexts'] ?? [],
+    ['languages:language_interface'],
+  );
 }
 
 /**
@@ -50,11 +143,18 @@ function psmhydraulics_preprocess_links__language_block(array &$variables): void
     'lv' => 'fi fi-lv',
   ];
 
+  $code_map = [
+    'en' => 'EN',
+    'en-gb' => 'EN',
+    'lv' => 'LV',
+  ];
+
   $label_map = $localized_labels[$current_language_id] ?? $localized_labels['en-gb'];
   $current_label = $label_map[$current_language_id] ?? ($label_map['en-gb'] ?? $current_language->getName());
 
   $variables['psm_language_switcher'] = [
     'current_label' => $current_label,
+    'current_code' => $code_map[$current_language_id] ?? strtoupper($current_language_id),
     'current_flag_class' => $flag_class_map[$current_language_id] ?? 'fi',
     'items' => [],
   ];
@@ -70,6 +170,7 @@ function psmhydraulics_preprocess_links__language_block(array &$variables): void
 
     $variables['psm_language_switcher']['items'][] = [
       'flag_class' => $flag_class_map[$langcode] ?? 'fi',
+      'code' => $code_map[$langcode] ?? strtoupper($langcode),
       'label' => $label,
       'is_active' => $langcode === $current_language_id,
       'link' => $link,

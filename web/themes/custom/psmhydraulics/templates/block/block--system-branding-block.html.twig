@@ -1,25 +1,19 @@
 {% extends "block.html.twig" %}
 
 {% block content %}
-  <a class="flex items-center gap-4" href="{{ path('<front>') }}" rel="home">
+  <a class="site-logo" href="{{ path('<front>') }}" rel="home">
     {% if site_logo %}
-      <img class="h-14 w-auto" src="{{ site_logo }}" alt="{{ 'Home'|t }}" fetchpriority="high" />
+      <img class="site-logo__mark" src="{{ site_logo }}" alt="{{ 'Home'|t }}" fetchpriority="high" />
     {% else %}
-      <div class="flex h-14 w-14 items-center justify-center rounded-md bg-steel-300 text-xs font-bold uppercase tracking-[0.2em] text-steel-700">
-        Logo
-      </div>
+      <span class="site-logo__placeholder" aria-hidden="true">L</span>
     {% endif %}
 
-    <span class="flex flex-col">
+    <span class="site-logo__text">
       {% if site_name %}
-        <span class="font-display text-4xl font-bold uppercase leading-none tracking-[0.02em] text-brand-ink">
-          {{ site_name }}
-        </span>
+        <span class="site-logo__wordmark">{{ site_name }}</span>
       {% endif %}
       {% if site_slogan %}
-        <span class="mt-1 text-xs font-semibold uppercase tracking-[0.28em] text-steel-500">
-          {{ site_slogan }}
-        </span>
+        <span class="site-logo__sub">{{ site_slogan }}</span>
       {% endif %}
     </span>
   </a>

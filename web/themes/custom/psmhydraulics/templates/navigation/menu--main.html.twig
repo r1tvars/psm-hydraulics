@@ -1,43 +1,88 @@
-{% import _self as menus %}
-
-{{ menus.menu_links(items, attributes, 0) }}
-
-{% macro menu_links(items, attributes, menu_level) %}
-  {% import _self as menus %}
-  {% if items %}
-    {% if menu_level == 0 %}
-      <ul{{ attributes.addClass('menu-level--0') }}>
-    {% else %}
-      <ul class="menu-level--sub">
-    {% endif %}
+{#
+/**
+ * @file
+ * Main menu: 3 levels.
+ *
+ * Desktop (.navbar): level 0 inline, levels 1–2 inside a full-width
+ * mega panel (columns with heading + links), opened on hover/focus.
+ * Drawer (.nav-drawer): the same markup becomes nested accordions,
+ * toggled by the [data-menu-toggle] buttons (see nav.js).
+ */
+#}
+{% if items %}
+  <ul class="nav-menu">
     {% for item in items %}
-      {% set item_classes = ['menu-item'] %}
-      {% if item.below %}
-        {% set item_classes = item_classes|merge(['group']) %}
-      {% endif %}
-      {% set link_classes = [menu_level == 0 ? 'menu-link' : 'menu-link--sub'] %}
+      {% set has_children = item.below is not empty %}
+      {% set link_classes = ['nav-menu__link'] %}
       {% if item.in_active_trail %}
         {% set link_classes = link_classes|merge(['is-active']) %}
       {% endif %}
-      {% if item.below %}
-        {% set link_classes = link_classes|merge(['has-children']) %}
-      {% endif %}
-      <li{{ item.attributes.addClass(item_classes) }}>
-        {{ link(item.title, item.url, {'class': link_classes}) }}
-        {% if item.below %}
-          {% if menu_level == 0 %}
-            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs text-steel-400 xl:right-2">
+
+      <li class="nav-menu__item{{ has_children ? ' nav-menu__item--mega' }}">
+        <div class="nav-menu__row">
+          {{ link(item.title, item.url, {'class': link_classes}) }}
+          {% if has_children %}
+            <span class="nav-menu__chev" aria-hidden="true">
+              <i class="fa-solid fa-angle-down"></i>
+            </span>
+            <button class="nav-menu__toggle" type="button"
+                    aria-expanded="false"
+                    aria-label="{{ 'Toggle @title submenu'|t({'@title': item.title}) }}"
+                    data-menu-toggle>
               <i class="fa-solid fa-angle-down" aria-hidden="true"></i>
-            </span>
-          {% else %}
-            <span class="pointer-events-none absolute right-0 top-2 text-[0.65rem] text-steel-400">
-              <i class="fa-solid fa-angle-right" aria-hidden="true"></i>
-            </span>
+            </button>
           {% endif %}
-          {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+        </div>
+
+        {% if has_children %}
+          <div class="mega" data-menu-panel>
+            <div class="mega__frame">
+              <div class="mega__inner">
+                <div class="mega__cols">
+                  {% for child in item.below %}
+                    {% set child_has_children = child.below is not empty %}
+                    {% set child_classes = ['mega__heading'] %}
+                    {% if child.in_active_trail %}
+                      {% set child_classes = child_classes|merge(['is-active']) %}
+                    {% endif %}
+
+                    <div class="mega__col">
+                      <div class="mega__col-head">
+                        <span class="mega__code" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>
+                        {{ link(child.title, child.url, {'class': child_classes}) }}
+                        {% if child_has_children %}
+                          <button class="nav-menu__toggle nav-menu__toggle--sub" type="button"
+                                  aria-expanded="false"
+                                  aria-label="{{ 'Toggle @title submenu'|t({'@title': child.title}) }}"
+                                  data-menu-toggle>
+                            <i class="fa-solid fa-angle-down" aria-hidden="true"></i>
+                          </button>
+                        {% endif %}
+                      </div>
+
+                      {% if child_has_children %}
+                        <div class="mega__sub" data-menu-panel>
+                          <ul class="mega__list">
+                            {% for sub in child.below %}
+                              {% set sub_classes = ['mega__link'] %}
+                              {% if sub.in_active_trail %}
+                                {% set sub_classes = sub_classes|merge(['is-active']) %}
+                              {% endif %}
+                              <li>
+                                {{ link(sub.title, sub.url, {'class': sub_classes}) }}
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
         {% endif %}
       </li>
     {% endfor %}
-    </ul>
-  {% endif %}
-{% endmacro %}
+  </ul>
+{% endif %}

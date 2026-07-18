@@ -2,9 +2,9 @@
 
 {% if psm_language_switcher.items %}
   <div class="language-switcher" data-language-switcher data-open="false">
-    <button class="language-switcher__trigger" type="button" aria-expanded="false" aria-haspopup="true" data-language-switcher-trigger>
+    <button class="language-switcher__trigger" type="button" aria-expanded="false" aria-haspopup="listbox" data-language-switcher-trigger>
       <span class="{{ psm_language_switcher.current_flag_class }} language-switcher__flag" aria-hidden="true"></span>
-      <span class="language-switcher__label">{{ psm_language_switcher.current_label }}</span>
+      <span class="language-switcher__code">{{ psm_language_switcher.current_code }}</span>
       <span class="language-switcher__chevron" aria-hidden="true">
         <i class="fa-solid fa-chevron-down"></i>
       </span>

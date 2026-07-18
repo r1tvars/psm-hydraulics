@@ -1,0 +1,22 @@
+uuid: fe642718-56a8-474b-887b-36e4c289ccd9
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_description
+    - paragraphs.paragraphs_type.statistics_bar
+  module:
+    - text
+id: paragraph.statistics_bar.field_description
+field_name: field_description
+entity_type: paragraph
+bundle: statistics_bar
+label: Description
+description: 'Short introduction shown next to the heading.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

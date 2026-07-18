@@ -1,0 +1,19 @@
+uuid: 000b0397-936c-494c-b7ff-fc87de062104
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_heading
+    - paragraphs.paragraphs_type.statistics_bar
+id: paragraph.statistics_bar.field_heading
+field_name: field_heading
+entity_type: paragraph
+bundle: statistics_bar
+label: Heading
+description: 'Section heading shown above the statistics.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,6 +1,10 @@
 <article{{ attributes.addClass('statistics-bar-item') }}>
   {% if statistics_bar_link %}
     {{ statistics_bar_link }}
+  {% else %}
+    <span class="statistics-bar-item__tick" aria-hidden="true">
+      <i class="fa-solid fa-arrow-trend-up"></i>
+    </span>
   {% endif %}
 
   {% if not paragraph.field_stat_value.isEmpty() %}

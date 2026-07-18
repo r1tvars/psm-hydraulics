@@ -1,10 +1,12 @@
 {{ attach_library('psmhydraulics/statistics-bar') }}
 
 {% set has_image = not paragraph.field_image.isEmpty() %}
+{% set has_eyebrow = paragraph.field_eyebrow is defined and not paragraph.field_eyebrow.isEmpty() %}
+{% set has_heading = paragraph.field_heading is defined and not paragraph.field_heading.isEmpty() %}
+{% set has_description = paragraph.field_description is defined and not paragraph.field_description.isEmpty() %}
 {% set section_classes = [
   'statistics-bar',
   has_image ? 'statistics-bar--has-image' : 'statistics-bar--no-image',
-  not has_image ? 'bg-statistics-fallback',
 ] %}
 
 <section{{ attributes.addClass(section_classes) }}>
@@ -12,10 +14,34 @@
     <div class="statistics-bar__media">
       {{ content.field_image }}
     </div>
-    <div class="statistics-bar__overlay"></div>
+    <div class="statistics-bar__overlay" aria-hidden="true"></div>
+  {% else %}
+    <div class="statistics-bar__pattern" aria-hidden="true"></div>
   {% endif %}
 
   <div class="statistics-bar__inner">
+    {% if has_eyebrow or has_heading or has_description %}
+      <div class="statistics-bar__head">
+        <div class="statistics-bar__head-main">
+          {% if has_eyebrow %}
+            <span class="eyebrow statistics-bar__eyebrow">
+              {{ content.field_eyebrow }}
+            </span>
+          {% endif %}
+          {% if has_heading %}
+            <h2 class="statistics-bar__heading">
+              {{ content.field_heading }}
+            </h2>
+          {% endif %}
+        </div>
+        {% if has_description %}
+          <div class="statistics-bar__description">
+            {{ content.field_description }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
     {{ content.field_statistics_items }}
   </div>
 </section>

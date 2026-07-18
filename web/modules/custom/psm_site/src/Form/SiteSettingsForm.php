@@ -112,6 +112,31 @@ final class SiteSettingsForm extends ConfigFormBase {
       '#placeholder' => 'https://x.com/your-account',
     ];
 
+    $form['general'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Calls to action & footer'),
+      '#description' => $this->t('Used by the "Request a quote" buttons in the header, mobile menu and footer, and by the footer intro text.'),
+      '#group' => 'sections',
+      '#open' => FALSE,
+    ];
+
+    $form['general']['quote_url'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Request a quote link'),
+      '#default_value' => $config->get('quote_url') ?? '',
+      '#maxlength' => 255,
+      '#description' => $this->t('Internal path (e.g. /contact) or full URL. Leave empty to hide the quote buttons.'),
+      '#placeholder' => '/contact',
+    ];
+
+    $form['general']['footer_text'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Footer intro text'),
+      '#default_value' => $config->get('footer_text') ?? '',
+      '#rows' => 3,
+      '#description' => $this->t('Short company description shown next to the logo in the footer.'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -127,6 +152,8 @@ final class SiteSettingsForm extends ConfigFormBase {
       ->set('instagram_url', $form_state->getValue('instagram_url'))
       ->set('linkedin_url', $form_state->getValue('linkedin_url'))
       ->set('x_url', $form_state->getValue('x_url'))
+      ->set('quote_url', $form_state->getValue('quote_url'))
+      ->set('footer_text', $form_state->getValue('footer_text'))
       ->save();
 
     parent::submitForm($form, $form_state);

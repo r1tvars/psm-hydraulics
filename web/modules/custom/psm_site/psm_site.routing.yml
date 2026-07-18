@@ -5,3 +5,11 @@ psm_site.settings:
     _title: 'PSM site settings'
   requirements:
     _permission: 'administer site configuration'
+
+psm_site.search_suggest:
+  path: '/psm-site/search-suggest'
+  defaults:
+    _controller: '\Drupal\psm_site\Controller\SearchSuggestController::suggest'
+    _title: 'Search suggestions'
+  requirements:
+    _access: 'TRUE'

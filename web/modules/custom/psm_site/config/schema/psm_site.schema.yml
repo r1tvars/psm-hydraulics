@@ -23,3 +23,9 @@ psm_site.settings:
     x_url:
       type: string
       label: 'X URL'
+    quote_url:
+      type: string
+      label: 'Request a quote link'
+    footer_text:
+      type: text
+      label: 'Footer intro text'

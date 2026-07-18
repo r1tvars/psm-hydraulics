@@ -27,9 +27,21 @@
     };
   };
 
-  const formatCounterValue = ({ prefix, suffix, decimals }, value) => {
-    const formatted = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
-    return `${prefix}${formatted}${suffix}`;
+  // Writes "prefix + number" as text and the unit suffix as an accent span.
+  const renderCounterValue = (element, parsedValue, value) => {
+    const formatted = parsedValue.decimals > 0
+      ? value.toFixed(parsedValue.decimals)
+      : Math.round(value).toString();
+
+    element.textContent = '';
+    element.append(document.createTextNode(`${parsedValue.prefix}${formatted}`));
+
+    if (parsedValue.suffix) {
+      const unit = document.createElement('span');
+      unit.className = 'statistics-bar-item__unit';
+      unit.textContent = parsedValue.suffix;
+      element.append(unit);
+    }
   };
 
   const animateCounter = (element) => {
@@ -48,13 +60,10 @@
       const easedProgress = 1 - (1 - progress) ** 3;
       const currentValue = parsedValue.target * easedProgress;
 
-      element.textContent = formatCounterValue(parsedValue, currentValue);
+      renderCounterValue(element, parsedValue, currentValue);
 
       if (progress < 1) {
         requestAnimationFrame(step);
-      }
-      else {
-        element.textContent = targetValue;
       }
     };
 

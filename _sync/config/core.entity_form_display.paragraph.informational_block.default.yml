@@ -5,15 +5,15 @@ dependencies:
   config:
     - entity_browser.browser.media_directories_modal
     - field.field.paragraph.informational_block.field_description
+    - field.field.paragraph.informational_block.field_eyebrow
     - field.field.paragraph.informational_block.field_heading
     - field.field.paragraph.informational_block.field_image
     - field.field.paragraph.informational_block.field_image_position
-    - field.field.paragraph.informational_block.field_show_image_mobile
     - field.field.paragraph.informational_block.field_info_items
+    - field.field.paragraph.informational_block.field_show_image_mobile
     - paragraphs.paragraphs_type.informational_block
   module:
     - entity_browser
-    - options
     - paragraphs
     - text
 id: paragraph.informational_block.default
@@ -27,6 +27,14 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_eyebrow:
+    type: string_textfield
+    weight: -10
+    region: content
+    settings:
+      size: 60
       placeholder: ''
     third_party_settings: {  }
   field_heading:

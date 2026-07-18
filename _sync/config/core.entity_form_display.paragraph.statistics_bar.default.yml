@@ -4,6 +4,9 @@ status: true
 dependencies:
   config:
     - entity_browser.browser.media_directories_modal
+    - field.field.paragraph.statistics_bar.field_description
+    - field.field.paragraph.statistics_bar.field_eyebrow
+    - field.field.paragraph.statistics_bar.field_heading
     - field.field.paragraph.statistics_bar.field_image
     - field.field.paragraph.statistics_bar.field_statistics_items
     - paragraphs.paragraphs_type.statistics_bar
@@ -15,6 +18,30 @@ targetEntityType: paragraph
 bundle: statistics_bar
 mode: default
 content:
+  field_description:
+    type: text_textarea
+    weight: -8
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_eyebrow:
+    type: string_textfield
+    weight: -10
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_heading:
+    type: string_textfield
+    weight: -9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_image:
     type: entity_browser_entity_reference
     weight: 0

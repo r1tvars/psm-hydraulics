@@ -3,6 +3,9 @@ langcode: en-gb
 status: true
 dependencies:
   config:
+    - field.field.paragraph.statistics_bar.field_description
+    - field.field.paragraph.statistics_bar.field_eyebrow
+    - field.field.paragraph.statistics_bar.field_heading
     - field.field.paragraph.statistics_bar.field_image
     - field.field.paragraph.statistics_bar.field_statistics_items
     - paragraphs.paragraphs_type.statistics_bar
@@ -13,6 +16,29 @@ targetEntityType: paragraph
 bundle: statistics_bar
 mode: default
 content:
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: -8
+    region: content
+  field_eyebrow:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: -10
+    region: content
+  field_heading:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: -9
+    region: content
   field_image:
     type: entity_reference_entity_view
     label: hidden
