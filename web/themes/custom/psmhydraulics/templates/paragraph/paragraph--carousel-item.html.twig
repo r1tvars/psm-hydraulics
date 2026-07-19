@@ -1,5 +1,11 @@
 <article{{ attributes.addClass('carousel-slide') }}>
-  {% if not paragraph.field_image.isEmpty() %}
+  {% if carousel_video %}
+    <div class="carousel-slide__media">
+      <video data-carousel-video muted playsinline preload="auto" aria-hidden="true" tabindex="-1">
+        <source src="{{ carousel_video.url }}" type="{{ carousel_video.type }}">
+      </video>
+    </div>
+  {% elseif not paragraph.field_image.isEmpty() %}
     <div class="carousel-slide__media">
       {{ content.field_image }}
     </div>

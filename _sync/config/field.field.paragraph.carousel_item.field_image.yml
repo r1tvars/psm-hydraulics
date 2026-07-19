@@ -5,13 +5,14 @@ dependencies:
   config:
     - field.storage.paragraph.field_image
     - media.type.image
+    - media.type.video
     - paragraphs.paragraphs_type.carousel_item
 id: paragraph.carousel_item.field_image
 field_name: field_image
 entity_type: paragraph
 bundle: carousel_item
-label: Image
-description: ''
+label: 'Image / Video'
+description: 'Background image, or an MP4 video — the slide then runs for the length of the video.'
 required: false
 translatable: true
 default_value: {  }
@@ -21,5 +22,6 @@ settings:
   handler_settings:
     target_bundles:
       image: image
+      video: video
     auto_create: false
 field_type: entity_reference

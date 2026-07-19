@@ -662,8 +662,8 @@
 
   .carousel-block {
     @apply relative isolate overflow-hidden bg-ink;
-    height: var(--carousel-height, 82svh);
-    min-height: 30rem;
+    height: var(--carousel-height, 72svh);
+    min-height: 28rem;
     --carousel-progress-duration: 8s;
   }
 
@@ -688,7 +688,8 @@
     @apply absolute inset-0;
   }
 
-  .carousel-slide__media img {
+  .carousel-slide__media img,
+  .carousel-slide__media video {
     @apply h-full w-full select-none object-cover;
     -webkit-user-drag: none;
     user-select: none;
