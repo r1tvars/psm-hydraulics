@@ -5,8 +5,26 @@ display:
     display_options:
       title: Multivide
       fields:
+        media_bulk_form:
+          action_title: Darbība
+        thumbnail__target_id:
+          separator: ', '
+        name:
+          separator: ', '
+        bundle:
+          label: Veids
+          separator: ', '
         uid:
           label: Autors
+          separator: ', '
+        status:
+          label: Statuss
+          settings:
+            format_custom_true: Publicēts
+          separator: ', '
+        changed:
+          label: Atjaunināts
+          separator: ', '
         operations:
           label: Darbības
       pager:
@@ -14,10 +32,25 @@ display:
           tags:
             next: 'Nākamais ›'
             previous: '‹ Iepriekšējais'
+          expose:
+            items_per_page_label: 'Vienumi vienā lapā'
+            items_per_page_options_all_label: '- Visi -'
+            offset_label: Atkāpe
       exposed_form:
         options:
+          submit_button: Filtrēt
           reset_button_label: Attīrīt
+          exposed_sorts_label: 'Kārtot pēc'
+          sort_desc_label: Dilst.
       filters:
+        bundle:
+          expose:
+            label: Veids
+        status:
+          group_info:
+            group_items:
+              1:
+                title: Publicēts
         langcode:
           expose:
             label: Valoda

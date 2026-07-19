@@ -1,0 +1,6 @@
+title: Kontakti
+settings:
+  confirmation_message: 'Jūsu ziņa tika nosūtīta.'
+handlers:
+  email_notification:
+    label: 'E-pasta paziņojums'

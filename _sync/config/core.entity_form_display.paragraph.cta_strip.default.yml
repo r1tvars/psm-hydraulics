@@ -1,0 +1,59 @@
+uuid: 7bc988e5-7e49-47aa-8c9a-ff1b8251c900
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.cta_strip.field_button_label
+    - field.field.paragraph.cta_strip.field_description
+    - field.field.paragraph.cta_strip.field_eyebrow
+    - field.field.paragraph.cta_strip.field_heading
+    - field.field.paragraph.cta_strip.field_webform
+    - paragraphs.paragraphs_type.cta_strip
+  module:
+    - text
+id: paragraph.cta_strip.default
+targetEntityType: paragraph
+bundle: cta_strip
+mode: default
+content:
+  field_button_label:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: 'Request a quote'
+    third_party_settings: {  }
+  field_description:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+  field_eyebrow:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_heading:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_webform:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

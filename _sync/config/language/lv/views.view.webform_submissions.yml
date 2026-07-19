@@ -1,0 +1,147 @@
+label: 'Tīmekļa veidlapas iesniegumi'
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Apstiprināt
+          reset_button_label: Attīrīt
+          exposed_sorts_label: 'Kārtot pēc'
+          sort_desc_label: Dilst.
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+            next: ››
+          expose:
+            items_per_page_label: 'Vienumi vienā lapā'
+            items_per_page_options_all_label: '- Visi -'
+            offset_label: Atkāpe
+      fields:
+        sid:
+          label: '#'
+          separator: ', '
+        in_draft:
+          label: Melnraksts
+          separator: ', '
+        created:
+          label: Izveidots
+          separator: ', '
+        remote_addr:
+          label: 'IP adrese'
+          separator: ', '
+        view_webform_submission:
+          label: Darbības
+          text: skatīt
+      arguments:
+        in_draft:
+          exception:
+            title: Visi
+      title: 'Tīmekļa veidlapas iesniegumi'
+  embed_administer:
+    display_options:
+      fields:
+        webform_submission_bulk_form:
+          action_title: Darbība
+        sid:
+          label: '#'
+          separator: ', '
+        in_draft:
+          label: Melnraksts
+          separator: ', '
+        sticky:
+          label: Uzlīme
+          separator: ', '
+        locked:
+          label: Slēgts
+          separator: ', '
+        created:
+          label: Izveidots
+          separator: ', '
+        completed:
+          label: Pabeigts
+          separator: ', '
+        remote_addr:
+          label: 'IP adrese'
+          separator: ', '
+        operations:
+          label: Darbības
+      filters:
+        sticky:
+          expose:
+            label: Uzlīme
+        locked:
+          expose:
+            label: Slēgts
+  embed_manage:
+    display_options:
+      fields:
+        webform_submission_bulk_form:
+          action_title: Darbība
+        sid:
+          label: '#'
+          separator: ', '
+        in_draft:
+          label: Melnraksts
+          separator: ', '
+        sticky:
+          label: Uzlīme
+          separator: ', '
+        locked:
+          label: Slēgts
+          separator: ', '
+        created:
+          label: Izveidots
+          separator: ', '
+        completed:
+          label: Pabeigts
+          separator: ', '
+        remote_addr:
+          label: 'IP adrese'
+          separator: ', '
+        view_webform_submission:
+          label: Darbības
+          text: skatīt
+        edit_webform_submission:
+          label: Darbības
+      filters:
+        sticky:
+          expose:
+            label: Uzlīme
+        locked:
+          expose:
+            label: Slēgts
+  embed_review:
+    display_options:
+      fields:
+        sid:
+          label: '#'
+          separator: ', '
+        in_draft:
+          label: Melnraksts
+          separator: ', '
+        sticky:
+          label: Uzlīme
+          separator: ', '
+        locked:
+          label: Slēgts
+          separator: ', '
+        created:
+          label: Izveidots
+          separator: ', '
+        completed:
+          label: Pabeigts
+          separator: ', '
+        remote_addr:
+          label: 'IP adrese'
+          separator: ', '
+        view_webform_submission:
+          label: Darbības
+          text: skatīt
+      filters:
+        sticky:
+          expose:
+            label: Uzlīme
+        locked:
+          expose:
+            label: Slēgts

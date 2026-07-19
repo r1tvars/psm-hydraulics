@@ -10,6 +10,9 @@
 <div class="site-shell">
   {{ attach_library('psmhydraulics/nav') }}
   {{ attach_library('psmhydraulics/header-search') }}
+  {% if psm_site_quote.modal %}
+    {{ attach_library('core/drupal.dialog.ajax') }}
+  {% endif %}
 
   {# ── Top utility bar: contacts · language · socials (desktop only) ── #}
   <div class="topbar">
@@ -96,8 +99,10 @@
           {% endif %}
 
           <div class="hbar__actions">
-            {% if psm_site_quote_url %}
-              <a class="btn btn--amber hbar__cta" href="{{ psm_site_quote_url }}">{{ 'Request a quote'|t }}</a>
+            {% if psm_site_quote %}
+              <a class="btn btn--amber hbar__cta{{ psm_site_quote.modal ? ' use-ajax' }}"
+                 href="{{ psm_site_quote.url }}"
+                 {%- if psm_site_quote.modal %} data-dialog-type="modal" data-dialog-options='{"width":720,"classes":{"ui-dialog":"quote-modal"}}'{% endif %}>{{ 'Request a quote'|t }}</a>
             {% endif %}
             <button class="nav-toggle" type="button"
                     aria-label="{{ 'Open navigation menu'|t }}"
@@ -142,9 +147,11 @@
         {{ page.primary_menu }}
       </div>
 
-      {% if psm_site_quote_url %}
+      {% if psm_site_quote %}
         <div class="nav-drawer__cta">
-          <a class="btn btn--amber btn--block" href="{{ psm_site_quote_url }}">{{ 'Request a quote'|t }}</a>
+          <a class="btn btn--amber btn--block{{ psm_site_quote.modal ? ' use-ajax' }}"
+             href="{{ psm_site_quote.url }}"
+             {%- if psm_site_quote.modal %} data-dialog-type="modal" data-dialog-options='{"width":720,"classes":{"ui-dialog":"quote-modal"}}'{% endif %}>{{ 'Request a quote'|t }}</a>
         </div>
       {% endif %}
 
@@ -281,8 +288,10 @@
               </li>
             {% endif %}
           </ul>
-          {% if psm_site_quote_url %}
-            <a class="btn btn--amber footer__quote" href="{{ psm_site_quote_url }}">{{ 'Request a quote'|t }}</a>
+          {% if psm_site_quote %}
+            <a class="btn btn--amber footer__quote{{ psm_site_quote.modal ? ' use-ajax' }}"
+               href="{{ psm_site_quote.url }}"
+               {%- if psm_site_quote.modal %} data-dialog-type="modal" data-dialog-options='{"width":720,"classes":{"ui-dialog":"quote-modal"}}'{% endif %}>{{ 'Request a quote'|t }}</a>
           {% endif %}
         </div>
 

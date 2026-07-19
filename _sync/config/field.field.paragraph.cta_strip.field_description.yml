@@ -1,0 +1,22 @@
+uuid: dce56fd9-6753-481c-b39c-6f65f68fd25c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_description
+    - paragraphs.paragraphs_type.cta_strip
+  module:
+    - text
+id: paragraph.cta_strip.field_description
+field_name: field_description
+entity_type: paragraph
+bundle: cta_strip
+label: Description
+description: 'Optional supporting text under the heading.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

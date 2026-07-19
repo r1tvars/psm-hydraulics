@@ -1,0 +1,10 @@
+uuid: bc25cdbf-3522-4ef8-be84-4067d5403b33
+langcode: en-gb
+status: true
+dependencies: {  }
+id: cta_strip
+label: 'CTA strip'
+icon_uuid: null
+icon_default: null
+description: 'Full-width amber call-to-action strip with a button that opens a webform in a popup.'
+behavior_plugins: {  }

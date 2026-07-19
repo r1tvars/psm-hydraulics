@@ -1,0 +1,36 @@
+<section{{ attributes.addClass('cta-strip') }}>
+  <div class="cta-strip__inner">
+    <div class="cta-strip__text">
+      {% if not paragraph.field_eyebrow.isEmpty() %}
+        <span class="eyebrow eyebrow--ink">
+          {{ content.field_eyebrow }}
+        </span>
+      {% endif %}
+
+      {% if not paragraph.field_heading.isEmpty() %}
+        <h2 class="cta-strip__heading">
+          {{ content.field_heading }}
+        </h2>
+      {% endif %}
+
+      {% if not paragraph.field_description.isEmpty() %}
+        <div class="cta-strip__description">
+          {{ content.field_description }}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if cta_webform %}
+      {{ attach_library('core/drupal.dialog.ajax') }}
+      <div class="cta-strip__actions">
+        <a class="btn btn--ink use-ajax"
+           href="{{ cta_webform.url }}"
+           data-dialog-type="modal"
+           data-dialog-options='{"width":720,"classes":{"ui-dialog":"quote-modal"}}'>
+          <span>{{ cta_webform.label }}</span>
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>

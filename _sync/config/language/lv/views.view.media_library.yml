@@ -3,10 +3,30 @@ display:
     display_title: Noklusējuma
     display_options:
       title: Multivide
+      fields:
+        media_bulk_form:
+          action_title: Darbība
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'Vienumi vienā lapā'
+            items_per_page_options_all_label: '- Visi -'
+            offset_label: Atkāpe
       exposed_form:
         options:
           reset_button_label: Attīrīt
+          exposed_sorts_label: 'Kārtot pēc'
+          sort_desc_label: Dilst.
       filters:
+        status:
+          group_info:
+            label: Publicēts
+            group_items:
+              1:
+                title: Publicēts
         name:
           expose:
             label: Nosaukums
@@ -14,18 +34,30 @@ display:
           expose:
             label: Valoda
   page:
+    display_title: Lapa
     display_options:
       fields:
+        media_bulk_form:
+          action_title: Darbība
+        name:
+          separator: ', '
         edit_media:
           text: Labot
         delete_media:
           text: Dzēst
   widget:
     display_options:
+      arguments:
+        bundle:
+          exception:
+            title: Visi
       filters:
         name:
           expose:
             label: Nosaukums
+      header:
+        display_link_table:
+          label: Tabula
   widget_table:
     display_options:
       fields:
@@ -33,7 +65,16 @@ display:
           label: Nosaukums
         uid:
           label: Autors
+        changed:
+          label: Atjaunināts
+      arguments:
+        bundle:
+          exception:
+            title: Visi
       filters:
         name:
           expose:
             label: Nosaukums
+      header:
+        display_link_table:
+          label: Tabula

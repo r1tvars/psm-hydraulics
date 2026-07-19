@@ -2,6 +2,13 @@ display:
   default:
     display_title: Noklusējuma
     display_options:
+      fields:
+        changed:
+          separator: ', '
       exposed_form:
         options:
+          submit_button: Apstiprināt
           reset_button_label: Attīrīt
+          exposed_sorts_label: 'Kārtot pēc'
+          sort_desc_label: Dilst.
+      use_more_text: Vairāk

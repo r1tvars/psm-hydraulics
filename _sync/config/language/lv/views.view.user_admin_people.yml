@@ -3,15 +3,48 @@ display:
     display_title: Noklusējuma
     display_options:
       fields:
+        name:
+          label: Lietotājvārds
+        status:
+          label: Statuss
+          settings:
+            format_custom_true: Aktīvs
         roles_target_id:
           label: Lomas
         operations:
           label: Darbības
+        mail:
+          separator: ', '
       pager:
         options:
           tags:
             next: 'Nākamais ›'
             previous: '‹ Iepriekšējais'
+          expose:
+            items_per_page_label: 'Vienumi vienā lapā'
+            items_per_page_options_all_label: '- Visi -'
+            offset_label: Atkāpe
       exposed_form:
         options:
+          submit_button: Filtrēt
           reset_button_label: Attīrīt
+          exposed_sorts_label: 'Kārtot pēc'
+          sort_desc_label: Dilst.
+      filters:
+        status:
+          group_info:
+            label: Statuss
+            group_items:
+              1:
+                title: Aktīvs
+        roles_target_id:
+          expose:
+            label: Loma
+        permission:
+          expose:
+            label: Atļauja
+  page_1:
+    display_title: Lapa
+    display_options:
+      menu:
+        title: Saraksts

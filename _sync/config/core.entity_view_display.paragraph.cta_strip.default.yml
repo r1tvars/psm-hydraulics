@@ -1,0 +1,44 @@
+uuid: b8cabed9-36f3-467d-9256-ded391d35b78
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.cta_strip.field_button_label
+    - field.field.paragraph.cta_strip.field_description
+    - field.field.paragraph.cta_strip.field_eyebrow
+    - field.field.paragraph.cta_strip.field_heading
+    - field.field.paragraph.cta_strip.field_webform
+    - paragraphs.paragraphs_type.cta_strip
+  module:
+    - text
+id: paragraph.cta_strip.default
+targetEntityType: paragraph
+bundle: cta_strip
+mode: default
+content:
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_eyebrow:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_heading:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_button_label: true
+  field_webform: true

@@ -3,25 +3,70 @@ display:
     display_title: Noklusējuma
     display_options:
       fields:
+        comment_bulk_form:
+          action_title: Darbība
+        subject:
+          label: Temats
+          separator: ', '
+        uid:
+          separator: ', '
         name:
           label: Autors
+          separator: ', '
+        entity_id:
+          separator: ', '
+        changed:
+          label: Atjaunināts
+          separator: ', '
         operations:
           label: Darbības
+        name_1:
+          separator: ', '
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Vienumi vienā lapā'
+            items_per_page_options_all_label: '- Visi -'
+            offset_label: Atkāpe
       exposed_form:
         options:
+          submit_button: Filtrēt
           reset_button_label: Attīrīt
+          exposed_sorts_label: 'Kārtot pēc'
+          sort_desc_label: Dilst.
       filters:
+        subject:
+          expose:
+            label: Temats
         langcode:
           expose:
             label: Valoda
   page_unapproved:
     display_options:
       fields:
+        comment_bulk_form:
+          action_title: Darbība
+        subject:
+          label: Temats
+          separator: ', '
+        uid:
+          separator: ', '
         name:
           label: Autors
+          separator: ', '
+        entity_id:
+          separator: ', '
+        changed:
+          label: Atjaunināts
+          separator: ', '
         operations:
           label: Darbības
+        name_1:
+          separator: ', '
       filters:
+        subject:
+          expose:
+            label: Temats
         langcode:
           expose:
             label: Valoda

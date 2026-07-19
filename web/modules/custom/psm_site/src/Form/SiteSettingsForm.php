@@ -120,12 +120,28 @@ final class SiteSettingsForm extends ConfigFormBase {
       '#open' => FALSE,
     ];
 
+    $webform_options = [];
+    if (\Drupal::moduleHandler()->moduleExists('webform')) {
+      foreach (\Drupal::entityTypeManager()->getStorage('webform')->loadMultiple() as $webform_id => $webform) {
+        $webform_options[$webform_id] = $webform->label();
+      }
+    }
+
+    $form['general']['quote_webform'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Quote form (opens in a popup)'),
+      '#options' => $webform_options,
+      '#empty_option' => $this->t('- None -'),
+      '#default_value' => $config->get('quote_webform') ?? '',
+      '#description' => $this->t('The webform opened in a popup by the quote buttons. When set, it takes precedence over the link below.'),
+    ];
+
     $form['general']['quote_url'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Request a quote link'),
+      '#title' => $this->t('Request a quote link (fallback)'),
       '#default_value' => $config->get('quote_url') ?? '',
       '#maxlength' => 255,
-      '#description' => $this->t('Internal path (e.g. /contact) or full URL. Leave empty to hide the quote buttons.'),
+      '#description' => $this->t('Used only when no quote form is selected above. Internal path (e.g. /contact) or full URL. If both are empty, the quote buttons are hidden.'),
       '#placeholder' => '/contact',
     ];
 
@@ -152,6 +168,7 @@ final class SiteSettingsForm extends ConfigFormBase {
       ->set('instagram_url', $form_state->getValue('instagram_url'))
       ->set('linkedin_url', $form_state->getValue('linkedin_url'))
       ->set('x_url', $form_state->getValue('x_url'))
+      ->set('quote_webform', $form_state->getValue('quote_webform'))
       ->set('quote_url', $form_state->getValue('quote_url'))
       ->set('footer_text', $form_state->getValue('footer_text'))
       ->save();

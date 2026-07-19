@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_content_sections
     - node.type.page
     - paragraphs.paragraphs_type.carousel
+    - paragraphs.paragraphs_type.cta_strip
     - paragraphs.paragraphs_type.informational_block
     - paragraphs.paragraphs_type.partner_logos
     - paragraphs.paragraphs_type.segments_block
@@ -31,6 +32,7 @@ settings:
       statistics_bar: statistics_bar
       partner_logos: partner_logos
       segments_block: segments_block
+      cta_strip: cta_strip
     negate: 0
     target_bundles_drag_drop:
       carousel:
@@ -39,6 +41,9 @@ settings:
       carousel_item:
         weight: 5
         enabled: false
+      cta_strip:
+        weight: 14
+        enabled: true
       informational_block:
         weight: 6
         enabled: true

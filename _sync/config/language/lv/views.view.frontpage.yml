@@ -7,6 +7,15 @@ display:
           tags:
             next: 'Nākamais ›'
             previous: '‹ Iepriekšējais'
+          expose:
+            items_per_page_label: 'Vienumi vienā lapā'
+            items_per_page_options_all_label: '- Visi -'
+            offset_label: Atkāpe
       exposed_form:
         options:
+          submit_button: Apstiprināt
           reset_button_label: Attīrīt
+          exposed_sorts_label: 'Kārtot pēc'
+          sort_desc_label: Dilst.
+  page_1:
+    display_title: Lapa

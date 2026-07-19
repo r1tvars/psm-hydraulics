@@ -3,8 +3,39 @@ display:
     display_title: Noklusējuma
     display_options:
       fields:
+        type:
+          label: Veids
+        timestamp:
+          label: Datums
+        message:
+          label: Ziņojums
+        name:
+          label: Lietotājs
+          separator: ', '
         link:
           label: Darbības
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'Vienumi vienā lapā'
+            items_per_page_options_all_label: '- Visi -'
+            offset_label: Atkāpe
       exposed_form:
         options:
+          submit_button: Filtrēt
           reset_button_label: Attīrīt
+          exposed_sorts_label: 'Kārtot pēc'
+          sort_desc_label: Dilst.
+      empty:
+        area:
+          admin_label: 'Nav pieejams neviens žurnāla pieraksts.'
+          content: 'Nav pieejams neviens žurnāla pieraksts.'
+      filters:
+        type:
+          expose:
+            label: Veids
+  page:
+    display_title: Lapa

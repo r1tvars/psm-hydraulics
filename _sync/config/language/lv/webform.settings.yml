@@ -1,0 +1,19 @@
+settings:
+  default_submit_button_label: Apstiprināt
+  default_reset_button_label: Attīrīt
+  default_delete_button_label: Dzēst
+  default_wizard_next_button_label: 'Tālāk >'
+  default_wizard_start_label: Sākt
+  default_preview_next_button_label: Priekšskatījums
+  default_preview_label: Priekšskatījums
+  default_draft_button_label: 'Saglabāt melnrakstu'
+  default_draft_saved_message: 'Iesniegums saglabāts. Jūs varat atgriezties šajā formā vēlāk un atjaunot esošās vērtības.'
+  dialog_options:
+    narrow:
+      title: Šaurs
+    normal:
+      title: Normāls
+    wide:
+      title: Plats
+element:
+  default_more_title: Vairāk

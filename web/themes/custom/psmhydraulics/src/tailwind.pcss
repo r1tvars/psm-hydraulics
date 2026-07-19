@@ -1389,6 +1389,65 @@
     opacity: 1;
   }
 
+  /* ── CTA strip ───────────────────────────────────── */
+
+  .eyebrow--ink {
+    @apply text-ink;
+  }
+
+  .eyebrow--ink::before {
+    @apply bg-ink;
+  }
+
+  .cta-strip {
+    @apply relative overflow-hidden bg-amber text-ink;
+  }
+
+  .cta-strip::before {
+    @apply absolute inset-0 opacity-[0.14];
+    content: '';
+    background-image: linear-gradient(rgba(12, 26, 41, 0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(12, 26, 41, 0.6) 1px, transparent 1px);
+    background-size: 30px 30px;
+    -webkit-mask-image: linear-gradient(90deg, #000, transparent 70%);
+    mask-image: linear-gradient(90deg, #000, transparent 70%);
+  }
+
+  .cta-strip__inner {
+    @apply relative z-10 mx-auto flex max-w-shell flex-wrap items-center justify-between gap-x-8 gap-y-6 px-5 py-10 sm:px-6 sm:py-12 lg:px-8 xl:py-14;
+  }
+
+  .cta-strip__text {
+    @apply flex flex-col items-start gap-3.5;
+  }
+
+  .cta-strip__heading {
+    @apply max-w-[22ch] font-display font-bold uppercase text-ink;
+    font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+    line-height: 1.05;
+  }
+
+  .cta-strip__heading .field,
+  .cta-strip__heading .field__item {
+    display: contents;
+  }
+
+  .cta-strip__description {
+    @apply max-w-[52ch] text-sm leading-6 text-ink/80;
+  }
+
+  .cta-strip__description p {
+    @apply m-0;
+  }
+
+  .cta-strip__actions .btn i {
+    @apply text-xs transition-transform duration-200;
+  }
+
+  .cta-strip__actions .btn:hover i {
+    @apply translate-x-1;
+  }
+
   /* ── Footer ──────────────────────────────────────── */
 
   .footer {
@@ -1636,10 +1695,6 @@
 
   /* ── Misc ────────────────────────────────────────── */
 
-  .node {
-    @apply mb-4;
-  }
-
   .node__content p,
   .node__content ul,
   .node__content ol {
@@ -1671,6 +1726,153 @@
   .messages {
     @apply rounded-brand border border-steel-200 bg-white p-4 shadow-sm;
   }
+}
+
+/*
+ * Runtime-injected markup (jQuery UI dialog, webform elements) is NOT in
+ * Tailwind's content scan, so these rules live outside @layer to escape
+ * tree-shaking.
+ */
+/* ── Quote modal (jQuery UI dialog skin) ─────────── */
+
+/* Core injects a throbber next to use-ajax triggers while the dialog
+   loads, shifting the button for a moment — suppress it entirely. */
+.ajax-progress-throbber,
+.ajax-progress.ajax-progress-throbber {
+  display: none;
+}
+
+.ui-widget-overlay,
+.ui-widget-overlay.ui-front {
+  @apply fixed inset-0 z-[100] bg-ink-deep/60;
+  opacity: 1;
+}
+
+.ui-dialog.quote-modal,
+.ui-dialog.quote-modal:not(.ui-dialog-off-canvas) {
+  /* Gin/Claro dialog CSS piggybacks on the AJAX response and paints with
+     these variables; defining them here makes those rules resolve to our
+     palette instead of transparent. */
+  --gin-bg-layer: #ffffff;
+  --gin-bg-app: #f4f6f8;
+  @apply z-[110] overflow-hidden rounded-brand border-0 bg-white p-0 font-sans shadow-panel;
+  border-top: 3px solid theme('colors.amber.DEFAULT');
+  max-width: min(46rem, calc(100vw - 2rem));
+}
+
+.ui-dialog.quote-modal .ui-widget-content.ui-dialog-content {
+  @apply border-0 bg-white p-6 text-ink;
+}
+
+.ui-dialog.quote-modal .ui-dialog-buttonpane,
+.ui-dialog.quote-modal .ui-widget-content.ui-dialog-buttonpane {
+  @apply m-0 flex justify-end rounded-none border-0 border-t border-solid border-paper-line bg-paper px-6 py-4;
+}
+
+.ui-dialog.quote-modal .ui-dialog-buttonpane .ui-dialog-buttonset {
+  @apply flex gap-3 whitespace-normal;
+}
+
+.ui-dialog.quote-modal .ui-dialog-buttonpane button,
+.ui-dialog.quote-modal .ui-dialog-buttonpane .ui-dialog-buttonset button.ui-button {
+  @apply m-0 inline-flex cursor-pointer items-center justify-center gap-3 rounded-brand border-0 bg-amber font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors duration-200 hover:bg-amber-deep;
+  padding: 0.875rem 1.5rem;
+}
+
+.ui-dialog.quote-modal .ui-dialog-titlebar .ui-dialog-titlebar-close {
+  @apply absolute right-4 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center overflow-hidden rounded-brand border border-solid border-paper-line bg-white p-0 text-slate transition-colors hover:border-amber hover:text-ink;
+  background-image: none;
+  text-indent: 0;
+  /* Collapse the button's "Close" text node; the × comes from ::before. */
+  font-size: 0;
+}
+
+.ui-dialog.quote-modal .ui-dialog-titlebar .ui-dialog-titlebar-close span {
+  @apply hidden;
+}
+
+.ui-dialog.quote-modal .ui-dialog-titlebar .ui-dialog-titlebar-close::before {
+  @apply leading-none;
+  content: '\00d7';
+  font-size: 1.05rem;
+}
+
+.ui-dialog.quote-modal .ui-dialog-titlebar {
+  @apply relative flex items-center justify-between rounded-none border-0 border-b border-paper-line bg-white px-6 py-4;
+}
+
+.ui-dialog.quote-modal .ui-dialog-title {
+  @apply font-display text-xl font-bold uppercase tracking-[0.03em] text-ink;
+}
+
+.ui-dialog.quote-modal .ui-dialog-titlebar-close {
+  @apply absolute right-4 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center overflow-hidden rounded-brand border border-paper-line bg-white p-0 text-slate transition-colors hover:border-amber hover:text-ink;
+}
+
+.ui-dialog.quote-modal .ui-dialog-titlebar-close .ui-icon {
+  @apply hidden;
+}
+
+.ui-dialog.quote-modal .ui-dialog-titlebar-close::before {
+  @apply text-base leading-none;
+  content: '\00d7';
+}
+
+.ui-dialog.quote-modal .ui-dialog-content {
+  @apply max-h-[75vh] overflow-y-auto p-6;
+}
+
+/* ── Webform elements (modal + standalone page) ──── */
+
+.webform-submission-form {
+  @apply flex flex-col gap-4 text-left font-sans text-ink;
+}
+
+.webform-submission-form .form-item {
+  @apply m-0;
+}
+
+.webform-submission-form label {
+  @apply mb-1.5 block font-mono text-xs font-medium uppercase tracking-[0.14em] text-slate;
+}
+
+.webform-submission-form .form-required::after {
+  @apply ml-1 text-amber-deep;
+  content: '*';
+}
+
+.webform-submission-form input[type='text'],
+.webform-submission-form input[type='email'],
+.webform-submission-form input[type='tel'],
+.webform-submission-form input[type='number'],
+.webform-submission-form input[type='url'],
+.webform-submission-form input[type='date'],
+.webform-submission-form textarea,
+.webform-submission-form select {
+  @apply w-full rounded-brand border border-paper-line bg-paper px-3.5 py-3 text-[15px] text-ink outline-none transition-all duration-200;
+}
+
+.webform-submission-form input:focus,
+.webform-submission-form textarea:focus,
+.webform-submission-form select:focus {
+  @apply border-amber bg-white;
+  box-shadow: 0 0 0 3px rgba(247, 162, 27, 0.16);
+}
+
+.webform-submission-form .form-actions {
+  @apply mt-2 flex flex-wrap gap-3;
+}
+
+.webform-submission-form .webform-button--submit {
+  @apply inline-flex cursor-pointer items-center justify-center gap-3 rounded-brand border-0 bg-amber px-6 py-3.5 font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors duration-200 hover:bg-amber-deep;
+}
+
+.webform-confirmation__message {
+  @apply text-[15px] leading-7 text-ink;
+}
+
+.webform-confirmation__back {
+  @apply hidden;
 }
 
 @keyframes partner-marquee {

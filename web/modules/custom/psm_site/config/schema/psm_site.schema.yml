@@ -23,6 +23,9 @@ psm_site.settings:
     x_url:
       type: string
       label: 'X URL'
+    quote_webform:
+      type: string
+      label: 'Quote webform id'
     quote_url:
       type: string
       label: 'Request a quote link'

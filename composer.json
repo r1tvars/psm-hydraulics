@@ -33,6 +33,7 @@
         "drupal/pathauto": "^1.12",
         "drupal/tailwindcss": "^5.0@alpha",
         "drupal/token": "^1.15",
+        "drupal/webform": "^6.3",
         "npm-asset/flag-icons": "^7",
         "npm-asset/splidejs--splide": "^4.1",
         "oomphinc/composer-installers-extender": "^2.0"

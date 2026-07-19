@@ -72,7 +72,32 @@ function psmhydraulics_preprocess_page(array &$variables): void {
     }
   }
 
-  $variables['psm_site_quote_url'] = trim((string) $config->get('quote_url'));
+  // Quote buttons: prefer the configured webform (opened in a modal),
+  // fall back to a plain link, hide when neither is set.
+  $variables['psm_site_quote'] = NULL;
+  $quote_webform_id = trim((string) $config->get('quote_webform'));
+  if ($quote_webform_id !== '' && \Drupal::moduleHandler()->moduleExists('webform')) {
+    $quote_webform = \Drupal::entityTypeManager()->getStorage('webform')->load($quote_webform_id);
+    if ($quote_webform && $quote_webform->isOpen()) {
+      $variables['psm_site_quote'] = [
+        'url' => $quote_webform->toUrl()->toString(),
+        'modal' => TRUE,
+      ];
+      $variables['#cache']['tags'] = array_merge(
+        $variables['#cache']['tags'] ?? [],
+        $quote_webform->getCacheTags(),
+      );
+    }
+  }
+  if (!$variables['psm_site_quote']) {
+    $quote_url = trim((string) $config->get('quote_url'));
+    if ($quote_url !== '') {
+      $variables['psm_site_quote'] = [
+        'url' => $quote_url,
+        'modal' => FALSE,
+      ];
+    }
+  }
 
   // Header search: submits to the catalogue view, suggestions come from
   // the psm_site JSON endpoint.
@@ -177,6 +202,37 @@ function psmhydraulics_preprocess_links__language_block(array &$variables): void
       'text' => $item['text'],
     ];
   }
+}
+
+/**
+ * Implements hook_preprocess_paragraph__cta_strip().
+ */
+function psmhydraulics_preprocess_paragraph__cta_strip(array &$variables): void {
+  $paragraph = $variables['paragraph'];
+
+  if (!$paragraph->hasField('field_webform') || $paragraph->get('field_webform')->isEmpty()) {
+    return;
+  }
+
+  $webform = $paragraph->get('field_webform')->entity;
+  if (!$webform || !$webform->isOpen()) {
+    return;
+  }
+
+  $label = '';
+  if ($paragraph->hasField('field_button_label') && !$paragraph->get('field_button_label')->isEmpty()) {
+    $label = trim((string) $paragraph->get('field_button_label')->value);
+  }
+
+  $variables['cta_webform'] = [
+    'url' => $webform->toUrl()->toString(),
+    'label' => $label !== '' ? $label : (string) t('Request a quote'),
+  ];
+
+  $variables['#cache']['tags'] = array_merge(
+    $variables['#cache']['tags'] ?? [],
+    $webform->getCacheTags(),
+  );
 }
 
 /**

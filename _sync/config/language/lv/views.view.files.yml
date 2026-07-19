@@ -7,8 +7,15 @@ display:
       fields:
         filename:
           label: Nosaukums
+          separator: ', '
         filemime:
           label: 'MIME tips'
+        filesize:
+          label: Izmērs
+        status:
+          label: Statuss
+        changed:
+          label: 'Izmaiņu datums'
         operations:
           label: Darbības
       pager:
@@ -16,9 +23,16 @@ display:
           tags:
             next: 'Nākamais ›'
             previous: '‹ Iepriekšējais'
+          expose:
+            items_per_page_label: 'Vienumi vienā lapā'
+            items_per_page_options_all_label: '- Visi -'
+            offset_label: Atkāpe
       exposed_form:
         options:
+          submit_button: Filtrēt
           reset_button_label: Attīrīt
+          exposed_sorts_label: 'Kārtot pēc'
+          sort_desc_label: Dilst.
       filters:
         filename:
           expose:
@@ -26,6 +40,9 @@ display:
         filemime:
           expose:
             label: 'MIME tips'
+        status:
+          expose:
+            label: Statuss
   page_1:
     display_options:
       menu:
@@ -40,3 +57,11 @@ display:
           tags:
             next: 'Nākamais ›'
             previous: '‹ Iepriekšējais'
+          expose:
+            items_per_page_label: 'Vienumi vienā lapā'
+            items_per_page_options_all_label: '- Visi -'
+            offset_label: Atkāpe
+      arguments:
+        fid:
+          exception:
+            title: Visi
