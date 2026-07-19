@@ -7,6 +7,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         git \
         unzip \
+        mariadb-client \
         libfreetype6-dev \
         libicu-dev \
         libjpeg62-turbo-dev \
