@@ -1736,6 +1736,13 @@
  */
 /* ── Quote modal (jQuery UI dialog skin) ─────────── */
 
+/* Logged-in users get blocks wrapped in a positioned .contextual-region,
+   which would re-anchor the full-width mega panel to the narrow menu block
+   instead of the navbar — neutralize it inside the navbar. */
+.navbar .contextual-region {
+  position: static;
+}
+
 /* Core injects a throbber next to use-ajax triggers while the dialog
    loads, shifting the button for a moment — suppress it entirely. */
 .ajax-progress-throbber,
