@@ -236,16 +236,4 @@
   </form>
 </div>
 
-{% if pv.quote %}
-  <section class="products-cta">
-    <div class="site-section products-cta__in">
-      <div>
-        <h2>{{ 'Need a custom hydraulic solution?'|t }}</h2>
-        <p>{{ 'Send us your drawings or the failed unit — we design, machine and test replacements in-house.'|t }}</p>
-      </div>
-      <a class="btn btn--amber{{ pv.quote.modal ? ' use-ajax' }}"
-         href="{{ pv.quote.url }}"
-         {%- if pv.quote.modal %} data-dialog-type="modal" data-dialog-options='{"width":720,"classes":{"ui-dialog":"quote-modal"}}'{% endif %}>{{ 'Request a quote'|t }}</a>
-    </div>
-  </section>
-{% endif %}
+{% include '@psmhydraulics/includes/quote-cta.html.twig' with { quote: pv.quote } only %}

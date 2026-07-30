@@ -4,7 +4,9 @@
 
   Drupal.behaviors.psmHydraulicsSplide = {
     attach(context) {
-      once('psmHydraulicsSplide', '.splide', context).forEach((element) => {
+      // Only sliders configured via data-splide (hero carousel) — the product
+      // gallery mounts its own Splide instances in product-gallery.js.
+      once('psmHydraulicsSplide', '.splide[data-splide]', context).forEach((element) => {
         if (typeof window.Splide !== 'function') {
           return;
         }

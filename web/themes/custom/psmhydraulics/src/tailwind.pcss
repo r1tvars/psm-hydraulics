@@ -2230,6 +2230,261 @@
     @apply mt-1.5 text-[14.5px] text-steelgray;
   }
 
+  /* ── Product detail: band, gallery, info panel ────── */
+
+  .product-band {
+    @apply border-t border-line-dark-2 bg-ink text-white;
+  }
+
+  .product-band__in {
+    @apply flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-5;
+  }
+
+  .product-band__crumbs {
+    @apply mb-0 min-w-0;
+  }
+
+  .product-band__crumbs [aria-current] {
+    @apply max-w-[18rem] overflow-hidden text-ellipsis whitespace-nowrap sm:max-w-[32rem];
+  }
+
+  .product-band__ref {
+    @apply hidden font-mono text-[11px] uppercase tracking-[0.22em] text-steelgray md:block;
+  }
+
+  .product-page__layout {
+    @apply grid grid-cols-1 gap-8 py-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-12 lg:py-12;
+  }
+
+  .pgallery__main {
+    @apply relative overflow-hidden rounded-brand border border-paper-line bg-paper;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px),
+      repeating-linear-gradient(90deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px);
+  }
+
+  .pgallery__main::before,
+  .pgallery__main::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid theme('colors.steel.300');
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .pgallery__main::before {
+    top: 12px;
+    left: 12px;
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .pgallery__main::after {
+    bottom: 12px;
+    right: 12px;
+    border-left: 0;
+    border-top: 0;
+  }
+
+  .pgallery__slide {
+    @apply flex aspect-[4/3] items-center justify-center;
+  }
+
+  .pgallery__slide img {
+    @apply h-full w-full object-contain p-6 sm:p-10;
+  }
+
+  .pgallery .splide__arrow {
+    @apply grid h-10 w-10 -translate-y-1/2 place-items-center rounded-brand border-0 bg-ink text-[13px] text-white opacity-90 transition-colors duration-200;
+  }
+
+  .pgallery .splide__arrow:hover {
+    @apply bg-amber text-ink opacity-100;
+  }
+
+  .pgallery .splide__arrow svg {
+    @apply hidden;
+  }
+
+  .pgallery .splide__arrow--prev {
+    @apply left-3;
+  }
+
+  .pgallery .splide__arrow--next {
+    @apply right-3;
+  }
+
+  .pgallery__thumbs {
+    @apply mt-2.5;
+  }
+
+  .pgallery__thumb {
+    @apply cursor-pointer overflow-hidden rounded-brand border border-paper-line bg-paper opacity-70 transition-all duration-200;
+  }
+
+  .pgallery__thumb img {
+    @apply h-full w-full object-cover;
+  }
+
+  .pgallery__thumb:hover {
+    @apply opacity-100;
+  }
+
+  .pgallery__thumbs .splide__slide.is-active {
+    @apply border-amber opacity-100;
+  }
+
+  .pgallery__placeholder {
+    @apply relative flex aspect-[4/3] items-center justify-center rounded-brand border border-paper-line bg-paper;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px),
+      repeating-linear-gradient(90deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px);
+  }
+
+  .pgallery__placeholder .product-card__glyph {
+    @apply static h-[46%] w-[46%];
+  }
+
+  .product-info__title {
+    @apply mt-3 font-display text-3xl font-semibold uppercase leading-tight tracking-wide sm:text-4xl;
+  }
+
+  .product-info__meta {
+    @apply mt-3.5 flex flex-wrap items-center gap-2.5;
+  }
+
+  .product-info__sku {
+    @apply rounded-brand border border-paper-line bg-paper px-2.5 py-1 font-mono text-[11px] font-medium tracking-[0.08em] text-slate;
+  }
+
+  .product-info__status {
+    @apply static;
+  }
+
+  .product-info__desc {
+    @apply mt-4 max-w-prose text-[15px] leading-relaxed text-slate;
+  }
+
+  .product-facts {
+    @apply mt-6 divide-y divide-paper-line rounded-brand border border-paper-line bg-white;
+  }
+
+  .product-facts__row {
+    @apply grid grid-cols-[7.5rem_minmax(0,1fr)] items-baseline gap-4 px-4 py-2.5;
+  }
+
+  .product-facts__row dt {
+    @apply font-mono text-[10px] uppercase tracking-[0.18em] text-slate-soft;
+  }
+
+  .product-facts__row dd {
+    @apply m-0 text-sm font-medium text-steel-700;
+  }
+
+  .product-info__actions {
+    @apply mt-6 flex flex-wrap items-center gap-3;
+  }
+
+  .product-info__ds {
+    @apply border border-steel-300 text-steel-700 hover:border-ink hover:text-ink;
+  }
+
+  .product-info__ds .fa-file-pdf {
+    @apply text-amber-deep;
+  }
+
+  .product-info__note {
+    @apply mt-5 flex items-start gap-2.5 border-t border-paper-line pt-4 text-[13px] text-slate-soft;
+  }
+
+  .product-info__note i {
+    @apply mt-0.5 text-amber-deep;
+  }
+
+  /* ── Product detail: sections, documents, related ── */
+
+  .product-page__sections {
+    @apply flex flex-col gap-10 pb-16 pt-2 lg:pb-20;
+  }
+
+  .product-section__title {
+    @apply mb-4 border-b border-paper-line pb-3;
+  }
+
+  .product-section__body {
+    @apply max-w-[70ch] text-[15px] leading-relaxed text-steel-700;
+  }
+
+  .product-section__body p,
+  .product-section__body ul,
+  .product-section__body ol {
+    @apply mb-4;
+  }
+
+  .product-section__body ul {
+    @apply list-disc pl-5;
+  }
+
+  .product-section__body--specs table {
+    @apply w-full max-w-2xl border-collapse text-sm;
+  }
+
+  .product-section__body--specs th,
+  .product-section__body--specs td {
+    @apply border-b border-paper-line px-3 py-2.5 text-left align-top;
+  }
+
+  .product-section__body--specs th,
+  .product-section__body--specs td:first-child {
+    @apply font-mono text-xs uppercase tracking-[0.1em] text-slate-soft;
+  }
+
+  .product-doc {
+    @apply flex max-w-xl flex-wrap items-center gap-3.5 rounded-brand border border-paper-line bg-white px-4 py-3.5 transition-colors duration-200 hover:border-steel-300;
+  }
+
+  .product-doc > .fa-file-pdf {
+    @apply text-lg text-amber-deep;
+  }
+
+  .product-doc__name {
+    @apply min-w-0 flex-1 truncate text-sm font-medium text-steel-700;
+  }
+
+  .product-doc__size {
+    @apply font-mono text-[11px] uppercase text-slate-soft;
+  }
+
+  .product-doc__dl {
+    @apply inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink;
+  }
+
+  .product-doc:hover .product-doc__dl {
+    @apply text-amber-deep;
+  }
+
+  .product-related {
+    @apply border-t border-paper-line bg-paper py-12 lg:py-14;
+  }
+
+  .product-related__head {
+    @apply mb-6 flex flex-wrap items-end justify-between gap-4;
+  }
+
+  .product-related__title {
+    @apply mt-2 font-display text-2xl font-semibold uppercase tracking-wide;
+  }
+
+  .product-related__all {
+    @apply inline-flex items-center gap-2 font-mono text-[11.5px] font-semibold uppercase tracking-[0.14em] text-ink hover:text-amber-deep;
+  }
+
+  .product-related__grid {
+    @apply grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3;
+  }
+
   /* ── Misc ────────────────────────────────────────── */
 
   .node__content p,
@@ -2443,6 +2698,16 @@
 .fcheck__dot--custom,
 .product-card__status--custom-order i {
   background: #7a8896;
+}
+
+/* ── Product gallery: Splide runtime classes ──────── */
+/* .splide--nav is added by Splide's JS, so these selectors never appear in
+   scanned content and must live outside @layer. They also out-specify
+   Splide's default 3px black active border. */
+
+.pgallery__thumbs.splide--nav > .splide__track > .splide__list > .splide__slide.is-active {
+  border: 1.5px solid #f7a21b;
+  opacity: 1;
 }
 
 /* ── Products filter drawer state (JS-toggled) ────── */

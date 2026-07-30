@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Dark quote CTA band shared by the products listing and product detail page.
+ *
+ * Expects: quote { url, modal }.
+ */
+#}
+{% if quote %}
+  <section class="products-cta">
+    <div class="site-section products-cta__in">
+      <div>
+        <h2>{{ 'Need a custom hydraulic solution?'|t }}</h2>
+        <p>{{ 'Send us your drawings or the failed unit — we design, machine and test replacements in-house.'|t }}</p>
+      </div>
+      <a class="btn btn--amber{{ quote.modal ? ' use-ajax' }}"
+         href="{{ quote.url }}"
+         {%- if quote.modal %} data-dialog-type="modal" data-dialog-options='{"width":720,"classes":{"ui-dialog":"quote-modal"}}'{% endif %}>{{ 'Request a quote'|t }}</a>
+    </div>
+  </section>
+{% endif %}

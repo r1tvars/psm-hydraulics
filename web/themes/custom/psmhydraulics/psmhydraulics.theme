@@ -126,9 +126,16 @@ function psmhydraulics_preprocess_page(array &$variables): void {
     // Products view or suggest route unavailable: the search box is hidden.
   }
 
-  // The products listing renders its own breadcrumb inside the page head
-  // band — drop the system breadcrumb block there.
-  if (\Drupal::routeMatch()->getRouteName() === 'view.products.page_1') {
+  // The products listing and the product detail page render their own
+  // breadcrumbs inside their page head bands — drop the system block there.
+  $route_match = \Drupal::routeMatch();
+  $route_node = $route_match->getParameter('node');
+  if (
+    $route_match->getRouteName() === 'view.products.page_1'
+    || ($route_match->getRouteName() === 'entity.node.canonical'
+      && $route_node instanceof \Drupal\node\NodeInterface
+      && $route_node->bundle() === 'catalogue_item')
+  ) {
     $variables['page']['breadcrumb'] = [];
   }
 
@@ -365,6 +372,11 @@ function psmhydraulics_preprocess_node(array &$variables): void {
     return;
   }
 
+  if (($variables['view_mode'] ?? '') === 'full') {
+    _psmhydraulics_preprocess_product_full($variables, $node);
+    return;
+  }
+
   if (($variables['view_mode'] ?? '') !== 'teaser') {
     return;
   }
@@ -443,6 +455,134 @@ function psmhydraulics_preprocess_node(array &$variables): void {
       }
     }
   }
+}
+
+/**
+ * Builds everything the product detail template needs.
+ */
+function _psmhydraulics_preprocess_product_full(array &$variables, \Drupal\node\NodeInterface $node): void {
+  $file_url_generator = \Drupal::service('file_url_generator');
+  $image_styles = \Drupal::entityTypeManager()->getStorage('image_style');
+  $large_style = $image_styles->load('large');
+  $thumb_style = $image_styles->load('medium');
+
+  $product = [
+    'sku' => '',
+    'manufacturer' => '',
+    'category' => '',
+    'glyph' => 'tool',
+    'price_status' => '',
+    'short_description' => '',
+    'availability' => NULL,
+    'gallery' => [],
+    'datasheet' => NULL,
+    'facts' => [],
+  ];
+
+  foreach (['field_sku' => 'sku', 'field_manufacturer' => 'manufacturer', 'field_price_status' => 'price_status', 'field_short_description' => 'short_description'] as $field => $key) {
+    if ($node->hasField($field) && !$node->get($field)->isEmpty()) {
+      $product[$key] = (string) $node->get($field)->value;
+    }
+  }
+
+  if (!$node->get('field_availability')->isEmpty()) {
+    $value = (string) $node->get('field_availability')->value;
+    $allowed = $node->get('field_availability')->getFieldDefinition()
+      ->getFieldStorageDefinition()->getSetting('allowed_values');
+    $product['availability'] = [
+      'value' => $value,
+      'label' => (string) ($allowed[$value] ?? $value),
+    ];
+  }
+
+  $category_term = NULL;
+  if (!$node->get('field_product_category')->isEmpty()) {
+    $category_term = $node->get('field_product_category')->entity;
+    if ($category_term) {
+      $product['category'] = $category_term->label();
+      $product['glyph'] = _psmhydraulics_product_glyph($category_term->label());
+    }
+  }
+
+  // Gallery: every image media on the node, lead image first (field order).
+  foreach ($node->get('field_product_images') as $item) {
+    $media = $item->entity;
+    if (!$media || !$media->hasField('field_media_image') || $media->get('field_media_image')->isEmpty()) {
+      continue;
+    }
+    $image_item = $media->get('field_media_image')->first();
+    $file = $image_item?->entity;
+    if (!$file) {
+      continue;
+    }
+    $uri = $file->getFileUri();
+    $product['gallery'][] = [
+      'large' => $large_style ? $large_style->buildUrl($uri) : $file_url_generator->generateString($uri),
+      'thumb' => $thumb_style ? $thumb_style->buildUrl($uri) : $file_url_generator->generateString($uri),
+      'alt' => (string) ($image_item->alt ?: $node->label()),
+    ];
+  }
+
+  // Datasheet: media:document → file, with name and human size.
+  if (!$node->get('field_datasheet')->isEmpty()) {
+    $media = $node->get('field_datasheet')->entity;
+    if ($media && $media->hasField('field_media_document') && !$media->get('field_media_document')->isEmpty()) {
+      $file = $media->get('field_media_document')->entity;
+      if ($file) {
+        $product['datasheet'] = [
+          'url' => $file_url_generator->generateString($file->getFileUri()),
+          'name' => $file->getFilename(),
+          'size' => \Drupal\Core\StringTranslation\ByteSizeMarkup::create((int) $file->getSize()),
+        ];
+      }
+    }
+  }
+
+  // Key-facts table for the info panel.
+  foreach ([
+    (string) t('SKU') => $product['sku'],
+    (string) t('Manufacturer') => $product['manufacturer'],
+    (string) t('Category') => $product['category'],
+    (string) t('Availability') => $product['availability']['label'] ?? '',
+    (string) t('Price') => $product['price_status'],
+  ] as $fact_label => $fact_value) {
+    if ($fact_value !== '') {
+      $product['facts'][] = ['label' => $fact_label, 'value' => $fact_value];
+    }
+  }
+
+  // Long-text sections, labels suppressed (the template adds its own).
+  $product['body'] = !$node->get('body')->isEmpty()
+    ? $node->get('body')->view(['label' => 'hidden'])
+    : NULL;
+  $product['specifications'] = !$node->get('field_specifications')->isEmpty()
+    ? $node->get('field_specifications')->view(['label' => 'hidden'])
+    : NULL;
+
+  $variables['#cache']['tags'] = $variables['#cache']['tags'] ?? [];
+  $product['quote'] = _psmhydraulics_quote_link($variables['#cache']['tags']);
+
+  // Related products: newest published items sharing the category.
+  $variables['product_related'] = [];
+  if ($category_term) {
+    $related_ids = \Drupal::entityQuery('node')->accessCheck(TRUE)
+      ->condition('type', 'catalogue_item')
+      ->condition('status', 1)
+      ->condition('field_product_category', $category_term->id())
+      ->condition('nid', $node->id(), '<>')
+      ->sort('created', 'DESC')
+      ->range(0, 3)
+      ->execute();
+    if ($related_ids) {
+      $storage = \Drupal::entityTypeManager()->getStorage('node');
+      $variables['product_related'] = \Drupal::entityTypeManager()->getViewBuilder('node')
+        ->viewMultiple($storage->loadMultiple($related_ids), 'teaser');
+      $variables['#cache']['tags'][] = 'node_list:catalogue_item';
+    }
+  }
+
+  $variables['product'] = $product;
+  $variables['products_index_url'] = Url::fromRoute('view.products.page_1')->toString();
 }
 
 /**

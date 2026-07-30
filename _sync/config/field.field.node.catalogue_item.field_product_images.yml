@@ -11,7 +11,7 @@ field_name: field_product_images
 entity_type: node
 bundle: catalogue_item
 label: Images
-description: 'Upload product images. The first image will be treated as the main image.'
+description: 'Upload product images. The first image is the lead image — shown on catalogue cards and first in the product gallery; all further images appear in the gallery carousel.'
 required: false
 translatable: true
 default_value: {  }

@@ -1,0 +1,179 @@
+{#
+/**
+ * @file
+ * Product detail page: breadcrumb band, Splide gallery (main + synced
+ * thumbnails), technical info panel, content sections, related products.
+ *
+ * product / product_related / products_index_url come from
+ * _psmhydraulics_preprocess_product_full().
+ */
+#}
+{{ attach_library('psmhydraulics/product-gallery') }}
+
+<article{{ attributes.addClass('product-page') }}>
+
+  {# ── Slim ink band: breadcrumb + reference ─────────────────────── #}
+  <div class="product-band">
+    <div class="site-section product-band__in">
+      <nav class="products-head__crumbs product-band__crumbs" aria-label="{{ 'Breadcrumb'|t }}">
+        <a href="{{ path('<front>') }}">{{ 'Home'|t }}</a>
+        <span class="products-head__crumb-sep" aria-hidden="true">/</span>
+        <a href="{{ products_index_url }}">{{ 'Products'|t }}</a>
+        <span class="products-head__crumb-sep" aria-hidden="true">/</span>
+        <span aria-current="page">{{ label }}</span>
+      </nav>
+      {% if product.sku %}
+        <span class="product-band__ref">{{ 'Ref'|t }} · {{ product.sku }}</span>
+      {% endif %}
+    </div>
+  </div>
+
+  {# ── Gallery + info panel ──────────────────────────────────────── #}
+  <div class="site-section product-page__layout">
+
+    <div class="pgallery" data-product-gallery-wrap>
+      {% if product.gallery %}
+        <section class="splide pgallery__main" data-product-gallery aria-label="{{ 'Product images'|t }}">
+          <div class="splide__arrows">
+            <button class="splide__arrow splide__arrow--prev" type="button" aria-label="{{ 'Previous image'|t }}">
+              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            <button class="splide__arrow splide__arrow--next" type="button" aria-label="{{ 'Next image'|t }}">
+              <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="splide__track">
+            <ul class="splide__list">
+              {% for image in product.gallery %}
+                <li class="splide__slide pgallery__slide">
+                  <img src="{{ image.large }}" alt="{{ image.alt }}"{{ loop.first ? '' : ' loading="lazy"' }}>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </section>
+        {% if product.gallery|length > 1 %}
+          <section class="splide pgallery__thumbs" data-product-gallery-thumbs aria-label="{{ 'Image thumbnails'|t }}">
+            <div class="splide__track">
+              <ul class="splide__list">
+                {% for image in product.gallery %}
+                  <li class="splide__slide pgallery__thumb">
+                    <img src="{{ image.thumb }}" alt="" loading="lazy">
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </section>
+        {% endif %}
+      {% else %}
+        <div class="pgallery__placeholder">
+          {% include '@psmhydraulics/includes/product-glyph.html.twig' with { glyph: product.glyph } only %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="product-info">
+      {% if product.category %}
+        <span class="eyebrow eyebrow--dark">{{ product.category }}</span>
+      {% endif %}
+      <h1 class="product-info__title">{{ label }}</h1>
+
+      <div class="product-info__meta">
+        {% if product.sku %}
+          <span class="product-info__sku">{{ product.sku }}</span>
+        {% endif %}
+        {% if product.availability %}
+          <span class="product-card__status product-card__status--{{ product.availability.value|clean_class }} product-info__status">
+            <i aria-hidden="true"></i>{{ product.availability.label }}
+          </span>
+        {% endif %}
+      </div>
+
+      {% if product.short_description %}
+        <p class="product-info__desc">{{ product.short_description }}</p>
+      {% endif %}
+
+      {% if product.facts %}
+        <dl class="product-facts">
+          {% for fact in product.facts %}
+            <div class="product-facts__row">
+              <dt>{{ fact.label }}</dt>
+              <dd>{{ fact.value }}</dd>
+            </div>
+          {% endfor %}
+        </dl>
+      {% endif %}
+
+      <div class="product-info__actions">
+        {% if product.quote %}
+          <a class="btn btn--amber{{ product.quote.modal ? ' use-ajax' }}"
+             href="{{ product.quote.url }}"
+             {%- if product.quote.modal %} data-dialog-type="modal" data-dialog-options='{"width":720,"classes":{"ui-dialog":"quote-modal"}}'{% endif %}>{{ 'Request a quote'|t }}</a>
+        {% endif %}
+        {% if product.datasheet %}
+          <a class="btn product-info__ds" href="{{ product.datasheet.url }}" target="_blank" rel="noopener">
+            <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>{{ 'Datasheet'|t }}
+          </a>
+        {% endif %}
+      </div>
+
+      <p class="product-info__note">
+        <i class="fa-solid fa-headset" aria-hidden="true"></i>
+        {{ 'Need help choosing? Our engineers verify fitment against your system specification.'|t }}
+      </p>
+    </div>
+  </div>
+
+  {# ── Content sections ──────────────────────────────────────────── #}
+  {% if product.body or product.specifications or product.datasheet %}
+    <div class="site-section product-page__sections">
+      {% if product.body %}
+        <section class="product-section">
+          <h2 class="product-section__title"><span class="eyebrow eyebrow--dark">{{ 'Overview'|t }}</span></h2>
+          <div class="product-section__body">{{ product.body }}</div>
+        </section>
+      {% endif %}
+
+      {% if product.specifications %}
+        <section class="product-section">
+          <h2 class="product-section__title"><span class="eyebrow eyebrow--dark">{{ 'Specifications'|t }}</span></h2>
+          <div class="product-section__body product-section__body--specs">{{ product.specifications }}</div>
+        </section>
+      {% endif %}
+
+      {% if product.datasheet %}
+        <section class="product-section">
+          <h2 class="product-section__title"><span class="eyebrow eyebrow--dark">{{ 'Documents'|t }}</span></h2>
+          <a class="product-doc" href="{{ product.datasheet.url }}" target="_blank" rel="noopener">
+            <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+            <span class="product-doc__name">{{ product.datasheet.name }}</span>
+            <span class="product-doc__size">{{ product.datasheet.size }}</span>
+            <span class="product-doc__dl"><i class="fa-solid fa-download" aria-hidden="true"></i>{{ 'Download'|t }}</span>
+          </a>
+        </section>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {# ── Related products ──────────────────────────────────────────── #}
+  {% if product_related %}
+    <div class="product-related">
+      <div class="site-section">
+        <div class="product-related__head">
+          <div>
+            <span class="eyebrow eyebrow--dark">{{ 'Same category'|t }}</span>
+            <h2 class="product-related__title">{{ 'Related products'|t }}</h2>
+          </div>
+          <a class="product-related__all" href="{{ products_index_url }}">
+            {{ 'All products'|t }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="product-related__grid">
+          {{ product_related }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% include '@psmhydraulics/includes/quote-cta.html.twig' with { quote: product.quote } only %}
+</article>

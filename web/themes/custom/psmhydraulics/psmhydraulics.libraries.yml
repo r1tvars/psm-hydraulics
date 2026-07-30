@@ -53,3 +53,14 @@ products:
   dependencies:
     - core/drupal
     - core/once
+
+product-gallery:
+  css:
+    component:
+      /libraries/splidejs--splide/dist/css/splide.min.css: {}
+  js:
+    /libraries/splidejs--splide/dist/js/splide.min.js: { minified: true }
+    js/product-gallery.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
