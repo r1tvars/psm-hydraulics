@@ -1,0 +1,7 @@
+# Default local task for the settings form. Config Translation's "Translate"
+# tab attaches to this base route — without a default sibling tab, Drupal
+# renders no tab bar at all and the translate UI is unreachable.
+psm_site.settings:
+  route_name: psm_site.settings
+  title: 'Settings'
+  base_route: psm_site.settings

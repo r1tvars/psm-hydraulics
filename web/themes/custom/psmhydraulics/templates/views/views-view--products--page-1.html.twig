@@ -12,23 +12,28 @@
 
 {% set pv = products_view %}
 
-<section class="products-head">
+<section class="products-head{{ pv.head.bg_url ? ' products-head--image' }}">
+  {% if pv.head.bg_url %}
+    <div class="products-head__bg" style="background-image: url('{{ pv.head.bg_url }}')" aria-hidden="true"></div>
+  {% endif %}
   <div class="site-section products-head__in">
     <nav class="products-head__crumbs" aria-label="{{ 'Breadcrumb'|t }}">
       <a href="{{ path('<front>') }}">{{ 'Home'|t }}</a>
       <span class="products-head__crumb-sep" aria-hidden="true">/</span>
-      <span aria-current="page">{{ 'Products'|t }}</span>
+      <span aria-current="page">{{ pv.head.title }}</span>
     </nav>
     <div class="products-head__row">
       <div>
-        <span class="eyebrow">{{ 'Product index'|t }}</span>
-        <h1 class="products-head__title">{{ 'Products'|t }}</h1>
-        <p class="products-head__sub">{{ 'Hydraulic pumps, valves, cylinders, hoses and service tooling — stocked components and custom-built assemblies from certified manufacturers.'|t }}</p>
+        <span class="eyebrow">{{ pv.head.eyebrow }}</span>
+        <h1 class="products-head__title">{{ pv.head.title }}</h1>
+        <p class="products-head__sub">{{ pv.head.intro }}</p>
       </div>
-      <div class="products-head__counter">
-        <b>{{ '%03d'|format(pv.catalog_total) }}</b>
-        <span>{{ 'Items on record'|t }}</span>
-      </div>
+      {% if pv.head.show_counter %}
+        <div class="products-head__counter">
+          <b>{{ '%03d'|format(pv.catalog_total) }}</b>
+          <span>{{ 'Items on record'|t }}</span>
+        </div>
+      {% endif %}
     </div>
   </div>
 </section>

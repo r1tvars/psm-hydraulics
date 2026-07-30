@@ -3855,6 +3855,7 @@ a.topbar__item:hover {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 1;
   pointer-events: none;
   background:
       radial-gradient(circle at 82% 0%, rgba(247, 162, 27, 0.10), transparent 42%),
@@ -3862,8 +3863,31 @@ a.topbar__item:hover {
       repeating-linear-gradient(90deg, transparent 0 55px, rgba(255, 255, 255, 0.045) 55px 56px);
 }
 
+/* Optional admin-uploaded photo, faded into the ink band under the grid. */
+
+.products-head__bg {
+  position: absolute;
+  inset: 0px;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+  filter: grayscale(30%);
+}
+
+/* With a photo behind, weight the left side with ink so text stays
+     readable regardless of the image. */
+
+.products-head--image::before {
+  background:
+      linear-gradient(90deg, rgba(12, 26, 41, 0.78), rgba(12, 26, 41, 0.2) 62%),
+      radial-gradient(circle at 82% 0%, rgba(247, 162, 27, 0.10), transparent 42%),
+      repeating-linear-gradient(0deg, transparent 0 55px, rgba(255, 255, 255, 0.045) 55px 56px),
+      repeating-linear-gradient(90deg, transparent 0 55px, rgba(255, 255, 255, 0.045) 55px 56px);
+}
+
 .products-head__in {
   position: relative;
+  z-index: 2;
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
 }

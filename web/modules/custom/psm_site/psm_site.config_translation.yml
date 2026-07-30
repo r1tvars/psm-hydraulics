@@ -1,0 +1,5 @@
+psm_site.settings:
+  title: 'PSM site settings'
+  base_route_name: psm_site.settings
+  names:
+    - psm_site.settings

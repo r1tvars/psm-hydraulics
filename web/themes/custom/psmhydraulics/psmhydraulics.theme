@@ -766,7 +766,26 @@ function psmhydraulics_preprocess_views_view(array &$variables): void {
     ->condition('status', 1)
     ->count()->execute();
 
+  // Page head band, customizable via PSM site settings ("Products page").
+  // psm_site_views_pre_render() adds the config cache tag to this view.
+  $site_config = \Drupal::config('psm_site.settings');
+  $head = [
+    'eyebrow' => trim((string) $site_config->get('products_eyebrow')) ?: (string) t('Product index'),
+    'title' => trim((string) $site_config->get('products_title')) ?: (string) t('Products'),
+    'intro' => trim((string) $site_config->get('products_intro')) ?: (string) t('Hydraulic pumps, valves, cylinders, hoses and service tooling — stocked components and custom-built assemblies from certified manufacturers.'),
+    'show_counter' => (bool) ($site_config->get('products_show_counter') ?? TRUE),
+    'bg_url' => NULL,
+  ];
+  $bg_fid = (int) ($site_config->get('products_bg') ?? 0);
+  if ($bg_fid && ($bg_file = \Drupal::entityTypeManager()->getStorage('file')->load($bg_fid))) {
+    $wide_style = \Drupal::entityTypeManager()->getStorage('image_style')->load('wide');
+    $head['bg_url'] = $wide_style
+      ? $wide_style->buildUrl($bg_file->getFileUri())
+      : \Drupal::service('file_url_generator')->generateString($bg_file->getFileUri());
+  }
+
   $variables['products_view'] = [
+    'head' => $head,
     'action' => Url::fromRoute('view.products.page_1')->toString(),
     'reset_url' => Url::fromRoute('view.products.page_1')->toString(),
     'search' => $search,

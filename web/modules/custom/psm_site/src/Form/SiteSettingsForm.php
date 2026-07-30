@@ -153,6 +153,56 @@ final class SiteSettingsForm extends ConfigFormBase {
       '#description' => $this->t('Short company description shown next to the logo in the footer.'),
     ];
 
+    $form['products_page'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Products page'),
+      '#description' => $this->t('The dark header band at the top of the products listing. Empty fields fall back to the built-in texts.'),
+      '#group' => 'sections',
+      '#open' => FALSE,
+    ];
+
+    $form['products_page']['products_eyebrow'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Eyebrow label'),
+      '#default_value' => $config->get('products_eyebrow') ?? '',
+      '#maxlength' => 64,
+      '#description' => $this->t('The small amber label above the title.'),
+      '#placeholder' => $this->t('Product index'),
+    ];
+
+    $form['products_page']['products_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Title'),
+      '#default_value' => $config->get('products_title') ?? '',
+      '#maxlength' => 128,
+      '#placeholder' => $this->t('Products'),
+    ];
+
+    $form['products_page']['products_intro'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Intro text'),
+      '#default_value' => $config->get('products_intro') ?? '',
+      '#rows' => 3,
+      '#description' => $this->t('Short description shown under the title.'),
+    ];
+
+    $form['products_page']['products_bg'] = [
+      '#type' => 'managed_file',
+      '#title' => $this->t('Background image'),
+      '#default_value' => $config->get('products_bg') ? [(int) $config->get('products_bg')] : NULL,
+      '#upload_location' => 'public://site',
+      '#upload_validators' => [
+        'FileExtension' => ['extensions' => 'png jpg jpeg webp'],
+      ],
+      '#description' => $this->t('Optional. Shown faded behind the band with the schematic grid on top — pick a wide, dark-friendly photo. Leave empty for the plain ink background.'),
+    ];
+
+    $form['products_page']['products_show_counter'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show the "items on record" counter'),
+      '#default_value' => (bool) ($config->get('products_show_counter') ?? TRUE),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -160,7 +210,26 @@ final class SiteSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $this->configFactory()->getEditable('psm_site.settings')
+    $config = $this->configFactory()->getEditable('psm_site.settings');
+
+    // Background image: keep the file permanent and its usage tracked, so
+    // cron never garbage-collects it; release the old file when replaced.
+    $old_fid = (int) ($config->get('products_bg') ?? 0);
+    $new_fid = (int) ($form_state->getValue(['products_bg', 0]) ?? 0);
+    if ($new_fid !== $old_fid) {
+      $file_usage = \Drupal::service('file.usage');
+      $file_storage = \Drupal::entityTypeManager()->getStorage('file');
+      if ($new_fid && ($file = $file_storage->load($new_fid))) {
+        $file->setPermanent();
+        $file->save();
+        $file_usage->add($file, 'psm_site', 'config', 'products_bg');
+      }
+      if ($old_fid && ($old_file = $file_storage->load($old_fid))) {
+        $file_usage->delete($old_file, 'psm_site', 'config', 'products_bg');
+      }
+    }
+
+    $config
       ->set('phone', $form_state->getValue('phone'))
       ->set('email', $form_state->getValue('email'))
       ->set('location', $form_state->getValue('location'))
@@ -171,6 +240,11 @@ final class SiteSettingsForm extends ConfigFormBase {
       ->set('quote_webform', $form_state->getValue('quote_webform'))
       ->set('quote_url', $form_state->getValue('quote_url'))
       ->set('footer_text', $form_state->getValue('footer_text'))
+      ->set('products_eyebrow', $form_state->getValue('products_eyebrow'))
+      ->set('products_title', $form_state->getValue('products_title'))
+      ->set('products_intro', $form_state->getValue('products_intro'))
+      ->set('products_bg', $new_fid ?: NULL)
+      ->set('products_show_counter', (bool) $form_state->getValue('products_show_counter'))
       ->save();
 
     parent::submitForm($form, $form_state);

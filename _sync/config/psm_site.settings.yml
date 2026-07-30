@@ -11,3 +11,8 @@ x_url: ''
 quote_webform: quote_request
 quote_url: /contact
 footer_text: 'Precision fluid-power systems engineered, manufactured and serviced for industry that cannot afford to stop.'
+products_eyebrow: ''
+products_title: ''
+products_intro: ''
+products_bg: null
+products_show_counter: true

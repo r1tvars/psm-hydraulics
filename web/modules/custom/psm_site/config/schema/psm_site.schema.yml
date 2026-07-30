@@ -3,32 +3,48 @@ psm_site.settings:
   label: 'PSM site settings'
   mapping:
     phone:
-      type: string
+      type: label
       label: 'Phone number'
     email:
-      type: string
+      type: label
       label: 'Email address'
     location:
-      type: string
+      type: label
       label: 'Location'
     facebook_url:
-      type: string
+      type: label
       label: 'Facebook URL'
     instagram_url:
-      type: string
+      type: label
       label: 'Instagram URL'
     linkedin_url:
-      type: string
+      type: label
       label: 'LinkedIn URL'
     x_url:
-      type: string
+      type: label
       label: 'X URL'
     quote_webform:
       type: string
       label: 'Quote webform id'
     quote_url:
-      type: string
+      type: label
       label: 'Request a quote link'
     footer_text:
       type: text
       label: 'Footer intro text'
+    products_eyebrow:
+      type: label
+      label: 'Products page eyebrow'
+    products_title:
+      type: label
+      label: 'Products page title'
+    products_intro:
+      type: text
+      label: 'Products page intro text'
+    products_bg:
+      type: integer
+      label: 'Products page background image file ID'
+      nullable: true
+    products_show_counter:
+      type: boolean
+      label: 'Show the products counter'
