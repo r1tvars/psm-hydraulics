@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Site-specific hooks for PSM Hydraulics.
+ */
+
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * The products listing exposes two filters that Views cannot provide out of
+ * the box: a multi-value manufacturer filter (plain string field) and a
+ * "datasheet available" toggle. Both read their input straight from the
+ * query string; the products view already varies its cache by
+ * url.query_args, so no extra cache metadata is needed.
+ */
+function psm_site_views_query_alter(ViewExecutable $view, QueryPluginBase $query): void {
+  if ($view->id() !== 'products' || !$query instanceof \Drupal\views\Plugin\views\query\Sql) {
+    return;
+  }
+
+  $params = \Drupal::request()->query;
+
+  $manufacturers = array_values(array_filter(
+    (array) $params->all('manufacturer'),
+    static fn ($value) => is_string($value) && $value !== '',
+  ));
+  if ($manufacturers !== []) {
+    $table = $query->ensureTable('node__field_manufacturer');
+    $query->addWhere('psm_products', "$table.field_manufacturer_value", $manufacturers, 'IN');
+  }
+
+  if ($params->get('doc')) {
+    $table = $query->ensureTable('node__field_datasheet');
+    $query->addWhere('psm_products', "$table.field_datasheet_target_id", NULL, 'IS NOT NULL');
+  }
+}

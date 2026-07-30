@@ -1,0 +1,39 @@
+{#
+/**
+ * @file
+ * ISO-1219-flavoured schematic glyph used as a product image placeholder.
+ *
+ * Expects:
+ * - glyph: one of pump | valve | cylinder | hose | tool.
+ */
+#}
+<svg class="product-card__glyph" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+  {% if glyph == 'pump' %}
+    <circle cx="60" cy="58" r="34"/>
+    <path d="M60 30 L74 52 H46 Z" fill="#F7A21B" stroke="none"/>
+    <path d="M60 92 V110 M42 110 H78"/>
+    <path d="M60 12 V24" stroke="#F7A21B"/>
+  {% elseif glyph == 'valve' %}
+    <rect x="18" y="38" width="42" height="42"/>
+    <rect x="60" y="38" width="42" height="42"/>
+    <path d="M28 72 L50 46 M50 46 l-8 1.5 M50 46 l-1 8" stroke="#F7A21B"/>
+    <path d="M70 46 L92 72 M92 72 l-8 -1.5 M92 72 l1 -8"/>
+    <path d="M39 26 V38 M81 80 V92"/>
+  {% elseif glyph == 'cylinder' %}
+    <rect x="14" y="44" width="64" height="32"/>
+    <path d="M40 44 V76" stroke="#F7A21B"/>
+    <path d="M40 60 H106"/>
+    <path d="M14 36 V44 M14 76 v8"/>
+  {% elseif glyph == 'hose' %}
+    <rect x="10" y="50" width="18" height="20"/>
+    <rect x="92" y="50" width="18" height="20"/>
+    <path d="M28 60 C 48 60 44 38 60 38 C 76 38 72 82 92 60"/>
+    <path d="M28 60 H36 M84 60 h8" stroke="#F7A21B"/>
+  {% else %}
+    <circle cx="60" cy="62" r="34"/>
+    <path d="M60 62 L78 44" stroke="#F7A21B"/>
+    <circle cx="60" cy="62" r="4" fill="#F7A21B" stroke="none"/>
+    <path d="M60 34 v8 M88 62 h-8 M60 90 v-8 M32 62 h8"/>
+    <path d="M46 16 h28"/>
+  {% endif %}
+</svg>

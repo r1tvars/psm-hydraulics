@@ -37,7 +37,7 @@ function custom_form_node_form_alter(array &$form, FormStateInterface $form_stat
     '#type' => 'textfield',
     '#title' => t('Category name'),
     '#maxlength' => 255,
-    '#description' => t('Create a new product category and select it for this catalogue item.'),
+    '#description' => t('Create a new product category and select it for this product.'),
   ];
 
   $form['custom_add_product_category']['actions'] = [

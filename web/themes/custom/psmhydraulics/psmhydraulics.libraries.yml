@@ -46,3 +46,10 @@ header-search:
   dependencies:
     - core/drupal
     - core/once
+
+products:
+  js:
+    js/products.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

@@ -16,7 +16,7 @@
           popular: panel.dataset.labelPopular || 'Popular searches',
           matches: panel.dataset.labelMatches || 'Matches',
           empty: panel.dataset.labelEmpty || 'No quick matches.',
-          browse: panel.dataset.labelBrowse || 'Browse full catalogue',
+          browse: panel.dataset.labelBrowse || 'Browse all products',
         };
 
         let debounceTimer = null;

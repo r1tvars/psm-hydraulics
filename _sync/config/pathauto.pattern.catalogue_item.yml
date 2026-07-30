@@ -1,0 +1,23 @@
+uuid: 90a38e76-064b-4cf7-a5ec-3a4b265bc732
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - node
+    - pathauto
+id: catalogue_item
+label: 'Product alias pattern'
+type: 'canonical_entities:node'
+pattern: 'products/[node:title]'
+selection_criteria:
+  a496274d-ca4b-47ad-bbdb-6782f0e897ff:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: a496274d-ca4b-47ad-bbdb-6782f0e897ff
+    context_mapping:
+      node: node
+    bundles:
+      catalogue_item: catalogue_item
+selection_logic: and
+weight: -5
+relationships: {  }

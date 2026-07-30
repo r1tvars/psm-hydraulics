@@ -42,6 +42,41 @@ function _psmhydraulics_menu_links(string $menu_name): array {
 }
 
 /**
+ * Resolves the site-wide quote CTA target from psm_site settings.
+ *
+ * Prefers the configured webform (opened in a modal) and falls back to a
+ * plain link. Returns NULL when neither is set. Appends the webform's cache
+ * tags to the given array.
+ *
+ * @return array{url: string, modal: bool}|null
+ */
+function _psmhydraulics_quote_link(array &$cache_tags): ?array {
+  $config = \Drupal::config('psm_site.settings');
+
+  $quote_webform_id = trim((string) $config->get('quote_webform'));
+  if ($quote_webform_id !== '' && \Drupal::moduleHandler()->moduleExists('webform')) {
+    $quote_webform = \Drupal::entityTypeManager()->getStorage('webform')->load($quote_webform_id);
+    if ($quote_webform && $quote_webform->isOpen()) {
+      $cache_tags = array_merge($cache_tags, $quote_webform->getCacheTags());
+      return [
+        'url' => $quote_webform->toUrl()->toString(),
+        'modal' => TRUE,
+      ];
+    }
+  }
+
+  $quote_url = trim((string) $config->get('quote_url'));
+  if ($quote_url !== '') {
+    return [
+      'url' => $quote_url,
+      'modal' => FALSE,
+    ];
+  }
+
+  return NULL;
+}
+
+/**
  * Implements hook_preprocess_page().
  */
 function psmhydraulics_preprocess_page(array &$variables): void {
@@ -74,43 +109,27 @@ function psmhydraulics_preprocess_page(array &$variables): void {
 
   // Quote buttons: prefer the configured webform (opened in a modal),
   // fall back to a plain link, hide when neither is set.
-  $variables['psm_site_quote'] = NULL;
-  $quote_webform_id = trim((string) $config->get('quote_webform'));
-  if ($quote_webform_id !== '' && \Drupal::moduleHandler()->moduleExists('webform')) {
-    $quote_webform = \Drupal::entityTypeManager()->getStorage('webform')->load($quote_webform_id);
-    if ($quote_webform && $quote_webform->isOpen()) {
-      $variables['psm_site_quote'] = [
-        'url' => $quote_webform->toUrl()->toString(),
-        'modal' => TRUE,
-      ];
-      $variables['#cache']['tags'] = array_merge(
-        $variables['#cache']['tags'] ?? [],
-        $quote_webform->getCacheTags(),
-      );
-    }
-  }
-  if (!$variables['psm_site_quote']) {
-    $quote_url = trim((string) $config->get('quote_url'));
-    if ($quote_url !== '') {
-      $variables['psm_site_quote'] = [
-        'url' => $quote_url,
-        'modal' => FALSE,
-      ];
-    }
-  }
+  $variables['#cache']['tags'] = $variables['#cache']['tags'] ?? [];
+  $variables['psm_site_quote'] = _psmhydraulics_quote_link($variables['#cache']['tags']);
 
-  // Header search: submits to the catalogue view, suggestions come from
+  // Header search: submits to the products view, suggestions come from
   // the psm_site JSON endpoint.
   $variables['psm_site_search'] = [
     'action' => '',
     'suggest_url' => '',
   ];
   try {
-    $variables['psm_site_search']['action'] = Url::fromRoute('view.catalogue.page_1')->toString();
+    $variables['psm_site_search']['action'] = Url::fromRoute('view.products.page_1')->toString();
     $variables['psm_site_search']['suggest_url'] = Url::fromRoute('psm_site.search_suggest')->toString();
   }
   catch (\Exception $exception) {
-    // Catalogue view or suggest route unavailable: the search box is hidden.
+    // Products view or suggest route unavailable: the search box is hidden.
+  }
+
+  // The products listing renders its own breadcrumb inside the page head
+  // band — drop the system breadcrumb block there.
+  if (\Drupal::routeMatch()->getRouteName() === 'view.products.page_1') {
+    $variables['page']['breadcrumb'] = [];
   }
 
   $variables['psm_site_footer'] = [
@@ -353,6 +372,11 @@ function psmhydraulics_preprocess_node(array &$variables): void {
   $variables['catalogue_item_price_status'] = '';
   $variables['catalogue_item_sku'] = '';
   $variables['catalogue_item_category'] = '';
+  $variables['catalogue_item_glyph'] = 'tool';
+  $variables['catalogue_item_manufacturer'] = '';
+  $variables['catalogue_item_short_description'] = '';
+  $variables['catalogue_item_availability'] = NULL;
+  $variables['catalogue_item_datasheet_url'] = NULL;
   $variables['catalogue_item_image_uri'] = NULL;
   $variables['catalogue_item_image_url'] = NULL;
   $variables['catalogue_item_image_alt'] = $node->label();
@@ -365,10 +389,40 @@ function psmhydraulics_preprocess_node(array &$variables): void {
     $variables['catalogue_item_sku'] = (string) $node->get('field_sku')->value;
   }
 
+  if ($node->hasField('field_manufacturer') && !$node->get('field_manufacturer')->isEmpty()) {
+    $variables['catalogue_item_manufacturer'] = (string) $node->get('field_manufacturer')->value;
+  }
+
+  if ($node->hasField('field_short_description') && !$node->get('field_short_description')->isEmpty()) {
+    $variables['catalogue_item_short_description'] = (string) $node->get('field_short_description')->value;
+  }
+
+  if ($node->hasField('field_availability') && !$node->get('field_availability')->isEmpty()) {
+    $value = (string) $node->get('field_availability')->value;
+    $allowed = $node->get('field_availability')->getFieldDefinition()
+      ->getFieldStorageDefinition()->getSetting('allowed_values');
+    $variables['catalogue_item_availability'] = [
+      'value' => $value,
+      'label' => (string) ($allowed[$value] ?? $value),
+    ];
+  }
+
+  if ($node->hasField('field_datasheet') && !$node->get('field_datasheet')->isEmpty()) {
+    $media = $node->get('field_datasheet')->entity;
+    if ($media && $media->hasField('field_media_document') && !$media->get('field_media_document')->isEmpty()) {
+      $file = $media->get('field_media_document')->entity;
+      if ($file) {
+        $variables['catalogue_item_datasheet_url'] = \Drupal::service('file_url_generator')
+          ->generateString($file->getFileUri());
+      }
+    }
+  }
+
   if ($node->hasField('field_product_category') && !$node->get('field_product_category')->isEmpty()) {
     $term = $node->get('field_product_category')->entity;
     if ($term) {
       $variables['catalogue_item_category'] = $term->label();
+      $variables['catalogue_item_glyph'] = _psmhydraulics_product_glyph($term->label());
     }
   }
 
@@ -392,36 +446,208 @@ function psmhydraulics_preprocess_node(array &$variables): void {
 }
 
 /**
+ * Maps a product category label to one of the schematic placeholder glyphs.
+ */
+function _psmhydraulics_product_glyph(string $category): string {
+  $category = mb_strtolower($category);
+  foreach ([
+    'pump' => 'pump',
+    'valve' => 'valve',
+    'cylind' => 'cylinder',
+    'hose' => 'hose',
+    'fitting' => 'hose',
+  ] as $needle => $glyph) {
+    if (str_contains($category, $needle)) {
+      return $glyph;
+    }
+  }
+  return 'tool';
+}
+
+/**
+ * Counts published products grouped by a field column.
+ *
+ * @return array<string, int>
+ *   Keyed by the column value, sorted by count descending.
+ */
+function _psmhydraulics_product_counts(string $table, string $column): array {
+  $connection = \Drupal::database();
+  $query = $connection->select($table, 'f');
+  $query->innerJoin('node_field_data', 'n', 'n.nid = f.entity_id AND n.langcode = f.langcode');
+  $query->condition('n.status', 1)
+    ->condition('n.type', 'catalogue_item')
+    ->condition('n.default_langcode', 1)
+    ->condition('f.deleted', 0);
+  $query->addField('f', $column, 'value');
+  $query->addExpression('COUNT(DISTINCT f.entity_id)', 'total');
+  $query->groupBy("f.$column");
+  $query->orderBy('total', 'DESC');
+
+  $counts = [];
+  foreach ($query->execute() as $row) {
+    $counts[(string) $row->value] = (int) $row->total;
+  }
+  return $counts;
+}
+
+/**
  * Implements hook_preprocess_views_view().
+ *
+ * Builds everything the products listing template needs: filter options
+ * with counts, current selections, removable filter chips, and the result
+ * summary. The template renders the whole listing as one hand-built GET
+ * form, so no Views exposed form is used.
  */
 function psmhydraulics_preprocess_views_view(array &$variables): void {
   $view = $variables['view'] ?? NULL;
-  if (!$view || $view->id() !== 'catalogue' || $view->current_display !== 'page_1') {
+  if (!$view || $view->id() !== 'products' || $view->current_display !== 'page_1') {
     return;
   }
 
   $input = $view->getExposedInput();
-  $pager = $view->pager;
-  $current_page = method_exists($pager, 'getCurrentPage') ? (int) $pager->getCurrentPage() : 0;
-  $items_per_page = method_exists($pager, 'getItemsPerPage') ? (int) $pager->getItemsPerPage() : count($view->result);
-  $result_count = count($view->result);
-  $total = (int) $view->total_rows;
-  $start = $total > 0 ? ($current_page * $items_per_page) + 1 : 0;
-  $end = $total > 0 ? $start + $result_count - 1 : 0;
+  $search = trim((string) ($input['search'] ?? ''));
+  $sort_by = (string) ($input['sort_by'] ?? 'newest');
+  $per_page = (int) ($input['items_per_page'] ?? 12);
+  $doc = !empty($input['doc']);
+  $selected = [
+    'category' => array_map('strval', array_filter((array) ($input['category'] ?? []), 'is_numeric')),
+    'manufacturer' => array_values(array_filter((array) ($input['manufacturer'] ?? []), 'is_string')),
+    'availability' => array_values(array_filter((array) ($input['availability'] ?? []), 'is_string')),
+  ];
 
-  $variables['catalogue_view'] = [
-    'search' => (string) ($input['search'] ?? ''),
-    'sort_by' => (string) ($input['sort_by'] ?? 'newest'),
+  // Category options: vocabulary order, only terms with published products.
+  $category_counts = _psmhydraulics_product_counts('node__field_product_category', 'field_product_category_target_id');
+  $categories = [];
+  $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')
+    ->loadTree('product_category', 0, 1, TRUE);
+  foreach ($terms as $term) {
+    $term = \Drupal::service('entity.repository')->getTranslationFromContext($term);
+    $count = $category_counts[(string) $term->id()] ?? 0;
+    if ($count > 0) {
+      $categories[] = [
+        'value' => (string) $term->id(),
+        'label' => $term->label(),
+        'count' => $count,
+        'selected' => in_array((string) $term->id(), $selected['category'], TRUE),
+      ];
+    }
+  }
+
+  // Manufacturer options: distinct values, busiest first.
+  $manufacturers = [];
+  foreach (_psmhydraulics_product_counts('node__field_manufacturer', 'field_manufacturer_value') as $value => $count) {
+    if ($value !== '') {
+      $manufacturers[] = [
+        'value' => $value,
+        'label' => $value,
+        'count' => $count,
+        'selected' => in_array($value, $selected['manufacturer'], TRUE),
+      ];
+    }
+  }
+
+  // Availability options: field order, with status dot modifiers.
+  $availability_counts = _psmhydraulics_product_counts('node__field_availability', 'field_availability_value');
+  $availability_dots = [
+    'in_stock' => 'ok',
+    'on_request' => 'request',
+    'custom_order' => 'custom',
+  ];
+  $availability = [];
+  $availability_storage = \Drupal::service('entity_field.manager')
+    ->getFieldStorageDefinitions('node')['field_availability'] ?? NULL;
+  foreach (($availability_storage?->getSetting('allowed_values') ?? []) as $value => $label) {
+    $availability[] = [
+      'value' => (string) $value,
+      'label' => (string) $label,
+      'count' => $availability_counts[(string) $value] ?? 0,
+      'dot' => $availability_dots[$value] ?? 'custom',
+      'selected' => in_array((string) $value, $selected['availability'], TRUE),
+    ];
+  }
+
+  // Datasheet toggle count.
+  $doc_count = (int) \Drupal::database()->select('node__field_datasheet', 'f')
+    ->condition('f.deleted', 0)
+    ->countQuery()->execute()->fetchField();
+
+  // Query builder for chip-removal / reset links.
+  $base_query = array_filter([
+    'search' => $search !== '' ? $search : NULL,
+    'sort_by' => $sort_by !== 'newest' ? $sort_by : NULL,
+    'items_per_page' => $per_page !== 12 ? $per_page : NULL,
+    'category' => $selected['category'] ?: NULL,
+    'manufacturer' => $selected['manufacturer'] ?: NULL,
+    'availability' => $selected['availability'] ?: NULL,
+    'doc' => $doc ? 1 : NULL,
+  ]);
+  $url_without = static function (string $key, ?string $value = NULL) use ($base_query): string {
+    $query = $base_query;
+    if ($value === NULL) {
+      unset($query[$key]);
+    }
+    else {
+      $query[$key] = array_values(array_diff((array) ($query[$key] ?? []), [$value]));
+      if (!$query[$key]) {
+        unset($query[$key]);
+      }
+    }
+    return Url::fromRoute('view.products.page_1', [], ['query' => $query])->toString();
+  };
+
+  // Removable chips for every active filter.
+  $chips = [];
+  foreach ($categories as $option) {
+    if ($option['selected']) {
+      $chips[] = ['group' => (string) t('Cat'), 'label' => $option['label'], 'url' => $url_without('category', $option['value'])];
+    }
+  }
+  foreach ($manufacturers as $option) {
+    if ($option['selected']) {
+      $chips[] = ['group' => (string) t('Mfr'), 'label' => $option['label'], 'url' => $url_without('manufacturer', $option['value'])];
+    }
+  }
+  foreach ($availability as $option) {
+    if ($option['selected']) {
+      $chips[] = ['group' => (string) t('Stock'), 'label' => $option['label'], 'url' => $url_without('availability', $option['value'])];
+    }
+  }
+  if ($doc) {
+    $chips[] = ['group' => (string) t('Doc'), 'label' => (string) t('Datasheet available'), 'url' => $url_without('doc')];
+  }
+
+  // Result summary + catalogue-wide total for the head counter.
+  // Quote webform cache tags already bubble via the header CTA in
+  // psmhydraulics_preprocess_page(), so the collector array is discarded.
+  $quote_tags = [];
+  $total = (int) $view->total_rows;
+  $catalog_total = (int) \Drupal::entityQuery('node')->accessCheck(FALSE)
+    ->condition('type', 'catalogue_item')
+    ->condition('status', 1)
+    ->count()->execute();
+
+  $variables['products_view'] = [
+    'action' => Url::fromRoute('view.products.page_1')->toString(),
+    'reset_url' => Url::fromRoute('view.products.page_1')->toString(),
+    'search' => $search,
+    'sort_by' => $sort_by,
     'sort_options' => [
       'newest' => (string) t('Newest first'),
       'oldest' => (string) t('Oldest first'),
-      'title_asc' => (string) t('Title A-Z'),
-      'title_desc' => (string) t('Title Z-A'),
+      'title_asc' => (string) t('Name A–Z'),
+      'title_desc' => (string) t('Name Z–A'),
     ],
-    'summary' => [
-      'total' => $total,
-      'start' => $start,
-      'end' => $end,
-    ],
+    'per_page' => $per_page,
+    'per_page_options' => [12, 24, 48],
+    'categories' => $categories,
+    'manufacturers' => $manufacturers,
+    'availability' => $availability,
+    'doc' => $doc,
+    'doc_count' => $doc_count,
+    'chips' => $chips,
+    'active_count' => count($chips),
+    'total' => $total,
+    'catalog_total' => $catalog_total,
+    'quote' => _psmhydraulics_quote_link($quote_tags),
   ];
 }

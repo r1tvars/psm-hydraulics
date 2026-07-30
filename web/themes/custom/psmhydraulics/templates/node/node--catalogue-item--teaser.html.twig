@@ -1,34 +1,67 @@
-<article{{ attributes.addClass('catalogue-card') }}>
-  <a class="catalogue-card__link" href="{{ url }}" rel="bookmark">
-    <div class="catalogue-card__media">
-      {% if catalogue_item_category %}
-        <span class="catalogue-card__badge">{{ catalogue_item_category }}</span>
-      {% endif %}
+{#
+/**
+ * @file
+ * Product card for the products listing (grid and list view share markup).
+ *
+ * All catalogue_item_* variables come from psmhydraulics_preprocess_node().
+ */
+#}
+<article{{ attributes.addClass('product-card') }}>
+  <a class="product-card__media" href="{{ url }}" tabindex="-1" aria-hidden="true">
+    {% if catalogue_item_image_url %}
+      <img
+        class="product-card__image"
+        src="{{ catalogue_item_image_url }}"
+        alt="{{ catalogue_item_image_alt }}"
+        loading="lazy"
+      >
+    {% else %}
+      {% include '@psmhydraulics/includes/product-glyph.html.twig' with { glyph: catalogue_item_glyph } only %}
+    {% endif %}
 
-      {% if catalogue_item_image_url %}
-        <img
-          class="catalogue-card__image"
-          src="{{ catalogue_item_image_url }}"
-          alt="{{ catalogue_item_image_alt }}"
-          loading="lazy"
-        >
-      {% else %}
-        <div class="catalogue-card__placeholder">
-          <span>No image</span>
-        </div>
-      {% endif %}
-    </div>
+    {% if catalogue_item_sku %}
+      <span class="product-card__sku">{{ catalogue_item_sku }}</span>
+    {% endif %}
 
-    <div class="catalogue-card__body">
-      {% if catalogue_item_sku %}
-        <p class="catalogue-card__sku">{{ catalogue_item_sku }}</p>
-      {% endif %}
+    {% if catalogue_item_availability %}
+      <span class="product-card__status product-card__status--{{ catalogue_item_availability.value|clean_class }}">
+        <i aria-hidden="true"></i>{{ catalogue_item_availability.label }}
+      </span>
+    {% endif %}
 
-      <h2 class="catalogue-card__title">{{ label }}</h2>
-
-      {% if catalogue_item_price_status %}
-        <p class="catalogue-card__price">{{ catalogue_item_price_status }}</p>
-      {% endif %}
-    </div>
+    <span class="product-card__scrim" aria-hidden="true">
+      <span>{{ 'View product'|t }} <i class="fa-solid fa-arrow-right"></i></span>
+    </span>
   </a>
+
+  <div class="product-card__body">
+    {% if catalogue_item_category %}
+      <span class="product-card__cat">{{ catalogue_item_category }}</span>
+    {% endif %}
+
+    <h3 class="product-card__title">
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h3>
+
+    {% if catalogue_item_short_description %}
+      <p class="product-card__desc">{{ catalogue_item_short_description }}</p>
+    {% endif %}
+
+    {% if catalogue_item_manufacturer %}
+      <p class="product-card__meta">
+        <span class="product-card__meta-label">{{ 'Mfr'|t }}</span>{{ catalogue_item_manufacturer }}
+      </p>
+    {% endif %}
+  </div>
+
+  <div class="product-card__foot">
+    <a class="product-card__view" href="{{ url }}">
+      {{ 'View details'|t }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+    </a>
+    {% if catalogue_item_datasheet_url %}
+      <a class="product-card__ds" href="{{ catalogue_item_datasheet_url }}" target="_blank" rel="noopener">
+        <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>{{ 'PDF'|t }}
+      </a>
+    {% endif %}
+  </div>
 </article>

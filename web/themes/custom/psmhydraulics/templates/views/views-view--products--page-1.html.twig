@@ -1,0 +1,251 @@
+{#
+/**
+ * @file
+ * Products listing: ink page-head band, filter sidebar (drawer on mobile),
+ * toolbar, chips, card grid/list, pager. Everything interactive lives in ONE
+ * hand-built GET form so any input change re-queries the view.
+ *
+ * products_view comes from psmhydraulics_preprocess_views_view().
+ */
+#}
+{{ attach_library('psmhydraulics/products') }}
+
+{% set pv = products_view %}
+
+<section class="products-head">
+  <div class="site-section products-head__in">
+    <nav class="products-head__crumbs" aria-label="{{ 'Breadcrumb'|t }}">
+      <a href="{{ path('<front>') }}">{{ 'Home'|t }}</a>
+      <span class="products-head__crumb-sep" aria-hidden="true">/</span>
+      <span aria-current="page">{{ 'Products'|t }}</span>
+    </nav>
+    <div class="products-head__row">
+      <div>
+        <span class="eyebrow">{{ 'Product index'|t }}</span>
+        <h1 class="products-head__title">{{ 'Products'|t }}</h1>
+        <p class="products-head__sub">{{ 'Hydraulic pumps, valves, cylinders, hoses and service tooling — stocked components and custom-built assemblies from certified manufacturers.'|t }}</p>
+      </div>
+      <div class="products-head__counter">
+        <b>{{ '%03d'|format(pv.catalog_total) }}</b>
+        <span>{{ 'Items on record'|t }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="site-section">
+  <form class="products" method="get" action="{{ pv.action }}" data-products-form>
+
+    {# ── Filter sidebar (off-canvas drawer below lg) ─────────────── #}
+    <aside class="products-side" id="products-filters" data-products-side aria-label="{{ 'Product filters'|t }}">
+      <div class="products-side__drawer-head">
+        <span class="products-side__title">{{ 'Refine'|t }}</span>
+        <button class="products-side__close" type="button" data-products-drawer-close aria-label="{{ 'Close filters'|t }}">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="products-side__scroll">
+        <div class="products-panel">
+          <div class="products-panel__head">
+            <span class="products-side__title">{{ 'Refine'|t }}</span>
+            <a class="products-panel__reset" href="{{ pv.reset_url }}">{{ 'Reset all'|t }}</a>
+          </div>
+
+          <section class="fgroup" data-fgroup="category" data-open>
+            <button class="fgroup__head" type="button" aria-expanded="true">
+              <span class="fgroup__name">{{ 'Category'|t }}</span>
+              {% set n = pv.categories|filter(o => o.selected)|length %}
+              <span class="fgroup__badge"{{ n ? '' : ' hidden' }}>{{ n }}</span>
+              <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="fgroup__body"><div class="fgroup__inner">
+              {% for option in pv.categories %}
+                <label class="fcheck">
+                  <input type="checkbox" name="category[]" value="{{ option.value }}"{{ option.selected ? ' checked' }}>
+                  <span class="fcheck__box" aria-hidden="true"></span>
+                  <span class="fcheck__label">{{ option.label }}</span>
+                  <span class="fcheck__count">{{ option.count }}</span>
+                </label>
+              {% endfor %}
+            </div></div>
+          </section>
+
+          {% if pv.manufacturers %}
+            <section class="fgroup" data-fgroup="manufacturer" data-open>
+              <button class="fgroup__head" type="button" aria-expanded="true">
+                <span class="fgroup__name">{{ 'Manufacturer'|t }}</span>
+                {% set n = pv.manufacturers|filter(o => o.selected)|length %}
+                <span class="fgroup__badge"{{ n ? '' : ' hidden' }}>{{ n }}</span>
+                <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="fgroup__body"><div class="fgroup__inner">
+                {% if pv.manufacturers|length > 5 %}
+                  <div class="fgroup__search">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    {# No name attribute: this mini-filter must never submit. #}
+                    <input type="search" placeholder="{{ 'Find manufacturer…'|t }}" aria-label="{{ 'Find manufacturer'|t }}" data-manufacturer-search>
+                  </div>
+                {% endif %}
+                {% for option in pv.manufacturers %}
+                  <label class="fcheck">
+                    <input type="checkbox" name="manufacturer[]" value="{{ option.value }}"{{ option.selected ? ' checked' }}>
+                    <span class="fcheck__box" aria-hidden="true"></span>
+                    <span class="fcheck__label">{{ option.label }}</span>
+                    <span class="fcheck__count">{{ option.count }}</span>
+                  </label>
+                {% endfor %}
+              </div></div>
+            </section>
+          {% endif %}
+
+          <section class="fgroup" data-fgroup="availability" data-open>
+            <button class="fgroup__head" type="button" aria-expanded="true">
+              <span class="fgroup__name">{{ 'Availability'|t }}</span>
+              {% set n = pv.availability|filter(o => o.selected)|length %}
+              <span class="fgroup__badge"{{ n ? '' : ' hidden' }}>{{ n }}</span>
+              <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="fgroup__body"><div class="fgroup__inner">
+              {% for option in pv.availability %}
+                <label class="fcheck">
+                  <input type="checkbox" name="availability[]" value="{{ option.value }}"{{ option.selected ? ' checked' }}>
+                  <span class="fcheck__box" aria-hidden="true"></span>
+                  <span class="fcheck__dot fcheck__dot--{{ option.dot }}" aria-hidden="true"></span>
+                  <span class="fcheck__label">{{ option.label }}</span>
+                  <span class="fcheck__count">{{ option.count }}</span>
+                </label>
+              {% endfor %}
+            </div></div>
+          </section>
+
+          <section class="fgroup" data-fgroup="doc"{{ pv.doc ? ' data-open' }}>
+            <button class="fgroup__head" type="button" aria-expanded="{{ pv.doc ? 'true' : 'false' }}">
+              <span class="fgroup__name">{{ 'Documentation'|t }}</span>
+              <span class="fgroup__badge"{{ pv.doc ? '' : ' hidden' }}>1</span>
+              <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="fgroup__body"><div class="fgroup__inner">
+              <label class="fcheck">
+                <input type="checkbox" name="doc" value="1"{{ pv.doc ? ' checked' }}>
+                <span class="fcheck__box" aria-hidden="true"></span>
+                <span class="fcheck__label">{{ 'Datasheet available'|t }}</span>
+                <span class="fcheck__count">{{ pv.doc_count }}</span>
+              </label>
+            </div></div>
+          </section>
+        </div>
+
+        {% if pv.quote %}
+          <div class="products-promo">
+            <span class="products-promo__label">{{ 'Can’t find it?'|t }}</span>
+            <p>{% trans %}<strong>Our engineers source non-catalogue components</strong> directly from partner manufacturers.{% endtrans %}</p>
+            <a class="btn btn--amber products-promo__btn{{ pv.quote.modal ? ' use-ajax' }}"
+               href="{{ pv.quote.url }}"
+               {%- if pv.quote.modal %} data-dialog-type="modal" data-dialog-options='{"width":720,"classes":{"ui-dialog":"quote-modal"}}'{% endif %}>{{ 'Request a quote'|t }}</a>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="products-side__drawer-foot">
+        <a class="products-side__reset" href="{{ pv.reset_url }}">{{ 'Reset'|t }}</a>
+        <button class="btn btn--amber products-side__apply" type="submit">{{ 'Show products'|t }}</button>
+      </div>
+    </aside>
+    <div class="products-backdrop" data-products-drawer-close aria-hidden="true"></div>
+
+    {# ── Results column ──────────────────────────────────────────── #}
+    <main class="products-main">
+      <div class="products-toolbar">
+        <button class="products-toolbar__filters" type="button" data-products-drawer-open aria-controls="products-filters">
+          <i class="fa-solid fa-sliders" aria-hidden="true"></i>{{ 'Filters'|t }}
+          <span class="fgroup__badge"{{ pv.active_count ? '' : ' hidden' }}>{{ pv.active_count }}</span>
+        </button>
+        <div class="products-toolbar__search">
+          <button class="products-toolbar__submit" type="submit" aria-label="{{ 'Search'|t }}">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          </button>
+          <input type="search" name="search" value="{{ pv.search }}"
+                 placeholder="{{ 'Search by name, SKU or manufacturer…'|t }}"
+                 aria-label="{{ 'Search products'|t }}">
+          <button class="products-toolbar__clear" type="button" data-products-clear-search{{ pv.search ? '' : ' hidden' }} aria-label="{{ 'Clear search'|t }}">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="products-toolbar__sort">
+          <label for="products-sort">{{ 'Sort'|t }}</label>
+          <select id="products-sort" name="sort_by" data-fancy>
+            {% for value, label in pv.sort_options %}
+              <option value="{{ value }}"{{ value == pv.sort_by ? ' selected' }}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="products-toolbar__view" role="group" aria-label="{{ 'Layout'|t }}">
+          <button type="button" data-products-view="grid" aria-pressed="true" aria-label="{{ 'Grid view'|t }}"><i class="fa-solid fa-border-all" aria-hidden="true"></i></button>
+          <button type="button" data-products-view="list" aria-pressed="false" aria-label="{{ 'List view'|t }}"><i class="fa-solid fa-list" aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+      <div class="products-status">
+        <p class="products-status__count">
+          <b>{{ pv.total }}</b> {{ pv.total == 1 ? 'product'|t : 'products'|t }}
+        </p>
+        {% if pv.chips %}
+          <div class="products-chips">
+            {% for chip in pv.chips %}
+              <a class="products-chip" href="{{ chip.url }}" rel="nofollow">
+                <span class="products-chip__group">{{ chip.group }}</span>{{ chip.label }}
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+              </a>
+            {% endfor %}
+            <a class="products-chips__clear" href="{{ pv.reset_url }}">{{ 'Clear all'|t }}</a>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if rows %}
+        <div class="products-grid" data-products-grid>
+          {{ rows }}
+        </div>
+        <script>
+          try { if (localStorage.getItem('psmProductsView') === 'list') { document.querySelector('[data-products-grid]').classList.add('is-list'); } } catch (e) {}
+        </script>
+      {% else %}
+        <div class="products-empty">
+          <i class="fa-solid fa-magnifying-glass-minus" aria-hidden="true"></i>
+          <h2>{{ 'No matching products'|t }}</h2>
+          <p>{{ 'Try removing a filter or adjusting your search — or send us the specification and we’ll source it.'|t }}</p>
+          <a class="btn btn--ink" href="{{ pv.reset_url }}">{{ 'Reset filters'|t }}</a>
+        </div>
+      {% endif %}
+
+      {% if pager %}
+        <div class="products-pager">
+          {{ pager }}
+          <div class="products-pager__meta">
+            <label for="products-per-page">{{ 'Per page'|t }}</label>
+            <select id="products-per-page" name="items_per_page" data-fancy="up">
+              {% for option in pv.per_page_options %}
+                <option value="{{ option }}"{{ option == pv.per_page ? ' selected' }}>{{ option }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      {% endif %}
+    </main>
+  </form>
+</div>
+
+{% if pv.quote %}
+  <section class="products-cta">
+    <div class="site-section products-cta__in">
+      <div>
+        <h2>{{ 'Need a custom hydraulic solution?'|t }}</h2>
+        <p>{{ 'Send us your drawings or the failed unit — we design, machine and test replacements in-house.'|t }}</p>
+      </div>
+      <a class="btn btn--amber{{ pv.quote.modal ? ' use-ajax' }}"
+         href="{{ pv.quote.url }}"
+         {%- if pv.quote.modal %} data-dialog-type="modal" data-dialog-options='{"width":720,"classes":{"ui-dialog":"quote-modal"}}'{% endif %}>{{ 'Request a quote'|t }}</a>
+    </div>
+  </section>
+{% endif %}

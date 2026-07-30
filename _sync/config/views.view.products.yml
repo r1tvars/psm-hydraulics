@@ -1,4 +1,4 @@
-uuid: 955b27fc-f8ff-4bda-9501-720a2932f3bf
+uuid: 5f4f9a18-a688-4405-88df-2bb4e0fa9c93
 langcode: en-gb
 status: true
 dependencies:
@@ -7,13 +7,16 @@ dependencies:
     - field.field.node.catalogue_item.field_manufacturer
     - field.field.node.catalogue_item.field_short_description
     - field.field.node.catalogue_item.field_sku
+    - field.storage.node.field_availability
+    - field.storage.node.field_product_category
     - node.type.catalogue_item
+    - taxonomy.vocabulary.product_category
   module:
     - node
     - text
     - user
-id: catalogue
-label: Catalogue
+id: products
+label: Products
 module: views
 description: 'Catalogue listing for catalogue item nodes.'
 tag: default
@@ -26,7 +29,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Catalogue
+      title: Products
       fields:
         title:
           id: title
@@ -292,7 +295,7 @@ display:
         options:
           offset: 0
           pagination_heading_level: h4
-          items_per_page: 8
+          items_per_page: 12
           total_pages: 0
           id: 0
           tags:
@@ -301,9 +304,9 @@ display:
             first: '« First'
             last: 'Last »'
           expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '8, 16, 24'
+            items_per_page: true
+            items_per_page_label: 'Per page'
+            items_per_page_options: '12, 24, 48'
             items_per_page_options_all: false
             items_per_page_options_all_label: '- All -'
             offset: false
@@ -571,6 +574,91 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_product_category_target_id:
+          id: field_product_category_target_id
+          table: node__field_product_category
+          field: field_product_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_product_category_target_id_op
+            label: Category
+            description: ''
+            use_operator: false
+            operator: field_product_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: category
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: product_category
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_availability_value:
+          id: field_availability_value
+          table: node__field_availability
+          field: field_availability_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_availability_value_op
+            label: Availability
+            description: ''
+            use_operator: false
+            operator: field_availability_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: availability
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
       style:
         type: default
         options:
@@ -609,7 +697,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: catalogue
+      path: products
     cache_metadata:
       max-age: -1
       contexts:
