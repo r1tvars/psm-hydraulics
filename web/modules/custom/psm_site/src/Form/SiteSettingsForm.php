@@ -6,6 +6,7 @@ namespace Drupal\psm_site\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\psm_site\Controller\SearchSuggestController;
 
 /**
  * Defines the site settings form for the frontend header.
@@ -203,7 +204,100 @@ final class SiteSettingsForm extends ConfigFormBase {
       '#default_value' => (bool) ($config->get('products_show_counter') ?? TRUE),
     ];
 
+    $form['header_search'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Header search'),
+      '#description' => $this->t('The "Popular searches" list shown in the header search dropdown before the visitor starts typing. Drag rows to reorder; the first @limit are shown. Leave all rows empty to fall back to the newest products.', ['@limit' => 8]),
+      '#group' => 'sections',
+      '#open' => FALSE,
+    ];
+
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $popular_nids = array_values(array_filter(array_map('intval', (array) ($config->get('popular_products') ?? []))));
+    $popular_nodes = array_values(array_filter(array_map(
+      static fn (int $nid) => $node_storage->load($nid),
+      $popular_nids,
+    )));
+
+    // Saved picks plus one blank row; "Add another product" appends more,
+    // capped at the number of slots the dropdown can actually show.
+    $row_count = $form_state->get('popular_row_count');
+    if ($row_count === NULL) {
+      $row_count = min(count($popular_nodes) + 1, SearchSuggestController::LIMIT);
+      $form_state->set('popular_row_count', $row_count);
+    }
+
+    $form['header_search']['popular_wrapper'] = [
+      '#type' => 'container',
+      '#attributes' => ['id' => 'psm-popular-products'],
+    ];
+
+    $form['header_search']['popular_wrapper']['popular_products'] = [
+      '#type' => 'table',
+      '#header' => [$this->t('Product'), $this->t('Weight')],
+      '#tabledrag' => [
+        [
+          'action' => 'order',
+          'relationship' => 'sibling',
+          'group' => 'popular-product-weight',
+        ],
+      ],
+    ];
+
+    for ($delta = 0; $delta < $row_count; $delta++) {
+      $row = &$form['header_search']['popular_wrapper']['popular_products'][$delta];
+      $row['#attributes']['class'][] = 'draggable';
+      $row['product'] = [
+        '#type' => 'entity_autocomplete',
+        '#target_type' => 'node',
+        '#selection_settings' => [
+          'target_bundles' => ['catalogue_item'],
+        ],
+        '#default_value' => $popular_nodes[$delta] ?? NULL,
+        '#placeholder' => $this->t('Start typing a product name…'),
+      ];
+      $row['weight'] = [
+        '#type' => 'weight',
+        '#title' => $this->t('Weight'),
+        '#title_display' => 'invisible',
+        '#default_value' => $delta,
+        '#delta' => max(10, $row_count),
+        '#attributes' => ['class' => ['popular-product-weight']],
+      ];
+      unset($row);
+    }
+
+    $form['header_search']['popular_wrapper']['popular_add'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Add another product'),
+      '#submit' => ['::addPopularRow'],
+      '#limit_validation_errors' => [],
+      '#ajax' => [
+        'callback' => '::popularRowsAjax',
+        'wrapper' => 'psm-popular-products',
+      ],
+      '#access' => $row_count < SearchSuggestController::LIMIT,
+    ];
+
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * Submit handler for "Add another product": appends one table row.
+   */
+  public function addPopularRow(array &$form, FormStateInterface $form_state): void {
+    $form_state->set(
+      'popular_row_count',
+      min((int) $form_state->get('popular_row_count') + 1, SearchSuggestController::LIMIT),
+    );
+    $form_state->setRebuild();
+  }
+
+  /**
+   * AJAX callback for "Add another product": re-renders the table.
+   */
+  public function popularRowsAjax(array &$form, FormStateInterface $form_state): array {
+    return $form['header_search']['popular_wrapper'];
   }
 
   /**
@@ -229,7 +323,18 @@ final class SiteSettingsForm extends ConfigFormBase {
       }
     }
 
+    // Popular searches: drop empty rows, honour drag order, dedupe.
+    $popular = [];
+    foreach ((array) $form_state->getValue('popular_products') as $row) {
+      if (!empty($row['product'])) {
+        $popular[] = ['nid' => (int) $row['product'], 'weight' => (int) ($row['weight'] ?? 0)];
+      }
+    }
+    usort($popular, static fn (array $a, array $b) => $a['weight'] <=> $b['weight']);
+    $popular_nids = array_values(array_unique(array_column($popular, 'nid')));
+
     $config
+      ->set('popular_products', $popular_nids)
       ->set('phone', $form_state->getValue('phone'))
       ->set('email', $form_state->getValue('email'))
       ->set('location', $form_state->getValue('location'))

@@ -48,3 +48,9 @@ psm_site.settings:
     products_show_counter:
       type: boolean
       label: 'Show the products counter'
+    popular_products:
+      type: sequence
+      label: 'Popular search products (ordered)'
+      sequence:
+        type: integer
+        label: 'Product node ID'
