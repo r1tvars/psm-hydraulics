@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Theme override for the site breadcrumb trail.
+ *
+ * Fed by Easy Breadcrumb, so the trail carries every URL segment plus the
+ * current page title. Three states, matching the products page-head crumbs:
+ * - linked   — the segment resolves to a page the visitor may open;
+ * - plain    — the segment exists in the path but has no reachable page;
+ * - current  — the page being viewed, never a link.
+ *
+ * The products listing and catalogue_item nodes render their own crumbs
+ * inside their page-head bands; psmhydraulics_preprocess_page() empties the
+ * breadcrumb region there.
+ */
+#}
+{% if breadcrumb %}
+  <nav class="crumbs" role="navigation" aria-labelledby="system-breadcrumb">
+    <h2 id="system-breadcrumb" class="visually-hidden">{{ 'Breadcrumb'|t }}</h2>
+    <ol class="crumbs__list">
+      {% for item in breadcrumb %}
+        <li class="crumbs__item">
+          {% if not loop.first %}
+            <span class="crumbs__sep" aria-hidden="true">/</span>
+          {% endif %}
+          {% if item.url %}
+            <a class="crumbs__link" href="{{ item.url }}">{{ item.text }}</a>
+          {% elseif loop.last %}
+            <span class="crumbs__current" aria-current="page">{{ item.text }}</span>
+          {% else %}
+            <span class="crumbs__plain">{{ item.text }}</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+{% endif %}

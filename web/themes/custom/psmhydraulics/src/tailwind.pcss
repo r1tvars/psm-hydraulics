@@ -56,6 +56,39 @@
     @apply mx-auto max-w-shell px-5 sm:px-6 lg:px-8;
   }
 
+  /* ── Shared: breadcrumbs ─────────────────────────── */
+
+  /* Light-background sibling of .products-head__crumbs. Wraps rather than
+     scrolls, so a level-4 trail stays readable on a phone. */
+  .crumbs {
+    @apply border-b border-paper-line py-4;
+  }
+
+  .crumbs__list {
+    @apply flex flex-wrap items-center gap-x-2.5 gap-y-1.5 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-slate;
+  }
+
+  .crumbs__item {
+    @apply flex min-w-0 items-center gap-2.5;
+  }
+
+  .crumbs__link {
+    @apply text-slate transition-colors duration-200 hover:text-ink;
+  }
+
+  /* Path segment with no page behind it — shown, but not clickable. */
+  .crumbs__plain {
+    @apply text-slate-soft;
+  }
+
+  .crumbs__current {
+    @apply min-w-0 break-words text-amber-deep;
+  }
+
+  .crumbs__sep {
+    @apply flex-shrink-0 text-steel-300;
+  }
+
   /* ── Shared: eyebrow ─────────────────────────────── */
 
   .eyebrow {

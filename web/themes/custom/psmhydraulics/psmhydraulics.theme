@@ -127,11 +127,13 @@ function psmhydraulics_preprocess_page(array &$variables): void {
   }
 
   // The products listing and the product detail page render their own
-  // breadcrumbs inside their page head bands — drop the system block there.
+  // breadcrumbs inside their page head bands, and the front page has nowhere
+  // to go back to — drop the system block in all three cases.
   $route_match = \Drupal::routeMatch();
   $route_node = $route_match->getParameter('node');
   if (
-    $route_match->getRouteName() === 'view.products.page_1'
+    $variables['is_front']
+    || $route_match->getRouteName() === 'view.products.page_1'
     || ($route_match->getRouteName() === 'entity.node.canonical'
       && $route_node instanceof \Drupal\node\NodeInterface
       && $route_node->bundle() === 'catalogue_item')
@@ -160,7 +162,7 @@ function psmhydraulics_preprocess_page(array &$variables): void {
   );
   $variables['#cache']['contexts'] = array_merge(
     $variables['#cache']['contexts'] ?? [],
-    ['languages:language_interface'],
+    ['languages:language_interface', 'url.path.is_front'],
   );
 }
 

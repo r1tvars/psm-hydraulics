@@ -8,7 +8,7 @@ dependencies:
 id: page
 label: 'Basic page alias pattern'
 type: 'canonical_entities:node'
-pattern: '[node:title]'
+pattern: '[node:menu-link:parents:join-path]/[node:title]'
 selection_criteria:
   1a7bfef8-5cb9-43fd-b862-65d4cb4b0002:
     id: 'entity_bundle:node'
