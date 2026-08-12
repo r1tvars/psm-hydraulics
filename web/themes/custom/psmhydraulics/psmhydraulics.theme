@@ -131,12 +131,16 @@ function psmhydraulics_preprocess_page(array &$variables): void {
   // to go back to — drop the system block in all three cases.
   $route_match = \Drupal::routeMatch();
   $route_node = $route_match->getParameter('node');
+  $route_term = $route_match->getParameter('taxonomy_term');
   if (
     $variables['is_front']
     || $route_match->getRouteName() === 'view.products.page_1'
     || ($route_match->getRouteName() === 'entity.node.canonical'
       && $route_node instanceof \Drupal\node\NodeInterface
       && $route_node->bundle() === 'catalogue_item')
+    || ($route_match->getRouteName() === 'entity.taxonomy_term.canonical'
+      && $route_term instanceof \Drupal\taxonomy\TermInterface
+      && $route_term->bundle() === 'product_category')
   ) {
     $variables['page']['breadcrumb'] = [];
   }
@@ -386,6 +390,7 @@ function psmhydraulics_preprocess_node(array &$variables): void {
   $variables['catalogue_item_price_status'] = '';
   $variables['catalogue_item_sku'] = '';
   $variables['catalogue_item_category'] = '';
+  $variables['catalogue_item_category_url'] = NULL;
   $variables['catalogue_item_glyph'] = 'tool';
   $variables['catalogue_item_manufacturer'] = '';
   $variables['catalogue_item_short_description'] = '';
@@ -435,7 +440,9 @@ function psmhydraulics_preprocess_node(array &$variables): void {
   if ($node->hasField('field_product_category') && !$node->get('field_product_category')->isEmpty()) {
     $term = $node->get('field_product_category')->entity;
     if ($term) {
+      $term = \Drupal::service('entity.repository')->getTranslationFromContext($term);
       $variables['catalogue_item_category'] = $term->label();
+      $variables['catalogue_item_category_url'] = $term->toUrl()->toString();
       $variables['catalogue_item_glyph'] = _psmhydraulics_product_glyph($term->label());
     }
   }
@@ -472,6 +479,8 @@ function _psmhydraulics_preprocess_product_full(array &$variables, \Drupal\node\
     'sku' => '',
     'manufacturer' => '',
     'category' => '',
+    'category_url' => NULL,
+    'category_trail' => [],
     'glyph' => 'tool',
     'price_status' => '',
     'short_description' => '',
@@ -501,7 +510,11 @@ function _psmhydraulics_preprocess_product_full(array &$variables, \Drupal\node\
   if (!$node->get('field_product_category')->isEmpty()) {
     $category_term = $node->get('field_product_category')->entity;
     if ($category_term) {
+      $category_term = \Drupal::service('entity.repository')->getTranslationFromContext($category_term);
       $product['category'] = $category_term->label();
+      $product['category_url'] = $category_term->toUrl()->toString();
+      // Full chain, so the breadcrumb reads Home / Products / … / this product.
+      $product['category_trail'] = _psmhydraulics_category_trail($category_term);
       $product['glyph'] = _psmhydraulics_product_glyph($category_term->label());
     }
   }
@@ -588,6 +601,204 @@ function _psmhydraulics_preprocess_product_full(array &$variables, \Drupal\node\
 }
 
 /**
+ * Loads the product category tree with rolled-up product counts.
+ *
+ * A product carries exactly one category, so a term's subtree count is its
+ * own published products plus those of every descendant — a plain sum that
+ * cannot double-count.
+ *
+ * @return array
+ *   Two arrays: terms keyed by parent tid then own tid (vocabulary order,
+ *   each term listed once even if it has several parents), and subtree counts
+ *   keyed by tid.
+ */
+function _psmhydraulics_product_category_tree(): array {
+  $counts = _psmhydraulics_product_counts('node__field_product_category', 'field_product_category_target_id');
+
+  $children = [];
+  foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('product_category', 0, NULL, TRUE) as $term) {
+    // loadTree() attaches parents/depth to the untranslated entity, and lists
+    // a multi-parent term once per path — key by tid so it appears once.
+    $children[(int) reset($term->parents)][(int) $term->id()] = $term;
+  }
+
+  $subtree_counts = [];
+  $walk = static function (int $parent_tid) use (&$walk, $children, $counts, &$subtree_counts): int {
+    $total = 0;
+    foreach ($children[$parent_tid] ?? [] as $term) {
+      $count = ($counts[(string) $term->id()] ?? 0) + $walk((int) $term->id());
+      $subtree_counts[(int) $term->id()] = $count;
+      $total += $count;
+    }
+    return $total;
+  };
+  $walk(0);
+
+  return [$children, $subtree_counts];
+}
+
+/**
+ * Number of subcategory links shown per mega-menu column.
+ */
+const PSMHYDRAULICS_MENU_LINKS = 6;
+
+/**
+ * Implements hook_preprocess_menu().
+ *
+ * Hangs the product category tree off the Products link, so the main menu
+ * opens a catalogue panel instead of editors having to mirror every category
+ * as a menu link by hand. The same markup becomes the drawer accordion on
+ * small screens, so this covers both.
+ */
+function psmhydraulics_preprocess_menu(array &$variables): void {
+  if (($variables['menu_name'] ?? '') !== 'main' || empty($variables['items'])) {
+    return;
+  }
+
+  foreach ($variables['items'] as &$item) {
+    $url = $item['url'] ?? NULL;
+    if (!$url instanceof Url || !$url->isRouted() || $url->getRouteName() !== 'view.products.page_1') {
+      continue;
+    }
+    $columns = _psmhydraulics_category_menu_columns();
+    if ($columns) {
+      $item['below'] = $columns;
+      $item['mega_foot'] = [
+        'note' => (string) t('// @count line items in the catalogue', [
+          '@count' => \Drupal::entityQuery('node')->accessCheck(FALSE)
+            ->condition('type', 'catalogue_item')->condition('status', 1)
+            ->count()->execute(),
+        ]),
+        'label' => (string) t('Browse all products'),
+        'url' => $url->toString(),
+      ];
+    }
+    break;
+  }
+  unset($item);
+
+  // The panel is built from terms and a product count, neither of which the
+  // menu's own cache metadata covers.
+  $variables['#cache']['tags'][] = 'taxonomy_term_list:product_category';
+  $variables['#cache']['tags'][] = 'node_list:catalogue_item';
+}
+
+/**
+ * Builds the catalogue mega-menu columns from the product category tree.
+ *
+ * One column per top-level category that has products, listing its
+ * subcategories; a column with more subcategories than fit ends with a link
+ * through to the category page.
+ */
+function _psmhydraulics_category_menu_columns(): array {
+  [$tree_children, $subtree_counts] = _psmhydraulics_product_category_tree();
+  $entity_repository = \Drupal::service('entity.repository');
+  $stocked = static fn ($term) => ($subtree_counts[(int) $term->id()] ?? 0) > 0;
+
+  $columns = [];
+  foreach (array_filter($tree_children[0] ?? [], $stocked) as $term) {
+    $children = array_filter($tree_children[(int) $term->id()] ?? [], $stocked);
+    $term = $entity_repository->getTranslationFromContext($term);
+
+    $links = [];
+    foreach (array_slice($children, 0, PSMHYDRAULICS_MENU_LINKS, TRUE) as $child) {
+      $child = $entity_repository->getTranslationFromContext($child);
+      $links[] = [
+        'title' => $child->label(),
+        'url' => $child->toUrl(),
+        'below' => [],
+        'in_active_trail' => FALSE,
+      ];
+    }
+    if (count($children) > count($links)) {
+      $links[] = [
+        'title' => t('View all (@count)', ['@count' => count($children)]),
+        'url' => $term->toUrl(),
+        'below' => [],
+        'in_active_trail' => FALSE,
+      ];
+    }
+    elseif (!$links) {
+      // A category with no subcategories would otherwise be a bare heading in
+      // an empty column; point straight at its products instead.
+      $count = $subtree_counts[(int) $term->id()] ?? 0;
+      $links[] = [
+        'title' => \Drupal::translation()->formatPlural($count, '1 product', '@count products'),
+        'url' => $term->toUrl(),
+        'below' => [],
+        'in_active_trail' => FALSE,
+      ];
+    }
+
+    $columns[] = [
+      'title' => $term->label(),
+      'url' => $term->toUrl(),
+      'below' => $links,
+      'in_active_trail' => FALSE,
+    ];
+  }
+
+  return $columns;
+}
+
+/**
+ * Returns the breadcrumb trail for a product category term.
+ *
+ * Root first, the term itself last, each entry {label, url}. Callers that
+ * render the term as the current page pop the last entry.
+ */
+function _psmhydraulics_category_trail(\Drupal\taxonomy\TermInterface $term): array {
+  $entity_repository = \Drupal::service('entity.repository');
+  $trail = [];
+  // loadAllParents() returns the term first and the root last.
+  $chain = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadAllParents($term->id());
+  foreach (array_reverse($chain, TRUE) as $ancestor) {
+    $ancestor = $entity_repository->getTranslationFromContext($ancestor);
+    $trail[] = ['label' => $ancestor->label(), 'url' => $ancestor->toUrl()->toString()];
+  }
+  return $trail;
+}
+
+/**
+ * Builds the data a category card template needs.
+ *
+ * The term must already be the translation for the current context.
+ */
+function _psmhydraulics_category_card(\Drupal\taxonomy\TermInterface $term, int $count): array {
+  return [
+    'label' => $term->label(),
+    'count' => $count,
+    'url' => $term->toUrl()->toString(),
+    'image_url' => _psmhydraulics_category_image_url($term),
+    'glyph' => _psmhydraulics_product_glyph($term->label()),
+  ];
+}
+
+/**
+ * Returns the card image URL for a product category term, if it has one.
+ *
+ * Categories reference a media image (field_category_image); terms without
+ * one fall back to a schematic glyph in the template.
+ */
+function _psmhydraulics_category_image_url(\Drupal\taxonomy\TermInterface $term, string $style = 'large'): ?string {
+  if (!$term->hasField('field_category_image') || $term->get('field_category_image')->isEmpty()) {
+    return NULL;
+  }
+  $media = $term->get('field_category_image')->entity;
+  if (!$media || !$media->hasField('field_media_image') || $media->get('field_media_image')->isEmpty()) {
+    return NULL;
+  }
+  $file = $media->get('field_media_image')->first()?->entity;
+  if (!$file) {
+    return NULL;
+  }
+  $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style);
+  return $image_style
+    ? $image_style->buildUrl($file->getFileUri())
+    : \Drupal::service('file_url_generator')->generateString($file->getFileUri());
+}
+
+/**
  * Maps a product category label to one of the schematic placeholder glyphs.
  */
 function _psmhydraulics_product_glyph(string $category): string {
@@ -642,7 +853,19 @@ function _psmhydraulics_product_counts(string $table, string $column): array {
  */
 function psmhydraulics_preprocess_views_view(array &$variables): void {
   $view = $variables['view'] ?? NULL;
-  if (!$view || $view->id() !== 'products' || $view->current_display !== 'page_1') {
+  if (!$view) {
+    return;
+  }
+
+  // Product category term pages get their own landing-page treatment.
+  if ($view->id() === 'taxonomy_term') {
+    if ($term = _psmhydraulics_product_category_term($view)) {
+      _psmhydraulics_preprocess_category_view($variables, $term);
+    }
+    return;
+  }
+
+  if ($view->id() !== 'products' || $view->current_display !== 'page_1') {
     return;
   }
 
@@ -657,23 +880,45 @@ function psmhydraulics_preprocess_views_view(array &$variables): void {
     'availability' => array_values(array_filter((array) ($input['availability'] ?? []), 'is_string')),
   ];
 
-  // Category options: vocabulary order, only terms with published products.
-  $category_counts = _psmhydraulics_product_counts('node__field_product_category', 'field_product_category_target_id');
-  $categories = [];
-  $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')
-    ->loadTree('product_category', 0, 1, TRUE);
-  foreach ($terms as $term) {
-    $term = \Drupal::service('entity.repository')->getTranslationFromContext($term);
-    $count = $category_counts[(string) $term->id()] ?? 0;
-    if ($count > 0) {
-      $categories[] = [
+  // Category options: the vocabulary tree as a nested structure, each term
+  // included only if its subtree has published products. The sidebar renders
+  // it as collapsible groups, so every option carries its own open/closed and
+  // covered state:
+  // - selected: the user ticked this term;
+  // - covered:  an ancestor is ticked, so this term is already in the results
+  //             (rendered ticked and disabled — checking a parent matches the
+  //             whole subtree via psm_site_views_query_alter());
+  // - expanded: this branch holds an active filter, so it opens on load.
+  $entity_repository = \Drupal::service('entity.repository');
+  [$tree_children, $subtree_counts] = _psmhydraulics_product_category_tree();
+  $selected_categories = [];
+  $build_category_options = static function (int $parent_tid, bool $ancestor_selected) use (&$build_category_options, $tree_children, $subtree_counts, $entity_repository, $selected, &$selected_categories): array {
+    $options = [];
+    foreach ($tree_children[$parent_tid] ?? [] as $term) {
+      $count = $subtree_counts[(int) $term->id()] ?? 0;
+      if ($count <= 0) {
+        continue;
+      }
+      $is_selected = in_array((string) $term->id(), $selected['category'], TRUE);
+      $label = $entity_repository->getTranslationFromContext($term)->label();
+      if ($is_selected) {
+        $selected_categories[] = ['value' => (string) $term->id(), 'label' => $label];
+      }
+      $children = $build_category_options((int) $term->id(), $ancestor_selected || $is_selected);
+      $branch_active = (bool) array_filter($children, static fn (array $child) => $child['selected'] || $child['expanded']);
+      $options[] = [
         'value' => (string) $term->id(),
-        'label' => $term->label(),
+        'label' => $label,
         'count' => $count,
-        'selected' => in_array((string) $term->id(), $selected['category'], TRUE),
+        'selected' => $is_selected,
+        'covered' => $ancestor_selected,
+        'expanded' => $children !== [] && ($is_selected || $ancestor_selected || $branch_active),
+        'children' => $children,
       ];
     }
-  }
+    return $options;
+  };
+  $categories = $build_category_options(0, FALSE);
 
   // Manufacturer options: distinct values, busiest first.
   $manufacturers = [];
@@ -739,10 +984,8 @@ function psmhydraulics_preprocess_views_view(array &$variables): void {
 
   // Removable chips for every active filter.
   $chips = [];
-  foreach ($categories as $option) {
-    if ($option['selected']) {
-      $chips[] = ['group' => (string) t('Cat'), 'label' => $option['label'], 'url' => $url_without('category', $option['value'])];
-    }
+  foreach ($selected_categories as $option) {
+    $chips[] = ['group' => (string) t('Cat'), 'label' => $option['label'], 'url' => $url_without('category', $option['value'])];
   }
   foreach ($manufacturers as $option) {
     if ($option['selected']) {
@@ -756,6 +999,21 @@ function psmhydraulics_preprocess_views_view(array &$variables): void {
   }
   if ($doc) {
     $chips[] = ['group' => (string) t('Doc'), 'label' => (string) t('Datasheet available'), 'url' => $url_without('doc')];
+  }
+
+  // "Browse by category" strip: top-level categories as image cards, shown
+  // only on the unfiltered first page — once someone is searching, filtering
+  // or paging, the result grid is what they are looking at.
+  $browse = [];
+  // The pager is not part of the exposed input, so the page comes from the
+  // view itself.
+  if ($search === '' && $chips === [] && (int) $view->getCurrentPage() === 0) {
+    foreach ($tree_children[0] ?? [] as $term) {
+      $count = $subtree_counts[(int) $term->id()] ?? 0;
+      if ($count > 0) {
+        $browse[] = _psmhydraulics_category_card($entity_repository->getTranslationFromContext($term), $count);
+      }
+    }
   }
 
   // Result summary + catalogue-wide total for the head counter.
@@ -800,7 +1058,9 @@ function psmhydraulics_preprocess_views_view(array &$variables): void {
     ],
     'per_page' => $per_page,
     'per_page_options' => [12, 24, 48],
+    'browse' => $browse,
     'categories' => $categories,
+    'category_active' => count($selected_categories),
     'manufacturers' => $manufacturers,
     'availability' => $availability,
     'doc' => $doc,
@@ -811,4 +1071,88 @@ function psmhydraulics_preprocess_views_view(array &$variables): void {
     'catalog_total' => $catalog_total,
     'quote' => _psmhydraulics_quote_link($quote_tags),
   ];
+}
+
+/**
+ * Returns the product category term a taxonomy_term view is rendering.
+ *
+ * Other vocabularies (tags, media directories) keep the stock term page, so
+ * everything category-specific is gated on this.
+ */
+function _psmhydraulics_product_category_term($view): ?\Drupal\taxonomy\TermInterface {
+  $tid = (int) ($view->args[0] ?? 0);
+  if (!$tid) {
+    return NULL;
+  }
+  $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
+  if (!$term instanceof \Drupal\taxonomy\TermInterface || $term->bundle() !== 'product_category') {
+    return NULL;
+  }
+  return \Drupal::service('entity.repository')->getTranslationFromContext($term);
+}
+
+/**
+ * Implements hook_theme_suggestions_views_view_alter().
+ *
+ * Gives product category term pages their own landing-page template, leaving
+ * every other vocabulary on the stock one.
+ */
+function psmhydraulics_theme_suggestions_views_view_alter(array &$suggestions, array $variables): void {
+  $view = $variables['view'] ?? NULL;
+  if ($view && $view->id() === 'taxonomy_term' && _psmhydraulics_product_category_term($view)) {
+    $suggestions[] = 'views_view__taxonomy_term__product_category';
+  }
+}
+
+/**
+ * Builds the category landing page: head band, child cards, product grid.
+ *
+ * The view itself lists the products (its argument matches the whole subtree,
+ * so a parent category shows everything below it); this adds the navigation
+ * around them.
+ */
+function _psmhydraulics_preprocess_category_view(array &$variables, \Drupal\taxonomy\TermInterface $term): void {
+  $entity_repository = \Drupal::service('entity.repository');
+  [$tree_children, $subtree_counts] = _psmhydraulics_product_category_tree();
+  $tid = (int) $term->id();
+
+  // Breadcrumbs: Home / Products / ancestors. This term itself is rendered as
+  // the current page, so drop it off the end of the trail.
+  $ancestors = _psmhydraulics_category_trail($term);
+  array_pop($ancestors);
+  $crumbs = array_merge([
+    ['label' => (string) t('Home'), 'url' => Url::fromRoute('<front>')->toString()],
+    ['label' => (string) t('Products'), 'url' => Url::fromRoute('view.products.page_1')->toString()],
+  ], $ancestors);
+
+  // Child categories, as the same cards the products page browse strip uses.
+  $children = [];
+  foreach ($tree_children[$tid] ?? [] as $child) {
+    $count = $subtree_counts[(int) $child->id()] ?? 0;
+    if ($count > 0) {
+      $children[] = _psmhydraulics_category_card($entity_repository->getTranslationFromContext($child), $count);
+    }
+  }
+
+  $description = '';
+  if ($term->hasField('description') && !$term->get('description')->isEmpty()) {
+    $description = (string) $term->get('description')->processed;
+  }
+
+  $quote_tags = [];
+  $variables['category_view'] = [
+    'crumbs' => $crumbs,
+    'eyebrow' => (string) t('Category'),
+    'title' => $term->label(),
+    'description' => $description,
+    'bg_url' => _psmhydraulics_category_image_url($term, 'wide'),
+    'total' => $subtree_counts[$tid] ?? 0,
+    'children' => $children,
+    'refine_url' => Url::fromRoute('view.products.page_1', [], ['query' => ['category' => [$tid]]])->toString(),
+    'products_url' => Url::fromRoute('view.products.page_1')->toString(),
+    'quote' => _psmhydraulics_quote_link($quote_tags),
+  ];
+
+  // The band and cards read term names, images and the tree shape.
+  $variables['#cache']['tags'][] = 'taxonomy_term_list:product_category';
 }

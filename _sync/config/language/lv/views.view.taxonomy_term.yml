@@ -17,9 +17,5 @@ display:
           reset_button_label: Attīrīt
           exposed_sorts_label: 'Kārtot pēc'
           sort_desc_label: Dilst.
-      arguments:
-        tid:
-          exception:
-            title: Visi
   page_1:
     display_title: Lapa

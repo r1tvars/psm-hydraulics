@@ -36,7 +36,11 @@
 
   <div class="product-card__body">
     {% if catalogue_item_category %}
-      <span class="product-card__cat">{{ catalogue_item_category }}</span>
+      {% if catalogue_item_category_url %}
+        <a class="product-card__cat" href="{{ catalogue_item_category_url }}">{{ catalogue_item_category }}</a>
+      {% else %}
+        <span class="product-card__cat">{{ catalogue_item_category }}</span>
+      {% endif %}
     {% endif %}
 
     <h3 class="product-card__title">

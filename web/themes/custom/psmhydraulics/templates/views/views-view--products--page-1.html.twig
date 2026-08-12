@@ -38,6 +38,20 @@
   </div>
 </section>
 
+{% if pv.browse %}
+  <section class="site-section products-browse" aria-labelledby="products-browse-title">
+    <div class="products-browse__head">
+      <span class="eyebrow">{{ 'Browse'|t }}</span>
+      <h2 class="products-browse__title" id="products-browse-title">{{ 'Product categories'|t }}</h2>
+    </div>
+    <div class="products-browse__grid">
+      {% for card in pv.browse %}
+        {% include '@psmhydraulics/includes/category-card.html.twig' with { card: card } only %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
 <div class="site-section">
   <form class="products" method="get" action="{{ pv.action }}" data-products-form>
 
@@ -60,18 +74,12 @@
           <section class="fgroup" data-fgroup="category" data-open>
             <button class="fgroup__head" type="button" aria-expanded="true">
               <span class="fgroup__name">{{ 'Category'|t }}</span>
-              {% set n = pv.categories|filter(o => o.selected)|length %}
-              <span class="fgroup__badge"{{ n ? '' : ' hidden' }}>{{ n }}</span>
+              <span class="fgroup__badge"{{ pv.category_active ? '' : ' hidden' }}>{{ pv.category_active }}</span>
               <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
             </button>
             <div class="fgroup__body"><div class="fgroup__inner">
               {% for option in pv.categories %}
-                <label class="fcheck">
-                  <input type="checkbox" name="category[]" value="{{ option.value }}"{{ option.selected ? ' checked' }}>
-                  <span class="fcheck__box" aria-hidden="true"></span>
-                  <span class="fcheck__label">{{ option.label }}</span>
-                  <span class="fcheck__count">{{ option.count }}</span>
-                </label>
+                {% include '@psmhydraulics/includes/category-filter.html.twig' with { option: option } only %}
               {% endfor %}
             </div></div>
           </section>
@@ -191,6 +199,14 @@
         </div>
       </div>
 
+      {# Screen-reader announcement for AJAX updates: must live OUTSIDE the
+         swapped region so the live region itself survives the swap. #}
+      <p class="visually-hidden" aria-live="polite" data-products-announce></p>
+
+      {# Everything below is replaced wholesale by products.js on filter,
+         sort, pager and chip changes. #}
+      <div data-products-results>
+
       <div class="products-status">
         <p class="products-status__count">
           <b>{{ pv.total }}</b> {{ pv.total == 1 ? 'product'|t : 'products'|t }}
@@ -237,6 +253,8 @@
           </div>
         </div>
       {% endif %}
+
+      </div>{# /data-products-results #}
     </main>
   </form>
 </div>

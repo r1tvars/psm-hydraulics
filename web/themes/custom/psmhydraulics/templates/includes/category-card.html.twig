@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Product category card, shared by the products listing browse strip and the
+ * category landing pages.
+ *
+ * Expects:
+ * - card: { label, count, url, image_url, glyph }.
+ */
+#}
+<a class="cat-card" href="{{ card.url }}">
+  <span class="cat-card__media">
+    {% if card.image_url %}
+      <img class="cat-card__image" src="{{ card.image_url }}" alt="" loading="lazy">
+    {% else %}
+      {% include '@psmhydraulics/includes/product-glyph.html.twig' with { glyph: card.glyph } only %}
+    {% endif %}
+  </span>
+
+  <span class="cat-card__body">
+    <span class="cat-card__name">{{ card.label }}</span>
+    <span class="cat-card__count">
+      {{ card.count }} {{ card.count == 1 ? 'item'|t : 'items'|t }}
+    </span>
+  </span>
+
+  <span class="cat-card__arrow" aria-hidden="true">
+    <i class="fa-solid fa-arrow-right"></i>
+  </span>
+</a>

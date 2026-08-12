@@ -789,6 +789,24 @@ input[type='search']::-webkit-search-cancel-button,
   background-color: rgb(216 135 12 / var(--tw-bg-opacity, 1));
 }
 
+/* Light-background sibling of .btn--ghost, whose white text disappears on
+     paper. */
+
+.btn--outline {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(201 212 222 / var(--tw-border-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(12 26 41 / var(--tw-text-opacity, 1));
+}
+
+.btn--outline:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(247 162 27 / var(--tw-border-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(247 162 27 / var(--tw-text-opacity, 1));
+}
+
 .btn--ink {
   --tw-bg-opacity: 1;
   background-color: rgb(12 26 41 / var(--tw-bg-opacity, 1));
@@ -1502,6 +1520,13 @@ a.topbar__item:hover {
   grid-template-columns: repeat(auto-fit, minmax(200px, 232px));
 }
 
+/* The catalogue panel fills the shell: five categories across at full
+     desktop width, dropping a column at a time as the viewport narrows. */
+
+.navbar .mega--catalogue .mega__cols {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
 .navbar .mega__col-head {
   margin-bottom: 0.5rem;
   display: flex;
@@ -1533,6 +1558,10 @@ a.topbar__item:hover {
   color: rgb(247 162 27 / var(--tw-text-opacity, 1));
 }
 
+/* Nudge on hover via transform, not padding: with a full catalogue in this
+     panel, sweeping the cursor down a padding-animated list reflows every
+     link it touches. */
+
 .navbar .mega__link {
   display: block;
   padding-top: 0.375rem;
@@ -1541,18 +1570,94 @@ a.topbar__item:hover {
   line-height: 1.25rem;
   --tw-text-opacity: 1;
   color: rgb(159 172 184 / var(--tw-text-opacity, 1));
-  transition-property: all;
+  transition-property: color,transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
 
 .navbar .mega__link:hover {
-  padding-left: 0.375rem;
+  --tw-translate-x: 0.375rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   --tw-text-opacity: 1;
   color: rgb(247 162 27 / var(--tw-text-opacity, 1));
 }
 
 .navbar .mega__link.is-active {
+  --tw-text-opacity: 1;
+  color: rgb(247 162 27 / var(--tw-text-opacity, 1));
+}
+
+.navbar .mega__foot {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top-width: 1px;
+  border-color: rgba(255,255,255,0.09);
+  padding-top: 1.25rem;
+}
+
+.navbar .mega__note {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  --tw-text-opacity: 1;
+  color: rgb(126 144 159 / var(--tw-text-opacity, 1));
+}
+
+.navbar .mega__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  --tw-text-opacity: 1;
+  color: rgb(247 162 27 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+.navbar .mega__cta:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.nav-drawer .mega__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top-width: 1px;
+  border-color: rgba(255,255,255,0.09);
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+
+.nav-drawer .mega__note {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  --tw-text-opacity: 1;
+  color: rgb(126 144 159 / var(--tw-text-opacity, 1));
+}
+
+.nav-drawer .mega__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
   --tw-text-opacity: 1;
   color: rgb(247 162 27 / var(--tw-text-opacity, 1));
 }
@@ -3968,11 +4073,17 @@ a.topbar__item:hover {
   }
 }
 
+/* Wraps rather than squeezing: category trails run four or more levels deep
+     on product and category pages. */
+
 .products-head__crumbs {
   margin-bottom: 1.25rem;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.625rem;
+  -moz-column-gap: 0.625rem;
+       column-gap: 0.625rem;
+  row-gap: 0.375rem;
   font-family: 'IBM Plex Mono', ui-monospace, monospace;
   font-size: 11px;
   font-weight: 500;
@@ -4066,6 +4177,184 @@ a.topbar__item:hover {
   letter-spacing: 0.28em;
   --tw-text-opacity: 1;
   color: rgb(126 144 159 / var(--tw-text-opacity, 1));
+}
+
+/* ── Products listing: browse-by-category strip ──── */
+
+.products-browse {
+  padding-top: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .products-browse {
+    padding-top: 3rem;
+  }
+}
+
+.products-browse__head {
+  margin-bottom: 1.25rem;
+}
+
+.products-browse__title {
+  margin-top: 0.625rem;
+  font-family: Oswald, ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(12 26 41 / var(--tw-text-opacity, 1));
+}
+
+@media (min-width: 640px) {
+  .products-browse__title {
+    font-size: 1.75rem;
+  }
+}
+
+.products-browse__grid {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+}
+
+@media (min-width: 640px) {
+  .products-browse__grid {
+    grid-template-columns: repeat(auto-fill, minmax(13.75rem, 1fr));
+  }
+}
+
+/* The hairline "drawn grid" comes from each card outlining itself: shadows
+     of neighbours meet in the 1px gap, and a part-filled last row leaves
+     white space rather than a slab of the grid's own background. */
+
+.cat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  padding: 1rem;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0.1, 0.2, 1);
+  box-shadow: 0 0 0 1px #E2E7EC;
+}
+
+.cat-card::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0px;
+  border-width: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(247 162 27 / var(--tw-border-opacity, 1));
+  opacity: 0;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+
+.cat-card:hover,
+  .cat-card:focus-visible {
+  --tw-bg-opacity: 1;
+  background-color: rgb(244 246 248 / var(--tw-bg-opacity, 1));
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.cat-card:hover::after,
+  .cat-card:focus-visible::after {
+  opacity: 1;
+}
+
+.cat-card__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 4/3;
+  width: 100%;
+  overflow: hidden;
+  --tw-text-opacity: 1;
+  color: rgb(86 100 114 / var(--tw-text-opacity, 1));
+}
+
+.cat-card__image {
+  position: absolute;
+  inset: 0px;
+  height: 100%;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  padding: 0.5rem;
+}
+
+.cat-card__body {
+  margin-top: 0.875rem;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cat-card__name {
+  font-family: Oswald, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.375;
+  letter-spacing: 0.04em;
+  --tw-text-opacity: 1;
+  color: rgb(12 26 41 / var(--tw-text-opacity, 1));
+}
+
+.cat-card__count {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  --tw-text-opacity: 1;
+  color: rgb(122 136 150 / var(--tw-text-opacity, 1));
+}
+
+.cat-card__arrow {
+  margin-top: 0.75rem;
+  font-size: 13px;
+  --tw-text-opacity: 1;
+  color: rgb(247 162 27 / var(--tw-text-opacity, 1));
+  opacity: 0;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+
+.cat-card:hover .cat-card__arrow,
+  .cat-card:focus-visible .cat-card__arrow {
+  opacity: 1;
+}
+
+/* ── Category landing page ───────────────────────── */
+
+.category-products {
+  padding-top: 2.5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 1024px) {
+  .category-products {
+    padding-top: 3rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.category-products__head {
+  margin-bottom: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 /* ── Products listing: layout + sidebar ──────────── */
@@ -4453,6 +4742,84 @@ a.topbar__item:hover {
   gap: 0.625rem;
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
+}
+
+/* ── Category filter tree ────────────────────────── */
+
+.fcat__row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.fcat__row .fcheck {
+  min-width: 0px;
+  flex: 1 1 0%;
+}
+
+/* Fixed gutter so every checkbox in a level lines up, toggle or not. */
+
+.fcat__toggle {
+  display: grid;
+  height: 1.25rem;
+  width: 1.25rem;
+  flex: none;
+  place-items: center;
+  border-radius: 3px;
+  font-size: 9px;
+  --tw-text-opacity: 1;
+  color: rgb(122 136 150 / var(--tw-text-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+button.fcat__toggle:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(237 240 243 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(12 26 41 / var(--tw-text-opacity, 1));
+}
+
+.fcat__toggle .fa-chevron-right {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+.fcat[data-open] > .fcat__row .fa-chevron-right {
+  --tw-rotate: 90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.fcat__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+
+.fcat[data-open] > .fcat__body {
+  grid-template-rows: 1fr;
+}
+
+/* The rail is structural here: one border per nesting level, which keeps
+     ancestor guides continuous however deep the tree goes. */
+
+.fcat__inner {
+  margin-left: 0.625rem;
+  min-height: 0px;
+  overflow: hidden;
+  border-left-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(226 231 236 / var(--tw-border-opacity, 1));
+  padding-left: 0.5rem;
+}
+
+/* A covered child (its parent is ticked) is already in the results. */
+
+.fcheck:has(input:disabled) {
+  cursor: default;
+  opacity: 0.45;
 }
 
 .fcheck input {
@@ -5015,6 +5382,20 @@ a.topbar__item:hover {
   }
 }
 
+/* In-flight AJAX update: dim and lock the results, leaving the sidebar
+     live so the next filter can be queued straight away. */
+
+[data-products-results] {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+[data-products-results].is-loading {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 /* ── Product card ────────────────────────────────── */
 
 .product-card {
@@ -5223,6 +5604,40 @@ a.topbar__item:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(216 135 12 / var(--tw-bg-opacity, 1));
   content: '';
+}
+
+/* Category is a link wherever it appears; colour-only hover, no reflow. */
+
+a.product-card__cat {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+a.product-card__cat:hover {
+  --tw-text-opacity: 1;
+  color: rgb(12 26 41 / var(--tw-text-opacity, 1));
+}
+
+a.product-card__cat:hover::before {
+  --tw-bg-opacity: 1;
+  background-color: rgb(12 26 41 / var(--tw-bg-opacity, 1));
+}
+
+a.eyebrow--dark {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+a.eyebrow--dark:hover {
+  --tw-text-opacity: 1;
+  color: rgb(12 26 41 / var(--tw-text-opacity, 1));
+}
+
+a.eyebrow--dark:hover::before {
+  --tw-bg-opacity: 1;
+  background-color: rgb(12 26 41 / var(--tw-bg-opacity, 1));
 }
 
 .product-card__title {
@@ -5619,9 +6034,12 @@ a.topbar__item:hover {
   padding-bottom: 1.25rem;
 }
 
+/* flex-1 keeps the reference pinned right when a deep trail wraps. */
+
 .product-band__crumbs {
   margin-bottom: 0px;
   min-width: 0px;
+  flex: 1 1 0%;
 }
 
 .product-band__crumbs [aria-current] {

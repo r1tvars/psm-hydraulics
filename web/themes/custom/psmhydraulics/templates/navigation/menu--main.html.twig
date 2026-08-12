@@ -35,7 +35,7 @@
         </div>
 
         {% if has_children %}
-          <div class="mega" data-menu-panel>
+          <div class="mega{{ item.mega_foot ? ' mega--catalogue' }}" data-menu-panel>
             <div class="mega__frame">
               <div class="mega__inner">
                 <div class="mega__cols">
@@ -78,6 +78,18 @@
                     </div>
                   {% endfor %}
                 </div>
+
+                {# Only the catalogue panel sets this (see
+                   psmhydraulics_preprocess_menu). #}
+                {% if item.mega_foot %}
+                  <div class="mega__foot">
+                    <span class="mega__note">{{ item.mega_foot.note }}</span>
+                    <a class="mega__cta" href="{{ item.mega_foot.url }}">
+                      {{ item.mega_foot.label }}
+                      <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                {% endif %}
               </div>
             </div>
           </div>

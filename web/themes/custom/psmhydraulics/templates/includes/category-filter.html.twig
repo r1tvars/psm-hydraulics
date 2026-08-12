@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * One row of the category filter tree, recursing into its children.
+ *
+ * A parent row carries a disclosure toggle; its children live in a collapsible
+ * body that opens when the branch holds an active filter. Ticking a parent
+ * already matches its whole subtree, so descendants render ticked and disabled
+ * (products.js keeps that in sync as the user clicks).
+ *
+ * Expects:
+ * - option: { value, label, count, selected, covered, expanded, children }.
+ */
+#}
+<div class="fcat"{{ option.expanded ? ' data-open' }} data-cat>
+  <div class="fcat__row">
+    {% if option.children %}
+      <button class="fcat__toggle" type="button" data-cat-toggle
+              aria-expanded="{{ option.expanded ? 'true' : 'false' }}"
+              aria-label="{{ 'Show subcategories of @name'|t({'@name': option.label}) }}">
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+      </button>
+    {% else %}
+      <span class="fcat__toggle fcat__toggle--leaf" aria-hidden="true"></span>
+    {% endif %}
+
+    <label class="fcheck">
+      <input type="checkbox" name="category[]" value="{{ option.value }}"
+             {%- if option.covered %} checked disabled{% elseif option.selected %} checked{% endif %}>
+      <span class="fcheck__box" aria-hidden="true"></span>
+      <span class="fcheck__label">{{ option.label }}</span>
+      <span class="fcheck__count">{{ option.count }}</span>
+    </label>
+  </div>
+
+  {% if option.children %}
+    {# inert keeps a collapsed branch out of the tab order, not just out of
+       sight; products.js flips it as the branch opens. #}
+    <div class="fcat__body"{{ option.expanded ? '' : ' inert' }}><div class="fcat__inner">
+      {% for child in option.children %}
+        {% include '@psmhydraulics/includes/category-filter.html.twig' with { option: child } only %}
+      {% endfor %}
+    </div></div>
+  {% endif %}
+</div>

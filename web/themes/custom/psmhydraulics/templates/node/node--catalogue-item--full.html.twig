@@ -20,6 +20,10 @@
         <span class="products-head__crumb-sep" aria-hidden="true">/</span>
         <a href="{{ products_index_url }}">{{ 'Products'|t }}</a>
         <span class="products-head__crumb-sep" aria-hidden="true">/</span>
+        {% for crumb in product.category_trail %}
+          <a href="{{ crumb.url }}">{{ crumb.label }}</a>
+          <span class="products-head__crumb-sep" aria-hidden="true">/</span>
+        {% endfor %}
         <span aria-current="page">{{ label }}</span>
       </nav>
       {% if product.sku %}
@@ -74,7 +78,11 @@
 
     <div class="product-info">
       {% if product.category %}
-        <span class="eyebrow eyebrow--dark">{{ product.category }}</span>
+        {% if product.category_url %}
+          <a class="eyebrow eyebrow--dark" href="{{ product.category_url }}">{{ product.category }}</a>
+        {% else %}
+          <span class="eyebrow eyebrow--dark">{{ product.category }}</span>
+        {% endif %}
       {% endif %}
       <h1 class="product-info__title">{{ label }}</h1>
 
