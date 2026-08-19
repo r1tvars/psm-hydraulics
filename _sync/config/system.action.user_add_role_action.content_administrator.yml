@@ -1,0 +1,14 @@
+uuid: 8432e89c-93e9-4032-bde5-ce74ab229610
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - user.role.content_administrator
+  module:
+    - user
+id: user_add_role_action.content_administrator
+label: 'Add the Content administrator role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: content_administrator

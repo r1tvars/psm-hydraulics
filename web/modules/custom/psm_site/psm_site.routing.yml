@@ -4,7 +4,7 @@ psm_site.settings:
     _form: '\Drupal\psm_site\Form\SiteSettingsForm'
     _title: 'PSM site settings'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer psm site settings+administer site configuration'
 
 psm_site.search_suggest:
   path: '/psm-site/search-suggest'

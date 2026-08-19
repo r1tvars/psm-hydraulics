@@ -1,0 +1,23 @@
+_core:
+  default_config_hash: IgOVnECx6lbVt6JVFnadoEEugneDf3UblPZnOzov43Q
+mode: advanced
+ignored_config_entities:
+  create:
+    import: {  }
+    export: {  }
+  update:
+    import:
+      - 'block.block.*'
+      - 'language.*|*'
+      - psm_site.settings
+      - 'system.menu.*'
+      - 'webform.webform.*'
+    export: {  }
+  delete:
+    import:
+      - 'block.block.*'
+      - 'language.*|*'
+      - psm_site.settings
+      - 'system.menu.*'
+      - 'webform.webform.*'
+    export: {  }
