@@ -3,6 +3,8 @@ langcode: en-gb
 status: true
 dependencies:
   config:
+    - field.field.paragraph.partner_logos.field_background
+    - field.field.paragraph.partner_logos.field_background_image
     - field.field.paragraph.partner_logos.field_eyebrow
     - field.field.paragraph.partner_logos.field_partner_items
     - paragraphs.paragraphs_type.partner_logos
@@ -30,4 +32,6 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-hidden: {  }
+hidden:
+  field_background: true
+  field_background_image: true

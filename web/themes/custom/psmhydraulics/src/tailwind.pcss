@@ -78,15 +78,15 @@
 
   /* Path segment with no page behind it — shown, but not clickable. */
   .crumbs__plain {
-    @apply text-slate-soft;
+    @apply text-mute-light;
   }
 
   .crumbs__current {
-    @apply min-w-0 break-words text-amber-deep;
+    @apply min-w-0 break-words text-amber-text;
   }
 
   .crumbs__sep {
-    @apply flex-shrink-0 text-steel-300;
+    @apply flex-shrink-0 text-mute-light;
   }
 
   /* ── Shared: eyebrow ─────────────────────────────── */
@@ -101,7 +101,7 @@
   }
 
   .eyebrow--dark {
-    @apply text-amber-deep;
+    @apply text-amber-text;
   }
 
   .eyebrow--dark::before {
@@ -190,7 +190,10 @@
   /* ── Sticky header: logo · search · CTA ──────────── */
 
   .site-header {
-    @apply sticky top-0 z-50 bg-white transition-shadow duration-300;
+    @apply sticky z-50 bg-white transition-shadow duration-300;
+    /* The admin toolbar displaces the viewport top for logged-in users;
+       without honouring it the header parks underneath the toolbar. */
+    top: var(--drupal-displace-offset-top, 0px);
   }
 
   .site-header.is-scrolled {
@@ -960,7 +963,7 @@
   }
 
   .informational-block-item__heading {
-    @apply mb-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-deep;
+    @apply mb-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-text;
   }
 
   .informational-block-item__heading::before {
@@ -1093,8 +1096,13 @@
     @apply m-0;
   }
 
+  /* The hairlines between cards are the container's background showing
+     through 1px gaps, so a fixed column count paints an empty cell as a
+     phantom box whenever the editor adds fewer cards than columns. Letting
+     the track count follow the content keeps the row exactly full. */
   .statistics-bar__items {
-    @apply grid gap-px border border-line-dark bg-line-dark sm:grid-cols-2 xl:grid-cols-4;
+    @apply grid gap-px border border-line-dark bg-line-dark;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   }
 
   .statistics-bar-item {
@@ -1165,6 +1173,727 @@
 
   .statistics-bar-item:hover .statistics-bar-item__indicator::before {
     transform: translate3d(2px, -2px, 0);
+  }
+
+  /* ── Section bands ───────────────────────────────── */
+
+  /* A band's colour is chosen per section in the editor. The dark variants
+     flip the type to light through .is-dark below, so a component written
+     for a white ground still reads correctly on ink. */
+  .section-band {
+    @apply relative isolate;
+  }
+
+  .section-band.section-band--white {
+    @apply bg-white;
+  }
+
+  .section-band.section-band--paper {
+    @apply bg-paper;
+  }
+
+  .section-band.section-band--ink {
+    @apply bg-ink;
+  }
+
+  .section-band.section-band--panel {
+    @apply bg-panel;
+  }
+
+  .section-band.section-band--deep {
+    @apply bg-ink-deep;
+  }
+
+  .section-band__photo,
+  .section-band__photo .field,
+  .section-band__photo .field__item,
+  .section-band__photo .media,
+  .section-band__photo .media__content {
+    @apply absolute inset-0 h-full;
+    z-index: -2;
+  }
+
+  .section-band__photo img {
+    @apply h-full w-full object-cover object-center;
+  }
+
+  /* The same ink wash the statistics bar uses, so photographic bands keep
+     the palette instead of drifting towards the photo's own colours. */
+  .section-band__wash {
+    @apply absolute inset-0;
+    z-index: -1;
+    background-image: linear-gradient(
+      90deg,
+      rgba(12, 26, 41, 0.93) 0%,
+      rgba(12, 26, 41, 0.82) 50%,
+      rgba(12, 26, 41, 0.91) 100%
+    );
+  }
+
+  /* ── Dark bands ──────────────────────────────────── */
+
+  .section-band.is-dark h2,
+  .section-band.is-dark h3,
+  .section-band.is-dark .informational-block__heading,
+  .section-band.is-dark .team__heading,
+  .section-band.is-dark .history__heading,
+  .section-band.is-dark .mate__name,
+  .section-band.is-dark .history-item__heading {
+    @apply text-white;
+  }
+
+  .section-band.is-dark .informational-block__description,
+  .section-band.is-dark .team__intro,
+  .section-band.is-dark .history__intro,
+  .section-band.is-dark .history-item__text,
+  .section-band.is-dark .mate__contact {
+    @apply text-mute-dark;
+  }
+
+  /* The light-ground amber is deliberately dark; on ink it needs the bright
+     brand amber back, which clears 7:1 on every dark band. */
+  .section-band.is-dark .informational-block-item__heading {
+    @apply text-amber-text;
+  }
+
+  .section-band.is-dark .eyebrow--dark,
+  .section-band.is-dark .history__year,
+  .section-band.is-dark .history__era,
+  .section-band.is-dark .history-item__year,
+  .section-band.is-dark .history-item.is-live .history-item__tick,
+  .section-band.is-dark .mate__role {
+    @apply text-amber;
+  }
+
+  .section-band.is-dark .eyebrow--dark::before {
+    @apply bg-amber;
+  }
+
+  .section-band.is-dark .history__count,
+  .section-band.is-dark .history__hint,
+  .section-band.is-dark .history-item__tick {
+    @apply text-mute-dark;
+  }
+
+  /* Cards and rules: a hairline that reads on white disappears on ink. */
+  .section-band.is-dark .team__grid {
+    @apply border border-line-dark bg-line-dark;
+  }
+
+  .section-band.is-dark .mate__contact {
+    @apply border-line-dark bg-transparent;
+  }
+
+  .section-band.is-dark .mate {
+    @apply bg-panel;
+  }
+
+  .section-band.is-dark .mate:hover {
+    @apply bg-panel-light;
+  }
+
+  .section-band.is-dark .mate__portrait {
+    @apply bg-ink-deep;
+  }
+
+  .section-band.is-dark .mate__role {
+    @apply text-amber;
+  }
+
+  .section-band.is-dark .history-item__card {
+    @apply border-line-dark bg-panel;
+  }
+
+  .section-band.is-dark .history-item.is-live .history-item__card {
+    @apply border-line-dark-2;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+  }
+
+  .section-band.is-dark .history-item__tag {
+    @apply border-line-dark bg-ink text-steelgray;
+  }
+
+  .section-band.is-dark .history-item__node {
+    @apply border-steelgray bg-ink;
+  }
+
+  .section-band.is-dark .history__list::before,
+  .section-band.is-dark .history__rail {
+    @apply bg-line-dark-2;
+  }
+
+  .section-band.is-dark .history-item__card::after {
+    @apply bg-line-dark-2;
+  }
+
+  .section-band.is-dark .history__btn {
+    @apply border-line-dark-2 text-white;
+  }
+
+  .section-band.is-dark .history__btn:hover:not(:disabled) {
+    @apply border-amber bg-amber text-ink;
+  }
+
+  .section-band.is-dark .partner-logos__rule {
+    @apply bg-line-dark-2;
+  }
+
+  .section-band.is-dark .partner-logos__count {
+    @apply text-mute-dark;
+  }
+
+  .section-band.is-dark .plogo,
+  .section-band.is-dark .partner-logo {
+    @apply text-mute-dark;
+  }
+
+  .section-band.is-dark .plogo:hover,
+  .section-band.is-dark .partner-logo:hover {
+    @apply text-white;
+  }
+
+  .section-band.is-dark .informational-block__plate {
+    @apply border-amber;
+  }
+
+  /* Bands that carry a photo already sit on the ink wash. */
+  .partner-logos.is-dark,
+  .partner-logos.section-band--ink,
+  .partner-logos.section-band--panel,
+  .partner-logos.section-band--deep {
+    @apply border-b-0;
+  }
+
+  /* ── Section-by-section scrolling ────────────────── */
+
+  /* Off by default. The html class comes from the site setting, and the
+     media query keeps phones, short windows and reduce-motion users on a
+     normal continuous scroll however the setting is left. */
+  .chapter-rail,
+  .chapter-hud,
+  .chapter-progress {
+    display: none;
+  }
+
+  @media (min-width: 900px) and (min-height: 620px) {
+    html.chapters-on {
+      /* Everything pinned above the content: the admin toolbar when there is
+         one, plus the site header. Sections are sized and snapped against
+         this, so a logged-in editor sees the same layout as a visitor. */
+      --chrome-top: calc(var(--drupal-displace-offset-top, 0px) + var(--hdr, 0px));
+      scroll-snap-type: y mandatory;
+    }
+
+    /* Section wrappers centre themselves with auto inline margins. Inside a
+       flex column those margins suppress the default stretch, so the wrapper
+       collapses to shrink-to-fit and the section renders narrow. Decorative
+       layers are absolutely positioned and excluded by their aria-hidden. */
+    html.chapters-on .node-page__sections--chapters > .chapter > *:not([aria-hidden='true']) {
+      width: 100%;
+    }
+
+    html.chapters-on .node-page__sections--chapters > .chapter {
+      min-height: calc(100dvh - var(--chrome-top));
+      /* The offset lives on the snap target, not as scroll-padding on the
+         container: Drupal's displace.js writes scroll-padding-top inline on
+         <html> for logged-in users, and an inline style beats any rule we
+         could write. scroll-margin is ours alone. */
+      scroll-margin-top: var(--chrome-top);
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* The first section rests at scroll 0, where the utility bar is still
+       on screen, so it gets that much less height to play with. */
+    html.chapters-on .node-page__sections--chapters > .chapter:first-child {
+      min-height: calc(100dvh - var(--chrome-top) - var(--topbar, 0px));
+    }
+
+    /* Mandatory snapping only rests on a snap target: without these the top
+       of the page and the footer are unreachable. */
+    html.chapters-on .topbar {
+      scroll-snap-align: start;
+    }
+
+    html.chapters-on .footer {
+      scroll-snap-align: end;
+    }
+
+    /* The history branch needs a definite height, not merely a minimum, or
+       its inner strip has nothing to size against. */
+    html.chapters-on .node-page__sections--chapters > .history {
+      height: calc(100dvh - var(--chrome-top));
+    }
+
+    html.chapters-on .chapter-rail {
+      @apply fixed right-6 top-1/2 z-30 flex flex-col gap-0.5 opacity-0 transition-opacity duration-300;
+      transform: translateY(-50%);
+    }
+
+    html.chapters-on .chapter-hud {
+      @apply fixed left-6 z-30 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-steelgray opacity-0 transition-opacity duration-300;
+      top: calc(var(--chrome-top) + 1rem);
+      font-variant-numeric: tabular-nums;
+      mix-blend-mode: difference;
+    }
+
+    html.chapters-on .chapter-progress {
+      @apply fixed left-0 z-[60] block h-0.5 w-0 bg-amber;
+      top: var(--drupal-displace-offset-top, 0px);
+      transition: width 0.15s linear;
+    }
+
+    html.chapters-on body.has-scrolled .chapter-rail,
+    html.chapters-on body.has-scrolled .chapter-hud {
+      @apply opacity-100;
+    }
+  }
+
+  .chapter-hud b {
+    @apply font-medium text-amber;
+  }
+
+  /* A 44x34 target. The label is positioned out of flow on purpose: while
+     hidden it must not leave a wide invisible button over page content. */
+  .chapter-rail__item {
+    @apply relative flex h-[34px] w-11 cursor-pointer items-center justify-end border-0 bg-transparent p-0;
+  }
+
+  .chapter-rail__label {
+    @apply pointer-events-none absolute whitespace-nowrap font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] text-steelgray opacity-0 transition-all duration-200;
+    right: calc(100% + 0.5rem);
+    transform: translateX(6px);
+  }
+
+  .chapter-rail__tick {
+    @apply w-[26px] flex-shrink-0 bg-line-dark-2 transition-all duration-200;
+    height: 2px;
+  }
+
+  .chapter-rail__item:hover .chapter-rail__tick {
+    @apply bg-steelgray;
+  }
+
+  .chapter-rail__item:hover .chapter-rail__label,
+  .chapter-rail__item:focus-visible .chapter-rail__label {
+    @apply opacity-100;
+    transform: none;
+  }
+
+  .chapter-rail__item[aria-current='true'] .chapter-rail__tick {
+    @apply w-10 bg-amber;
+  }
+
+  .chapter-rail__item[aria-current='true'] .chapter-rail__label {
+    @apply text-amber opacity-100;
+    transform: none;
+  }
+
+  .chapter-rail--on-light .chapter-rail__label {
+    @apply text-slate;
+  }
+
+  .chapter-rail--on-light .chapter-rail__tick {
+    @apply bg-steel-300;
+  }
+
+  .chapter-rail--on-light .chapter-rail__item:hover .chapter-rail__tick {
+    @apply bg-slate;
+  }
+
+  /* ── History branch ──────────────────────────────── */
+
+  .history {
+    @apply bg-paper py-14 sm:py-16 xl:py-20;
+  }
+
+  .history__inner {
+    @apply mx-auto flex max-w-shell flex-col gap-5 px-5 sm:px-6 lg:px-8;
+  }
+
+  .history__head {
+    @apply flex flex-wrap items-end justify-between gap-x-8 gap-y-4;
+  }
+
+  .history__heading {
+    @apply mt-3 font-display font-bold uppercase text-ink;
+    font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  }
+
+  .history__heading .field,
+  .history__heading .field__item,
+  .history__year .field,
+  .history__year .field__item {
+    display: contents;
+  }
+
+  .history__intro {
+    @apply mt-3 max-w-[52ch] text-sm leading-7 text-slate;
+  }
+
+  .history__intro p {
+    @apply m-0;
+  }
+
+  .history__meta {
+    @apply flex items-end gap-6;
+  }
+
+  /* Year and era are editor text of varying length. Right-aligned they slid
+     sideways on every change; a reserved width with a fixed left edge keeps
+     the block still while the words swap. */
+  /* Reserved width so a shorter label cannot drag the row sideways when the
+     milestone changes. */
+  .history__now {
+    @apply flex flex-col items-start;
+    min-width: 13rem;
+  }
+
+  /* Deliberately untransitioned: the year is a readout, so it swaps
+     instantly rather than easing between values. */
+  .history__year {
+    @apply font-display font-bold leading-none text-ink;
+    font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .history__era {
+    @apply mt-1.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.2em] text-amber-text;
+  }
+
+  .history__count {
+    @apply font-mono text-[11px] tracking-[0.18em] text-mute-light;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .history__nav {
+    @apply flex gap-2;
+  }
+
+  .history__btn {
+    @apply grid h-11 w-11 place-items-center rounded-brand border border-steel-300 bg-transparent text-ink transition-all duration-300;
+  }
+
+  .history__btn:hover:not(:disabled) {
+    @apply border-amber bg-amber text-ink;
+  }
+
+  .history__btn:disabled {
+    @apply cursor-default opacity-30;
+  }
+
+  /* Vertical wheel deliberately passes through to the page, so the branch
+     never traps the reader; it moves by drag, swipe, arrows or buttons. */
+  .history__viewport {
+    @apply relative min-h-0 flex-1 cursor-grab overflow-x-auto overflow-y-hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .history__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .history__viewport.is-dragging {
+    @apply cursor-grabbing;
+    scroll-snap-type: none;
+  }
+
+  .history__list {
+    --axis-y: 50%;
+    --item-w: clamp(15rem, 23vw, 19rem);
+    @apply relative m-0 flex h-full w-max list-none items-stretch;
+    min-height: 15rem;
+    /* Half a card at each end, so the first and last milestones can reach
+       the centre line like every other one. */
+    padding-inline: calc(50% - var(--item-w) / 2);
+  }
+
+  .history__list::before {
+    @apply absolute left-0 right-0 h-0.5 bg-paper-line;
+    content: '';
+    top: var(--axis-y);
+    transform: translateY(-50%);
+  }
+
+  .history__fill {
+    @apply absolute left-0 h-0.5 w-0 bg-amber;
+    top: var(--axis-y);
+    transform: translateY(-50%);
+    transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .history-item {
+    @apply relative grid px-2;
+    flex: 0 0 var(--item-w);
+    grid-template-rows: 1fr 3.5rem 1fr;
+    scroll-snap-align: center;
+  }
+
+  .history-item__card {
+    @apply relative mb-5 self-end rounded-brand border border-paper-line bg-white p-4 opacity-50;
+    grid-row: 1;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Odd milestones sit above the trunk, even ones below. */
+  .history-item:nth-child(even) .history-item__card {
+    @apply mb-0 mt-5 self-start;
+    grid-row: 3;
+  }
+
+  .history-item__card::after {
+    @apply absolute left-1/2 top-full h-5 w-px bg-paper-line;
+    content: '';
+    transition: background-color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .history-item:nth-child(even) .history-item__card::after {
+    @apply bottom-full top-auto;
+  }
+
+  .history-item.is-on .history-item__card {
+    @apply opacity-100;
+  }
+
+  .history-item.is-on .history-item__card::after {
+    @apply bg-amber;
+  }
+
+  .history-item.is-live .history-item__card {
+    @apply border-steel-300;
+    box-shadow: 0 14px 34px rgba(12, 26, 41, 0.09);
+  }
+
+  .history-item__axis {
+    @apply relative grid place-items-center;
+    grid-row: 2;
+  }
+
+  .history-item__node {
+    @apply grid h-4 w-4 place-items-center rounded-full border-2 border-steel-300 bg-paper transition-all duration-500;
+  }
+
+  .history-item__node::after {
+    @apply h-1.5 w-1.5 rounded-full bg-transparent transition-colors duration-500;
+    content: '';
+  }
+
+  .history-item.is-on .history-item__node {
+    @apply border-amber;
+  }
+
+  .history-item.is-on .history-item__node::after {
+    @apply bg-amber;
+  }
+
+  .history-item.is-live .history-item__node {
+    transform: scale(1.3);
+  }
+
+  .history-item__tick {
+    @apply absolute font-mono text-[11px] font-medium tracking-[0.18em] text-mute-light transition-colors duration-500;
+    top: calc(50% + 1.125rem);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .history-item:nth-child(even) .history-item__tick {
+    @apply bottom-auto;
+    top: auto;
+    bottom: calc(50% + 1.125rem);
+  }
+
+  .history-item.is-live .history-item__tick {
+    @apply text-amber-text;
+  }
+
+  .history-item__year {
+    @apply font-mono text-xs font-medium tracking-[0.22em] text-amber-text;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .history-item__heading {
+    @apply my-1.5 font-display text-lg font-bold uppercase text-ink;
+  }
+
+  .history-item__text {
+    @apply text-[13px] leading-[1.7] text-slate;
+  }
+
+  .history-item__text p {
+    @apply m-0;
+  }
+
+  .history-item__tags {
+    @apply mt-3 flex flex-wrap gap-2;
+  }
+
+  .history-item__tag {
+    @apply rounded-brand border border-paper-line bg-paper px-1.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-slate;
+  }
+
+  .history__rail {
+    @apply relative h-0.5 bg-paper-line;
+  }
+
+  .history__rail i {
+    @apply absolute bottom-0 left-0 top-0 w-0 bg-amber;
+  }
+
+  .history__hint {
+    @apply font-mono text-[10.5px] uppercase tracking-[0.18em] text-mute-light;
+  }
+
+  /* One row under the trunk: alternating sides need height a phone lacks. */
+  @media (max-width: 899px) {
+    .history__list {
+      --axis-y: 1.75rem;
+      --item-w: 78vw;
+      min-height: 22rem;
+    }
+
+    .history-item {
+      grid-template-rows: 0 3.5rem 1fr;
+    }
+
+    .history-item__card,
+    .history-item:nth-child(even) .history-item__card {
+      @apply mb-0 mt-5 self-start;
+      grid-row: 3;
+    }
+
+    .history-item__card::after,
+    .history-item:nth-child(even) .history-item__card::after {
+      @apply bottom-full top-auto;
+    }
+
+    .history-item__tick,
+    .history-item:nth-child(even) .history-item__tick {
+      top: calc(50% + 1.125rem);
+      bottom: auto;
+    }
+
+    .history__head {
+      @apply flex-col items-start gap-5;
+    }
+
+    .history__meta {
+      @apply w-full flex-wrap items-center gap-x-4 gap-y-2;
+    }
+
+    .history__now {
+      @apply flex-row items-baseline gap-3;
+      flex: 1 1 100%;
+    }
+
+    .history__era {
+      @apply mt-0;
+    }
+
+    .history__nav {
+      @apply ml-auto flex-shrink-0;
+    }
+  }
+
+  /* ── Team ────────────────────────────────────────── */
+
+  .team {
+    @apply bg-white py-14 sm:py-16 xl:py-24;
+  }
+
+  .team__inner {
+    @apply mx-auto max-w-shell px-5 sm:px-6 lg:px-8;
+  }
+
+  .team__head {
+    @apply mb-10 flex flex-wrap items-end justify-between gap-x-8 gap-y-5;
+  }
+
+  .team__head-main {
+    @apply flex flex-col items-start gap-3.5;
+  }
+
+  .team__heading {
+    @apply font-display font-bold uppercase text-ink;
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+  }
+
+  .team__heading .field,
+  .team__heading .field__item,
+  .mate__name .field,
+  .mate__name .field__item,
+  .mate__role .field,
+  .mate__role .field__item {
+    display: contents;
+  }
+
+  .team__intro {
+    @apply max-w-[42ch] text-sm leading-7 text-slate;
+  }
+
+  .team__intro p {
+    @apply m-0;
+  }
+
+  /* Same reason as .statistics-bar__items: a team of three must not leave
+     a fourth empty cell showing the separator colour. */
+  .team__grid {
+    @apply grid gap-px border border-paper-line bg-paper-line;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+
+  .mate {
+    @apply flex flex-col gap-4 bg-white p-7 transition-colors duration-200;
+  }
+
+  .mate:hover {
+    @apply bg-paper;
+  }
+
+  .mate__portrait {
+    @apply relative grid aspect-square place-items-center overflow-hidden rounded-brand bg-ink;
+  }
+
+  .mate__portrait img {
+    @apply h-full w-full object-cover;
+  }
+
+  .mate__portrait--initials span {
+    @apply font-display text-4xl font-bold uppercase tracking-[0.04em] text-white opacity-90;
+  }
+
+  .mate__portrait--initials::after {
+    @apply absolute inset-0;
+    content: '';
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  .mate__name {
+    @apply font-display text-lg font-semibold uppercase tracking-[0.03em] text-ink;
+  }
+
+  .mate__role {
+    @apply mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-amber-text;
+  }
+
+  .mate__contact {
+    @apply mt-auto flex flex-col gap-1 border-t border-paper-line pt-3.5 text-[13px] text-slate;
+  }
+
+  .mate__contact a {
+    @apply no-underline;
+  }
+
+  .mate__contact a:hover {
+    @apply text-amber-deep;
   }
 
   /* ── Segments grid ───────────────────────────────── */
@@ -1425,7 +2154,7 @@
   }
 
   .partner-logos__count {
-    @apply font-mono text-xs tracking-[0.1em] text-slate-soft;
+    @apply font-mono text-xs tracking-[0.1em] text-mute-light;
   }
 
   .partner-logos__track {
@@ -1448,7 +2177,7 @@
   }
 
   .partner-logo {
-    @apply flex items-center gap-2.5 whitespace-nowrap font-display text-[22px] font-semibold uppercase tracking-[0.08em] text-[#A9B4BE] opacity-[0.85] transition-all duration-300;
+    @apply flex items-center gap-2.5 whitespace-nowrap font-display text-[22px] font-semibold uppercase tracking-[0.08em] text-[#5E6C7A] opacity-[0.85] transition-all duration-300;
   }
 
   .partner-logo:hover {
@@ -1704,7 +2433,7 @@
   }
 
   .products-head__crumb-sep {
-    @apply text-slate;
+    @apply text-mute-dark;
   }
 
   .products-head__row {
@@ -1796,7 +2525,7 @@
   }
 
   .cat-card__count {
-    @apply font-mono text-[11px] text-slate-soft;
+    @apply font-mono text-[11px] text-mute-light;
   }
 
   .cat-card__arrow {
@@ -1874,7 +2603,7 @@
   }
 
   .products-panel__reset {
-    @apply font-mono text-[11px] uppercase tracking-[0.1em] text-slate-soft transition-colors duration-200 hover:text-amber-deep;
+    @apply font-mono text-[11px] uppercase tracking-[0.1em] text-mute-light transition-colors duration-200 hover:text-amber-text;
   }
 
   .fgroup {
@@ -2029,7 +2758,7 @@
   }
 
   .fcheck__count {
-    @apply font-mono text-[11px] text-slate-soft;
+    @apply font-mono text-[11px] text-mute-light;
   }
 
   .fcheck__dot {
@@ -2098,11 +2827,11 @@
   }
 
   .products-toolbar__sort label {
-    @apply font-mono text-[11px] uppercase tracking-[0.16em] text-slate-soft;
+    @apply font-mono text-[11px] uppercase tracking-[0.16em] text-mute-light;
   }
 
   .products-toolbar__sort select {
-    @apply max-w-[9.5rem] cursor-pointer border-0 bg-transparent py-2 text-[13.5px] font-medium;
+    @apply max-w-[9.5rem] cursor-pointer border-0 bg-transparent py-2 text-[13.5px] font-medium text-ink;
   }
 
   .products-toolbar__view {
@@ -2311,7 +3040,7 @@
   }
 
   .product-card__cat {
-    @apply mb-2 inline-flex items-center gap-2 font-mono text-[10.5px] font-medium uppercase tracking-[0.2em] text-amber-deep;
+    @apply mb-2 inline-flex items-center gap-2 font-mono text-[10.5px] font-medium uppercase tracking-[0.2em] text-amber-text;
   }
 
   .product-card__cat::before {
@@ -2357,7 +3086,7 @@
   }
 
   .product-card__meta-label {
-    @apply mr-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-slate-soft;
+    @apply mr-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-mute-light;
   }
 
   .product-card__foot {
@@ -2377,7 +3106,7 @@
   }
 
   .product-card__ds {
-    @apply inline-flex items-center gap-1.5 font-mono text-[11px] tracking-[0.06em] text-slate-soft transition-colors duration-200 hover:text-amber-deep;
+    @apply inline-flex items-center gap-1.5 font-mono text-[11px] tracking-[0.06em] text-mute-light transition-colors duration-200 hover:text-amber-text;
   }
 
   .product-card__ds .fa-file-pdf {
@@ -2437,11 +3166,12 @@
   }
 
   .products-pager__meta {
-    @apply flex items-center gap-2.5 font-mono text-[11.5px] uppercase tracking-[0.08em] text-slate-soft;
+    @apply flex items-center gap-2.5 font-mono text-[11.5px] uppercase tracking-[0.08em] text-mute-light;
   }
 
+  /* The select inherited the label's grey; its options are real choices. */
   .products-pager__meta select {
-    @apply cursor-pointer rounded-brand border border-paper-line bg-white px-2.5 py-2 font-mono text-xs;
+    @apply cursor-pointer rounded-brand border border-paper-line bg-white px-2.5 py-2 font-mono text-xs text-ink;
   }
 
   .products-empty {
@@ -2630,7 +3360,7 @@
   }
 
   .product-facts__row dt {
-    @apply font-mono text-[10px] uppercase tracking-[0.18em] text-slate-soft;
+    @apply font-mono text-[10px] uppercase tracking-[0.18em] text-mute-light;
   }
 
   .product-facts__row dd {
@@ -2650,11 +3380,11 @@
   }
 
   .product-info__note {
-    @apply mt-5 flex items-start gap-2.5 border-t border-paper-line pt-4 text-[13px] text-slate-soft;
+    @apply mt-5 flex items-start gap-2.5 border-t border-paper-line pt-4 text-[13px] text-mute-light;
   }
 
   .product-info__note i {
-    @apply mt-0.5 text-amber-deep;
+    @apply mt-0.5 text-amber-text;
   }
 
   /* ── Product detail: sections, documents, related ── */

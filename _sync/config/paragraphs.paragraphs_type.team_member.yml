@@ -1,0 +1,10 @@
+uuid: c7edb222-6f07-46b9-9fc9-c9279071e42b
+langcode: en-gb
+status: true
+dependencies: {  }
+id: team_member
+label: 'Team member'
+icon_uuid: null
+icon_default: null
+description: 'One person: name, role and how to reach them.'
+behavior_plugins: {  }

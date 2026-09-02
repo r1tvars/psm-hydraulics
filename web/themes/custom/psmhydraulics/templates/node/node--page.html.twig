@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * A basic page: optional body copy in the shell, then the content sections
+ * full width.
+ *
+ * - psm_chapters: TRUE when the site setting asks for section-by-section
+ *   scrolling. The wrapper is marked either way so the JS can find it; the
+ *   snapping itself is gated on the html class and a viewport query.
+ */
+#}
+{% set sections = content.field_content_sections|render %}
+{% set rest = content|without('field_content_sections') %}
+
+<article{{ attributes.addClass('node', 'node--page') }}>
+  {% if rest|render|trim %}
+    <div class="site-section node-page__body">
+      {{ title_prefix }}
+      {% if not page %}
+        <h2{{ title_attributes }}><a href="{{ url }}" rel="bookmark">{{ label }}</a></h2>
+      {% endif %}
+      {{ title_suffix }}
+      <div{{ content_attributes.addClass('node-content') }}>{{ rest }}</div>
+    </div>
+  {% endif %}
+
+  {% if sections %}
+    <div class="node-page__sections{{ psm_chapters ? ' node-page__sections--chapters' : '' }}"
+         {% if psm_chapters %}data-chapters{% endif %}>
+      {{ sections }}
+    </div>
+  {% endif %}
+</article>

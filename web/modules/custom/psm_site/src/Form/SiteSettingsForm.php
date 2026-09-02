@@ -204,6 +204,21 @@ final class SiteSettingsForm extends ConfigFormBase {
       '#default_value' => (bool) ($config->get('products_show_counter') ?? TRUE),
     ];
 
+    $form['presentation'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Page scrolling'),
+      '#description' => $this->t('Affects pages built from content sections, such as About us. The front page always scrolls normally.'),
+      '#group' => 'sections',
+      '#open' => FALSE,
+    ];
+
+    $form['presentation']['chapter_scroll'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Scroll section by section'),
+      '#default_value' => (bool) ($config->get('chapter_scroll') ?? FALSE),
+      '#description' => $this->t('On: each section fills the screen and scrolling moves to the next one, like a slideshow. Off: the page scrolls normally in one continuous flow. Phones and small windows always scroll normally, and visitors who ask their device to reduce motion are never snapped.'),
+    ];
+
     $form['header_search'] = [
       '#type' => 'details',
       '#title' => $this->t('Header search'),
@@ -348,6 +363,7 @@ final class SiteSettingsForm extends ConfigFormBase {
       ->set('products_eyebrow', $form_state->getValue('products_eyebrow'))
       ->set('products_title', $form_state->getValue('products_title'))
       ->set('products_intro', $form_state->getValue('products_intro'))
+      ->set('chapter_scroll', (bool) $form_state->getValue('chapter_scroll'))
       ->set('products_bg', $new_fid ?: NULL)
       ->set('products_show_counter', (bool) $form_state->getValue('products_show_counter'))
       ->save();

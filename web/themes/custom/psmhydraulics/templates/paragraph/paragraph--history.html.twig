@@ -1,0 +1,62 @@
+{#
+/**
+ * @file
+ * History branch: a horizontal timeline of milestones.
+ *
+ * Layout is driven entirely by the number of milestones — sides alternate
+ * from nth-child and every measurement is taken from the DOM at runtime, so
+ * adding or reordering a milestone in the editor needs no template change.
+ */
+#}
+{{ attach_library('psmhydraulics/history-branch') }}
+
+{% set has_eyebrow = paragraph.field_eyebrow is defined and not paragraph.field_eyebrow.isEmpty() %}
+{% set has_heading = not paragraph.field_heading.isEmpty() %}
+{% set has_description = paragraph.field_description is defined and not paragraph.field_description.isEmpty() %}
+
+<section{{ attributes.addClass('history', 'section-band', 'section-band--' ~ section_background, section_is_dark ? 'is-dark' : '') }}
+         data-chapter-label="{{ paragraph.field_eyebrow.value|default(paragraph.field_heading.value)|default('History'|t) }}">
+  {% if section_has_photo %}
+    <div class="section-band__photo" aria-hidden="true">{{ content.field_background_image }}</div>
+    <div class="section-band__wash" aria-hidden="true"></div>
+  {% endif %}
+  <div class="history__inner">
+    <div class="history__head">
+      <div class="history__title">
+        {% if has_eyebrow %}
+          <span class="eyebrow eyebrow--dark">{{ content.field_eyebrow }}</span>
+        {% endif %}
+        {% if has_heading %}
+          <h2 class="history__heading">{{ content.field_heading }}</h2>
+        {% endif %}
+        {% if has_description %}
+          <div class="history__intro">{{ content.field_description }}</div>
+        {% endif %}
+      </div>
+
+      <div class="history__meta">
+        <div class="history__now">
+          <span class="history__year" data-hb-year></span>
+          <span class="history__era" data-hb-era></span>
+        </div>
+        <span class="history__count"><span data-hb-idx>1</span> / <span data-hb-total></span></span>
+        <div class="history__nav">
+          <button type="button" class="history__btn" data-hb="prev" aria-label="{{ 'Previous milestone'|t }}">
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="history__btn" data-hb="next" aria-label="{{ 'Next milestone'|t }}">
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="history__viewport" data-hb-scroller tabindex="0" role="group"
+         aria-label="{{ 'Company milestones, scroll sideways'|t }}">
+      {{ content.field_milestones }}
+    </div>
+
+    <div class="history__rail" aria-hidden="true"><i data-hb-progress></i></div>
+    <p class="history__hint">{{ 'Drag the branch, swipe, or use the arrow keys'|t }}</p>
+  </div>
+</section>

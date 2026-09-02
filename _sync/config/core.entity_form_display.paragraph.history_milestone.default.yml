@@ -1,0 +1,61 @@
+uuid: c3948a05-24e1-4523-80d2-6f64fd5c03da
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.history_milestone.field_description
+    - field.field.paragraph.history_milestone.field_era
+    - field.field.paragraph.history_milestone.field_heading
+    - field.field.paragraph.history_milestone.field_labels
+    - field.field.paragraph.history_milestone.field_year
+    - paragraphs.paragraphs_type.history_milestone
+  module:
+    - text
+id: paragraph.history_milestone.default
+targetEntityType: paragraph
+bundle: history_milestone
+mode: default
+content:
+  field_description:
+    type: text_textarea
+    weight: -7
+    region: content
+    settings:
+      rows: 4
+      placeholder: ''
+    third_party_settings: {  }
+  field_era:
+    type: string_textfield
+    weight: -9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_heading:
+    type: string_textfield
+    weight: -8
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_labels:
+    type: string_textfield
+    weight: -6
+    region: content
+    settings:
+      size: 30
+      placeholder: ''
+    third_party_settings: {  }
+  field_year:
+    type: string_textfield
+    weight: -10
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

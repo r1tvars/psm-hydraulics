@@ -48,6 +48,9 @@ psm_site.settings:
     products_show_counter:
       type: boolean
       label: 'Show the products counter'
+    chapter_scroll:
+      type: boolean
+      label: 'Snap page sections to full screens'
     popular_products:
       type: sequence
       label: 'Popular search products (ordered)'

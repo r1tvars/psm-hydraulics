@@ -1,0 +1,19 @@
+uuid: d707fd54-7379-4691-9abe-839d98ddba94
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_era
+    - paragraphs.paragraphs_type.history_milestone
+id: paragraph.history_milestone.field_era
+field_name: field_era
+entity_type: paragraph
+bundle: history_milestone
+label: 'Short label'
+description: 'One or two words describing this period.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

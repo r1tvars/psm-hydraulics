@@ -1,0 +1,40 @@
+{#
+/**
+ * @file
+ * One person. Without a photo the card falls back to their initials on the
+ * schematic grid, so a half-filled team still looks deliberate.
+ *
+ * - team_member_initials: derived in psmhydraulics_preprocess_paragraph__team_member().
+ */
+#}
+{% set has_photo = paragraph.field_image is defined and not paragraph.field_image.isEmpty() %}
+
+<article{{ attributes.addClass('mate') }}>
+  <div class="mate__portrait{{ has_photo ? '' : ' mate__portrait--initials' }}">
+    {% if has_photo %}
+      {{ content.field_image }}
+    {% else %}
+      <span aria-hidden="true">{{ team_member_initials }}</span>
+    {% endif %}
+  </div>
+
+  <div class="mate__identity">
+    {% if not paragraph.field_heading.isEmpty() %}
+      <h3 class="mate__name">{{ content.field_heading }}</h3>
+    {% endif %}
+    {% if paragraph.field_role is defined and not paragraph.field_role.isEmpty() %}
+      <p class="mate__role">{{ content.field_role }}</p>
+    {% endif %}
+  </div>
+
+  {% if (paragraph.field_email is defined and not paragraph.field_email.isEmpty()) or (paragraph.field_phone is defined and not paragraph.field_phone.isEmpty()) %}
+    <div class="mate__contact">
+      {% if paragraph.field_email is defined and not paragraph.field_email.isEmpty() %}
+        <a href="mailto:{{ paragraph.field_email.value }}">{{ paragraph.field_email.value }}</a>
+      {% endif %}
+      {% if paragraph.field_phone is defined and not paragraph.field_phone.isEmpty() %}
+        <a href="tel:{{ paragraph.field_phone.value|replace({' ': '', '(': '', ')': '', '-': ''}) }}">{{ paragraph.field_phone.value }}</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</article>

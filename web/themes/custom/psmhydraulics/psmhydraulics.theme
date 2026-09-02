@@ -372,8 +372,109 @@ function psmhydraulics_preprocess_paragraph__statistics_bar_item(array &$variabl
 /**
  * Implements hook_preprocess_node().
  */
+/**
+ * Implements hook_preprocess_HOOK() for html.
+ *
+ * Section-by-section scrolling needs `scroll-snap-type` on the scrolling
+ * element itself, which is <html> — so the switch has to be stamped there
+ * rather than on a wrapper inside the page.
+ */
+function psmhydraulics_preprocess_html(array &$variables): void {
+  if (!_psmhydraulics_chapters_enabled()) {
+    return;
+  }
+  $variables['html_attributes']->addClass('chapters-requested');
+}
+
+/**
+ * Whether the current page should scroll section by section.
+ *
+ * Requires the site setting, a page node, and at least two sections to move
+ * between. The viewport check lives in CSS and JS: a phone always scrolls
+ * normally, however the setting is left.
+ */
+function _psmhydraulics_chapters_enabled(): bool {
+  if (!\Drupal::config('psm_site.settings')->get('chapter_scroll')) {
+    return FALSE;
+  }
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if (!$node instanceof \Drupal\node\NodeInterface || $node->bundle() !== 'page') {
+    return FALSE;
+  }
+
+  // The front page is a landing page, not a chaptered document: its carousel
+  // and calls to action are meant to be scrolled past freely. Snapping it
+  // would be a surprising side effect of a setting aimed at About us.
+  $front = (string) \Drupal::config('system.site')->get('page.front');
+  $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $node->id());
+  if ($front === '/node/' . $node->id() || $front === $alias) {
+    return FALSE;
+  }
+
+  return $node->hasField('field_content_sections')
+    && $node->get('field_content_sections')->count() > 1;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for paragraph.
+ *
+ * Section paragraphs can carry a background colour and an optional photo.
+ * Both are read here into simple variables so each template only has to add
+ * classes, and so "is this band dark?" is decided in one place.
+ */
+function psmhydraulics_preprocess_paragraph(array &$variables): void {
+  $paragraph = $variables['paragraph'] ?? NULL;
+  $variables['section_background'] = '';
+  $variables['section_is_dark'] = FALSE;
+  $variables['section_has_photo'] = FALSE;
+
+  if (!$paragraph instanceof \Drupal\paragraphs\ParagraphInterface || !$paragraph->hasField('field_background')) {
+    return;
+  }
+
+  $background = (string) ($paragraph->get('field_background')->value ?: 'white');
+  $variables['section_background'] = $background;
+  $variables['section_is_dark'] = in_array($background, ['ink', 'panel', 'deep'], TRUE);
+  $variables['section_has_photo'] = $paragraph->hasField('field_background_image')
+    && !$paragraph->get('field_background_image')->isEmpty();
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for paragraph--team-member.
+ *
+ * Builds the initials shown when a person has no photo yet, so a
+ * half-populated team still reads as deliberate rather than broken.
+ */
+function psmhydraulics_preprocess_paragraph__team_member(array &$variables): void {
+  $paragraph = $variables['paragraph'] ?? NULL;
+  $variables['team_member_initials'] = '';
+  if (!$paragraph instanceof \Drupal\paragraphs\ParagraphInterface || $paragraph->get('field_heading')->isEmpty()) {
+    return;
+  }
+
+  $name = trim((string) $paragraph->get('field_heading')->value);
+  $initials = '';
+  foreach (preg_split('/\s+/u', $name, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $word) {
+    $initials .= mb_strtoupper(mb_substr($word, 0, 1));
+    if (mb_strlen($initials) === 2) {
+      break;
+    }
+  }
+  $variables['team_member_initials'] = $initials;
+}
+
 function psmhydraulics_preprocess_node(array &$variables): void {
   $node = $variables['node'] ?? NULL;
+
+  if ($node instanceof \Drupal\node\NodeInterface && $node->bundle() === 'page') {
+    $variables['psm_chapters'] = _psmhydraulics_chapters_enabled();
+    if ($variables['psm_chapters']) {
+      $variables['#attached']['library'][] = 'psmhydraulics/chapters';
+    }
+    $variables['#cache']['tags'][] = 'config:psm_site.settings';
+    return;
+  }
+
   if (!$node instanceof \Drupal\node\NodeInterface || $node->bundle() !== 'catalogue_item') {
     return;
   }

@@ -1,0 +1,19 @@
+uuid: e1a99acc-01eb-43e7-ad1f-aabf49c781fe
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_labels
+    - paragraphs.paragraphs_type.history_milestone
+id: paragraph.history_milestone.field_labels
+field_name: field_labels
+entity_type: paragraph
+bundle: history_milestone
+label: Tags
+description: 'Optional chips shown on the card.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,16 @@
+uuid: 446bb16d-4020-4b06-9209-0baa0edd0eee
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.history_milestone
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: paragraph.history_milestone
+target_entity_type_id: paragraph
+target_bundle: history_milestone
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * Team grid. Reflows from four columns to two to one; the card count is
+ * whatever the editor added.
+ */
+#}
+<section{{ attributes.addClass('team', 'section-band', 'section-band--' ~ section_background, section_is_dark ? 'is-dark' : '') }}
+         data-chapter-label="{{ paragraph.field_eyebrow.value|default(paragraph.field_heading.value)|default('Team'|t) }}">
+  {% if section_has_photo %}
+    <div class="section-band__photo" aria-hidden="true">{{ content.field_background_image }}</div>
+    <div class="section-band__wash" aria-hidden="true"></div>
+  {% endif %}
+  <div class="team__inner">
+    {% if paragraph.field_eyebrow is defined and not paragraph.field_eyebrow.isEmpty() or not paragraph.field_heading.isEmpty() or (paragraph.field_description is defined and not paragraph.field_description.isEmpty()) %}
+      <div class="team__head">
+        <div class="team__head-main">
+          {% if paragraph.field_eyebrow is defined and not paragraph.field_eyebrow.isEmpty() %}
+            <span class="eyebrow eyebrow--dark">{{ content.field_eyebrow }}</span>
+          {% endif %}
+          {% if not paragraph.field_heading.isEmpty() %}
+            <h2 class="team__heading">{{ content.field_heading }}</h2>
+          {% endif %}
+        </div>
+        {% if paragraph.field_description is defined and not paragraph.field_description.isEmpty() %}
+          <div class="team__intro">{{ content.field_description }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {{ content.field_members }}
+  </div>
+</section>

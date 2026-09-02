@@ -1,0 +1,25 @@
+uuid: 1240f90b-654e-44ad-bb66-ebb8789b137c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_background_image
+    - media.type.image
+    - paragraphs.paragraphs_type.team
+id: paragraph.team.field_background_image
+field_name: field_background_image
+entity_type: paragraph
+bundle: team
+label: 'Background image'
+description: 'Optional photo behind the section. A dark wash is laid over it so the text stays readable.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    auto_create: false
+field_type: entity_reference

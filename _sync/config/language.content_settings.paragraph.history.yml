@@ -1,0 +1,16 @@
+uuid: 3326b215-4ff8-44c3-a3dc-7f3bf6f86bf3
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.history
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: paragraph.history
+target_entity_type_id: paragraph
+target_bundle: history
+default_langcode: site_default
+language_alterable: false

@@ -16,5 +16,6 @@ products_title: ''
 products_intro: ''
 products_bg: null
 products_show_counter: true
+chapter_scroll: true
 popular_products:
   - 13

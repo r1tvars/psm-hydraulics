@@ -5,9 +5,16 @@
   'informational-block',
   has_image ? 'informational-block--has-image' : 'informational-block--no-image',
   has_image and image_position == 'left' ? 'informational-block--image-left' : 'informational-block--image-right',
+  'section-band',
+  'section-band--' ~ section_background,
+  section_is_dark ? 'is-dark' : '',
 ] %}
 
 <section{{ attributes.addClass(block_classes) }}>
+  {% if section_has_photo %}
+    <div class="section-band__photo" aria-hidden="true">{{ content.field_background_image }}</div>
+    <div class="section-band__wash" aria-hidden="true"></div>
+  {% endif %}
   <div class="informational-block__inner">
     <div class="informational-block__content">
       {% if paragraph.field_eyebrow is defined and not paragraph.field_eyebrow.isEmpty() %}

@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - entity_browser.browser.media_directories_modal
+    - field.field.paragraph.informational_block.field_background
+    - field.field.paragraph.informational_block.field_background_image
     - field.field.paragraph.informational_block.field_description
     - field.field.paragraph.informational_block.field_eyebrow
     - field.field.paragraph.informational_block.field_heading
@@ -21,6 +23,27 @@ targetEntityType: paragraph
 bundle: informational_block
 mode: default
 content:
+  field_background:
+    type: options_select
+    weight: 20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_background_image:
+    type: entity_browser_entity_reference
+    weight: 21
+    region: content
+    settings:
+      entity_browser: media_directories_modal
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      field_widget_replace: false
+      open: true
+      field_widget_display_settings:
+        view_mode: media_library
+      selection_mode: selection_append
+    third_party_settings: {  }
   field_description:
     type: text_textarea
     weight: 1

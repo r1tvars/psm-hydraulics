@@ -1,6 +1,10 @@
 {% set partner_count = paragraph.field_partner_items|length %}
 
-<section{{ attributes.addClass('partner-logos') }}>
+<section{{ attributes.addClass('partner-logos', 'section-band', 'section-band--' ~ section_background, section_is_dark ? 'is-dark' : '') }}>
+  {% if section_has_photo %}
+    <div class="section-band__photo" aria-hidden="true">{{ content.field_background_image }}</div>
+    <div class="section-band__wash" aria-hidden="true"></div>
+  {% endif %}
   <div class="partner-logos__inner">
     <div class="partner-logos__head">
       {% if not paragraph.field_eyebrow.isEmpty() %}

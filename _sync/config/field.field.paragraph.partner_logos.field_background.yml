@@ -1,0 +1,23 @@
+uuid: 84e5eaef-63fd-4152-9465-0eddf1644152
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_background
+    - paragraphs.paragraphs_type.partner_logos
+  module:
+    - options
+id: paragraph.partner_logos.field_background
+field_name: field_background
+entity_type: paragraph
+bundle: partner_logos
+label: Background
+description: 'The band colour behind this section. Dark backgrounds switch the text to light automatically.'
+required: false
+translatable: false
+default_value:
+  -
+    value: white
+default_value_callback: ''
+settings: {  }
+field_type: list_string

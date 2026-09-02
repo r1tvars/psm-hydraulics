@@ -1,0 +1,22 @@
+uuid: 3da2f9b5-b398-4e4d-a231-96c7267aafaa
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_description
+    - paragraphs.paragraphs_type.history
+  module:
+    - text
+id: paragraph.history.field_description
+field_name: field_description
+entity_type: paragraph
+bundle: history
+label: Intro
+description: 'Optional paragraph under the heading.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

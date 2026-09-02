@@ -3,6 +3,8 @@ langcode: en-gb
 status: true
 dependencies:
   config:
+    - field.field.paragraph.informational_block.field_background
+    - field.field.paragraph.informational_block.field_background_image
     - field.field.paragraph.informational_block.field_description
     - field.field.paragraph.informational_block.field_eyebrow
     - field.field.paragraph.informational_block.field_heading
@@ -61,5 +63,7 @@ content:
     weight: 3
     region: content
 hidden:
+  field_background: true
+  field_background_image: true
   field_image_position: true
   field_show_image_mobile: true

@@ -1,0 +1,22 @@
+uuid: bb62ccee-a3d7-48a0-8c6b-1302576ae61b
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_description
+    - paragraphs.paragraphs_type.history_milestone
+  module:
+    - text
+id: paragraph.history_milestone.field_description
+field_name: field_description
+entity_type: paragraph
+bundle: history_milestone
+label: Text
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

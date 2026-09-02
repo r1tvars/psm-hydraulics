@@ -1,0 +1,36 @@
+uuid: 3f2f929b-2517-4bf3-a6f4-bccc88f4fffa
+langcode: en-gb
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_background
+field_name: field_background
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: white
+      label: White
+    -
+      value: paper
+      label: 'Light grey'
+    -
+      value: ink
+      label: Dark
+    -
+      value: panel
+      label: 'Dark blue-grey'
+    -
+      value: deep
+      label: Darkest
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

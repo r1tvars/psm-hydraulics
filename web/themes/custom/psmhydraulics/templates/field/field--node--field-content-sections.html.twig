@@ -1,0 +1,13 @@
+{#
+/**
+ * @file
+ * Content sections render bare — no field wrapper.
+ *
+ * Each section must be a direct child of the sections container: the
+ * chapter-scrolling behaviour treats those children as the sections it
+ * moves between, and a wrapper div would collapse them into one.
+ */
+#}
+{%- for item in items -%}
+  {{ item.content }}
+{%- endfor -%}

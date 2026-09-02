@@ -64,3 +64,17 @@ product-gallery:
   dependencies:
     - core/drupal
     - core/once
+
+history-branch:
+  js:
+    js/history-branch.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+chapters:
+  js:
+    js/chapters.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

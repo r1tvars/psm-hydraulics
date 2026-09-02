@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * One point on the history branch. The year is repeated as a tick on the
+ * trunk so the branch stays readable when a card scrolls out of view.
+ */
+#}
+{% set year = paragraph.field_year.value|default('') %}
+
+<li{{ attributes.addClass('history-item') }}
+    data-year="{{ year }}"
+    data-era="{{ paragraph.field_era.value|default('') }}">
+  <div class="history-item__card">
+    {% if year %}
+      <span class="history-item__year">{{ year }}</span>
+    {% endif %}
+    {% if not paragraph.field_heading.isEmpty() %}
+      <h3 class="history-item__heading">{{ content.field_heading }}</h3>
+    {% endif %}
+    {% if paragraph.field_description is defined and not paragraph.field_description.isEmpty() %}
+      <div class="history-item__text">{{ content.field_description }}</div>
+    {% endif %}
+    {% if paragraph.field_labels is defined and not paragraph.field_labels.isEmpty() %}
+      <div class="history-item__tags">
+        {% for label in paragraph.field_labels %}
+          <span class="history-item__tag">{{ label.value }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="history-item__axis">
+    <span class="history-item__node" aria-hidden="true"></span>
+    {% if year %}
+      <span class="history-item__tick" aria-hidden="true">{{ year }}</span>
+    {% endif %}
+  </div>
+</li>

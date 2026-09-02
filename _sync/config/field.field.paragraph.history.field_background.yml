@@ -1,0 +1,23 @@
+uuid: 029c1393-d42c-4efe-beb2-7ed1c8929eae
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_background
+    - paragraphs.paragraphs_type.history
+  module:
+    - options
+id: paragraph.history.field_background
+field_name: field_background
+entity_type: paragraph
+bundle: history
+label: Background
+description: 'The band colour behind this section. Dark backgrounds switch the text to light automatically.'
+required: false
+translatable: false
+default_value:
+  -
+    value: paper
+default_value_callback: ''
+settings: {  }
+field_type: list_string

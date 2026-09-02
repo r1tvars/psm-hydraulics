@@ -1,0 +1,12 @@
+{#
+/**
+ * @file
+ * The role renders bare.
+ *
+ * The default field template wraps the value in a <div>. Inside the
+ * <p class="mate__role"> that holds it, the HTML parser closes the paragraph
+ * and lifts the div out as a sibling — where it stops inheriting the role
+ * colour and turns ink-on-ink on dark bands.
+ */
+#}
+{%- for item in items -%}{{ item.content }}{%- endfor -%}

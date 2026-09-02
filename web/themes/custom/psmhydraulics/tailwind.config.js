@@ -23,6 +23,9 @@ module.exports = {
         amber: {
           DEFAULT: "#F7A21B",
           deep: "#D8870C",
+          // Small amber text on white/paper: #D8870C only reaches 2.8:1.
+          // This clears 4.5:1 on both while holding the brand hue.
+          text: "#A06308",
         },
         paper: {
           DEFAULT: "#F4F6F8",
@@ -33,6 +36,10 @@ module.exports = {
           soft: "#7A8896",
         },
         steelgray: "#7E909F",
+        // Muted greys that still clear 4.5:1 — #7A8896 falls to 3.4:1 on
+        // paper and 4.1:1 on the panel band.
+        "mute-light": "#566472",
+        "mute-dark": "#8C9CAA",
         "line-dark": "rgba(255,255,255,0.09)",
         "line-dark-2": "rgba(255,255,255,0.16)",
         // Legacy aliases used by existing templates (catalogue, nodes, …).

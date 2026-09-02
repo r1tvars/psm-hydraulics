@@ -7,10 +7,12 @@ dependencies:
     - node.type.page
     - paragraphs.paragraphs_type.carousel
     - paragraphs.paragraphs_type.cta_strip
+    - paragraphs.paragraphs_type.history
     - paragraphs.paragraphs_type.informational_block
     - paragraphs.paragraphs_type.partner_logos
     - paragraphs.paragraphs_type.segments_block
     - paragraphs.paragraphs_type.statistics_bar
+    - paragraphs.paragraphs_type.team
   module:
     - entity_reference_revisions
 id: node.page.field_content_sections
@@ -33,6 +35,8 @@ settings:
       partner_logos: partner_logos
       segments_block: segments_block
       cta_strip: cta_strip
+      history: history
+      team: team
     negate: 0
     target_bundles_drag_drop:
       carousel:
@@ -43,6 +47,9 @@ settings:
         enabled: false
       cta_strip:
         weight: 14
+        enabled: true
+      history:
+        weight: 20
         enabled: true
       informational_block:
         weight: 6
@@ -68,4 +75,7 @@ settings:
       statistics_bar_item:
         weight: 9
         enabled: false
+      team:
+        weight: 20
+        enabled: true
 field_type: entity_reference_revisions

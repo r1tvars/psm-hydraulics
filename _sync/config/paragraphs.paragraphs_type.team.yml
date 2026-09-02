@@ -1,0 +1,10 @@
+uuid: f25a1896-a285-42af-b72c-78beb813c814
+langcode: en-gb
+status: true
+dependencies: {  }
+id: team
+label: Team
+icon_uuid: null
+icon_default: null
+description: 'Grid of people, with an optional photo for each.'
+behavior_plugins: {  }
