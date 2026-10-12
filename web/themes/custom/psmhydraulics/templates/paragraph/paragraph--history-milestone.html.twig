@@ -3,29 +3,44 @@
  * @file
  * One point on the history branch. The year is repeated as a tick on the
  * trunk so the branch stays readable when a card scrolls out of view.
+ *
+ * Year and labels share one metadata row, and the description is clamped to
+ * a few lines, so the whole branch fits on one screen instead of needing a
+ * scroll to get from the card above the trunk to the one below it. The
+ * toggle opens the rest of the text in place, and is unhidden by JS only on
+ * the cards whose text is actually cut off.
  */
 #}
 {% set year = paragraph.field_year.value|default('') %}
+{% set text_id = 'history-text-' ~ paragraph.id() %}
 
 <li{{ attributes.addClass('history-item') }}
     data-year="{{ year }}"
     data-era="{{ paragraph.field_era.value|default('') }}">
   <div class="history-item__card">
-    {% if year %}
-      <span class="history-item__year">{{ year }}</span>
+    {% if year or (paragraph.field_labels is defined and not paragraph.field_labels.isEmpty()) %}
+      <div class="history-item__meta">
+        {% if year %}
+          <span class="history-item__year">{{ year }}</span>
+        {% endif %}
+        {% if paragraph.field_labels is defined %}
+          {% for label in paragraph.field_labels %}
+            <span class="history-item__tag">{{ label.value }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
     {% endif %}
     {% if not paragraph.field_heading.isEmpty() %}
       <h3 class="history-item__heading">{{ content.field_heading }}</h3>
     {% endif %}
     {% if paragraph.field_description is defined and not paragraph.field_description.isEmpty() %}
-      <div class="history-item__text">{{ content.field_description }}</div>
-    {% endif %}
-    {% if paragraph.field_labels is defined and not paragraph.field_labels.isEmpty() %}
-      <div class="history-item__tags">
-        {% for label in paragraph.field_labels %}
-          <span class="history-item__tag">{{ label.value }}</span>
-        {% endfor %}
-      </div>
+      <div class="history-item__text" id="{{ text_id }}" data-hb-text>{{ content.field_description }}</div>
+      <button class="history-item__more" type="button" hidden
+              aria-expanded="false" aria-controls="{{ text_id }}" data-hb-more>
+        <span class="history-item__more-label" data-hb-more-open>{{ 'Read more'|t }}</span>
+        <span class="history-item__more-label" data-hb-more-close>{{ 'Show less'|t }}</span>
+        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+      </button>
     {% endif %}
   </div>
 

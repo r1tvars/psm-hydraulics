@@ -350,19 +350,11 @@
   }
 
   .navbar__inner {
-    @apply flex h-[52px] items-center justify-between gap-4;
+    @apply flex h-[52px] items-center;
   }
 
   .navbar__menu {
     @apply flex min-w-0 items-center;
-  }
-
-  .navbar__phone {
-    @apply hidden flex-shrink-0 items-center gap-2 font-mono text-[12.5px] tracking-[0.05em] text-steelgray hover:text-white xl:inline-flex;
-  }
-
-  .navbar__phone i {
-    @apply text-amber;
   }
 
   .navbar .nav-menu {
@@ -1260,9 +1252,14 @@
   .section-band.is-dark .history__year,
   .section-band.is-dark .history__era,
   .section-band.is-dark .history-item__year,
+  .section-band.is-dark .history-item__more,
   .section-band.is-dark .history-item.is-live .history-item__tick,
   .section-band.is-dark .mate__role {
     @apply text-amber;
+  }
+
+  .section-band.is-dark .history-item__more:hover {
+    @apply text-white;
   }
 
   .section-band.is-dark .eyebrow--dark::before {
@@ -1507,7 +1504,7 @@
   /* ── History branch ──────────────────────────────── */
 
   .history {
-    @apply bg-paper py-14 sm:py-16 xl:py-20;
+    @apply bg-paper py-12 sm:py-14 xl:py-16;
   }
 
   .history__inner {
@@ -1719,19 +1716,70 @@
   }
 
   .history-item__heading {
-    @apply my-1.5 font-display text-lg font-bold uppercase text-ink;
+    @apply mb-1.5 mt-0 font-display text-base font-bold uppercase text-ink;
   }
 
+  /* Clamped by default so a long milestone cannot stretch the branch past
+     the fold; --hb-lines is the single place that number lives. */
   .history-item__text {
-    @apply text-[13px] leading-[1.7] text-slate;
+    --hb-lines: 3;
+    @apply overflow-hidden text-[13px] leading-[1.7] text-slate;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--hb-lines);
   }
 
   .history-item__text p {
     @apply m-0;
   }
 
-  .history-item__tags {
-    @apply mt-3 flex flex-wrap gap-2;
+  /* The formatter's field wrapper would otherwise be the only child the
+     clamp can see, which clamps it to three wrappers rather than three
+     lines. Collapsing it puts the paragraphs directly in the clamp box. */
+  .history-item__text .field,
+  .history-item__text .field__item {
+    display: contents;
+  }
+
+  /* Open: the rest of the text in place, with a ceiling so an unusually long
+     entry scrolls inside the card instead of overflowing the strip. */
+  .history-item.is-open .history-item__text {
+    @apply block max-h-[9.5rem] overflow-y-auto pr-1;
+    -webkit-line-clamp: unset;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  .history-item__more {
+    @apply mt-2 inline-flex cursor-pointer items-center gap-1.5 bg-transparent p-0 font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-amber-text transition-colors duration-300;
+  }
+
+  .history-item__more:hover {
+    @apply text-ink;
+  }
+
+  .history-item__more i {
+    @apply text-[9px] transition-transform duration-300;
+  }
+
+  .history-item__more[aria-expanded='true'] i {
+    transform: rotate(180deg);
+  }
+
+  /* One label at a time, both in the markup so neither state needs JS text. */
+  .history-item__more [data-hb-more-close],
+  .history-item__more[aria-expanded='true'] [data-hb-more-open] {
+    @apply hidden;
+  }
+
+  .history-item__more[aria-expanded='true'] [data-hb-more-close] {
+    @apply inline;
+  }
+
+  /* Year and labels on one row: they are both metadata, and folding them
+     together is what lets both halves of the branch share a screen. */
+  .history-item__meta {
+    @apply mb-1 flex flex-wrap items-center gap-x-2 gap-y-1;
   }
 
   .history-item__tag {
@@ -1755,7 +1803,6 @@
     .history__list {
       --axis-y: 1.75rem;
       --item-w: 78vw;
-      min-height: 22rem;
     }
 
     .history-item {

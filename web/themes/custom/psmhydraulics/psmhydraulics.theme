@@ -440,6 +440,28 @@ function psmhydraulics_preprocess_paragraph(array &$variables): void {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for field.
+ *
+ * The history branch can run either way round. Reversing the rendered items
+ * here rather than in the template keeps the branch markup — and the
+ * alternating sides it gets from nth-child — identical in both directions.
+ */
+function psmhydraulics_preprocess_field(array &$variables): void {
+  if (($variables['field_name'] ?? '') !== 'field_milestones') {
+    return;
+  }
+
+  $paragraph = $variables['element']['#object'] ?? NULL;
+  if (!$paragraph instanceof \Drupal\paragraphs\ParagraphInterface
+    || !$paragraph->hasField('field_newest_first')
+    || !$paragraph->get('field_newest_first')->value) {
+    return;
+  }
+
+  $variables['items'] = array_reverse($variables['items']);
+}
+
+/**
  * Implements hook_preprocess_HOOK() for paragraph--team-member.
  *
  * Builds the initials shown when a person has no photo yet, so a

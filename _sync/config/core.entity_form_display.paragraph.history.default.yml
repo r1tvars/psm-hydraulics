@@ -10,6 +10,7 @@ dependencies:
     - field.field.paragraph.history.field_eyebrow
     - field.field.paragraph.history.field_heading
     - field.field.paragraph.history.field_milestones
+    - field.field.paragraph.history.field_newest_first
     - paragraphs.paragraphs_type.history
   module:
     - entity_browser
@@ -64,6 +65,13 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_newest_first:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_milestones:
     type: paragraphs

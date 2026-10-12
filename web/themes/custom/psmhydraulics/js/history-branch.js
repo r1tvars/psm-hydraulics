@@ -106,8 +106,52 @@
           });
         };
 
+        // ── Read more / show less ──────────────────────────────
+        // Cards are clamped so the branch fits one screen. Only the cards
+        // whose text is genuinely cut off get a toggle, and only one card
+        // stays open at a time so the strip's height moves once, not twice.
+        const panels = items
+          .map((el) => ({
+            el,
+            text: el.querySelector('[data-hb-text]'),
+            btn: el.querySelector('[data-hb-more]'),
+          }))
+          .filter((panel) => panel.text && panel.btn);
+
+        const setOpen = (panel, open) => {
+          panel.el.classList.toggle('is-open', open);
+          panel.btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        };
+
+        // Clamped text reports a scrollHeight taller than its box; a closed
+        // card is therefore the only state this can be measured in.
+        const measure = () => {
+          panels.forEach((panel) => {
+            if (panel.el.classList.contains('is-open')) {
+              return;
+            }
+            panel.btn.hidden = panel.text.scrollHeight <= panel.text.clientHeight + 1;
+          });
+        };
+
+        panels.forEach((panel) => {
+          panel.btn.addEventListener('click', () => {
+            const open = !panel.el.classList.contains('is-open');
+            panels.forEach((other) => {
+              if (other !== panel) {
+                setOpen(other, false);
+              }
+            });
+            setOpen(panel, open);
+            measure();
+          });
+        });
+
         scroller.addEventListener('scroll', sync, { passive: true });
-        window.addEventListener('resize', sync);
+        window.addEventListener('resize', () => {
+          measure();
+          sync();
+        });
         prevBtn.addEventListener('click', () => goTo(step - 1));
         nextBtn.addEventListener('click', () => goTo(step + 1));
         scroller.addEventListener('keydown', (event) => {
@@ -130,6 +174,10 @@
 
         scroller.addEventListener('pointerdown', (event) => {
           if (event.pointerType === 'mouse' && event.button !== 0) {
+            return;
+          }
+          // The toggle is a control, not a drag handle.
+          if (event.target.closest('[data-hb-more]')) {
             return;
           }
           releaseSteering();
@@ -169,6 +217,12 @@
 
         paint(0);
         sync();
+        measure();
+        // Web fonts land after first paint and change where the text wraps,
+        // so the cut-off test has to run again once they are in.
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(measure);
+        }
       });
     },
   };

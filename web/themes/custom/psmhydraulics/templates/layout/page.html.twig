@@ -122,12 +122,6 @@
           <div class="navbar__menu">
             {{ page.primary_menu }}
           </div>
-          {% if psm_site_contact.phone %}
-            <a class="navbar__phone" href="{{ psm_site_contact.phone_href }}">
-              <i class="fa-solid fa-phone" aria-hidden="true"></i>
-              <span>{{ '24/7 line'|t }} · {{ psm_site_contact.phone }}</span>
-            </a>
-          {% endif %}
         </div>
       </div>
     </nav>

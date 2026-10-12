@@ -1,0 +1,23 @@
+uuid: 22ecb899-7cc0-4f5c-aa7b-930b24851e5c
+langcode: en-gb
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_newest_first
+    - paragraphs.paragraphs_type.history
+id: paragraph.history.field_newest_first
+field_name: field_newest_first
+entity_type: paragraph
+bundle: history
+label: 'Start from the newest'
+description: 'Enable to run the branch newest to oldest. Disable to keep the milestones in the order listed below.'
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
