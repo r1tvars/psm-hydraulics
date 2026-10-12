@@ -1,0 +1,5 @@
+dem_site.settings:
+  title: 'DEM site settings'
+  base_route_name: dem_site.settings
+  names:
+    - dem_site.settings

@@ -1,0 +1,5 @@
+name: DEM Site
+type: module
+description: Site settings for the DEM Hydraulics frontend.
+package: Custom
+core_version_requirement: ^10 || ^11

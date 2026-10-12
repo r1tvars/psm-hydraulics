@@ -36,7 +36,7 @@ dependencies:
     - paragraphs
     - path
     - pathauto
-    - psm_site
+    - dem_site
     - role_delegation
     - shortcut
     - system
@@ -71,7 +71,7 @@ permissions:
   - 'administer menu'
   - 'administer node published status'
   - 'administer nodes'
-  - 'administer psm site settings'
+  - 'administer dem site settings'
   - 'administer url aliases'
   - 'administer users'
   - 'administer webform overview'

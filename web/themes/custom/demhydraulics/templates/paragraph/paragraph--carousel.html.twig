@@ -1,0 +1,8 @@
+{{ attach_library('demhydraulics/splide') }}
+
+{# Fade transition + custom progress autoplay driven by splide-init.js. #}
+<section{{ attributes.addClass('carousel-block', 'splide') }} data-splide='{"type":"fade","rewind":true,"perPage":1,"perMove":1,"drag":false,"arrows":false,"pagination":true,"autoplay":false,"interval":8000,"speed":900,"breakpoints":{"767":{"drag":true}}}'>
+  <div class="splide__track">
+    {{ content.field_carousel_slides }}
+  </div>
+</section>

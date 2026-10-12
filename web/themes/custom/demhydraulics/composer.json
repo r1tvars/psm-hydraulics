@@ -1,0 +1,5 @@
+{
+    "name": "drupal/demhydraulics",
+    "description": "Custom Tailwind CSS theme for DEM Hydraulics.",
+    "type": "drupal-theme"
+}

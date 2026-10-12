@@ -1,7 +1,7 @@
 services:
   traefik:
     image: traefik:v3.4
-    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-traefik
+    container_name: ${COMPOSE_PROJECT_NAME:-dem-hydraulics}-traefik
     command:
       - --providers.file.directory=/etc/traefik/dynamic
       - --providers.file.watch=true
@@ -13,7 +13,7 @@ services:
 
   nginx:
     image: nginx:1.27-alpine
-    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-nginx
+    container_name: ${COMPOSE_PROJECT_NAME:-dem-hydraulics}-nginx
     depends_on:
       app:
         condition: service_started
@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-app
+    container_name: ${COMPOSE_PROJECT_NAME:-dem-hydraulics}-app
     depends_on:
       db:
         condition: service_healthy
@@ -36,7 +36,7 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-composer
+    container_name: ${COMPOSE_PROJECT_NAME:-dem-hydraulics}-composer
     user: "${UID:-1000}:${GID:-1000}"
     working_dir: /var/www/html
     volumes:
@@ -48,8 +48,8 @@ services:
 
   node:
     image: node:22-alpine
-    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-node
-    working_dir: /var/www/html/web/themes/custom/psmhydraulics
+    container_name: ${COMPOSE_PROJECT_NAME:-dem-hydraulics}-node
+    working_dir: /var/www/html/web/themes/custom/demhydraulics
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
@@ -57,7 +57,7 @@ services:
 
   db:
     image: mariadb:11.4
-    container_name: ${COMPOSE_PROJECT_NAME:-psm-hydraulics}-db
+    container_name: ${COMPOSE_PROJECT_NAME:-dem-hydraulics}-db
     restart: unless-stopped
     environment:
       MARIADB_DATABASE: ${DB_NAME:-drupal}

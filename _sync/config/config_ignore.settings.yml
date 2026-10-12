@@ -9,7 +9,7 @@ ignored_config_entities:
     import:
       - 'block.block.*'
       - 'language.*|*'
-      - psm_site.settings
+      - dem_site.settings
       - 'system.menu.*'
       - 'webform.webform.*'
     export: {  }
@@ -17,7 +17,7 @@ ignored_config_entities:
     import:
       - 'block.block.*'
       - 'language.*|*'
-      - psm_site.settings
+      - dem_site.settings
       - 'system.menu.*'
       - 'webform.webform.*'
     export: {  }

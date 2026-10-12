@@ -89,14 +89,14 @@ Concretely for us:
   requirement 3 is satisfied by doing nothing here.
 - **Products page** = view `products`, display `page_1`, path `/products`
   (`_sync/config/views.view.products.yml`). The whole UI is hand-built:
-  - Template: `web/themes/custom/psmhydraulics/templates/views/views-view--products--page-1.html.twig`
+  - Template: `web/themes/custom/demhydraulics/templates/views/views-view--products--page-1.html.twig`
     (ink head band w/ own breadcrumbs, filter sidebar as one GET form, toolbar,
     chips, grid). Rows template: `views-view-unformatted--products--page-1.html.twig`.
-  - All template data comes from `psmhydraulics_preprocess_views_view()` in
-    `web/themes/custom/psmhydraulics/psmhydraulics.theme` (~line 643): category/
+  - All template data comes from `demhydraulics_preprocess_views_view()` in
+    `web/themes/custom/demhydraulics/demhydraulics.theme` (~line 643): category/
     manufacturer/availability options with counts (via
-    `_psmhydraulics_product_counts()` which does direct field-table COUNT
-    queries), chips, head band from `psm_site.settings`.
+    `_demhydraulics_product_counts()` which does direct field-table COUNT
+    queries), chips, head band from `dem_site.settings`.
   - Category filter: views filter `taxonomy_index_tid`, table
     `node__field_product_category`, exposed identifier `category` (multi-value
     OR). The sidebar checkboxes POST-as-GET `category[]=tid`.
@@ -116,9 +116,9 @@ Concretely for us:
   taxonomy terms yet.
 - **Image styles** available: `thumbnail`, `medium`, `large`, `wide`,
   `carousel_hero`, `browser_thumbnail`, `media_library`.
-- **psm_site module** (`web/modules/custom/psm_site`): site settings form
+- **dem_site module** (`web/modules/custom/dem_site`): site settings form
   (`SiteSettingsForm.php`, has a "Products page" section for head band texts),
-  `psm_site.module` hooks. Custom PHP hooks that alter views queries belong
+  `dem_site.module` hooks. Custom PHP hooks that alter views queries belong
   HERE, not in the theme (themes don't get `hook_views_query_alter`).
 
 ### Dev workflow
@@ -133,7 +133,7 @@ Concretely for us:
   then `drush cex -y` and commit the exported YAML.** Do not hand-write config
   YAML unless unavoidable.
 - Visual verification (no local browser): dockerized puppeteer —
-  `docker run --rm --network psm-hydraulics_default --add-host psmhydraulics.local:<traefik-ip> -v /tmp/shots:/shots -v <scriptdir>:/work -e NODE_PATH=/usr/src/app/node_modules --entrypoint node zenika/alpine-chrome:with-puppeteer /work/script.js`.
+  `docker run --rm --network dem-hydraulics_default --add-host demhydraulics.local:<traefik-ip> -v /tmp/shots:/shots -v <scriptdir>:/work -e NODE_PATH=/usr/src/app/node_modules --entrypoint node zenika/alpine-chrome:with-puppeteer /work/script.js`.
   Headless chrome there reports `(hover:hover)` as false — test hover styles via
   `:focus-within` or by toggling classes in the script.
 
@@ -193,12 +193,12 @@ upload images — see step 5.**
    or ask the user for the intended tree. Terms/images are content, so they are
    NOT exported; do this on the live/dev DB directly.
 
-### Phase 2 — Hierarchy-aware filtering (psm_site module, PHP) — ✅ DONE 2026-08-12
+### Phase 2 — Hierarchy-aware filtering (dem_site module, PHP) — ✅ DONE 2026-08-12
 
-Implemented in the existing `psm_site_views_query_alter()` in
-`web/modules/custom/psm_site/psm_site.module` (it already handled the
+Implemented in the existing `dem_site_views_query_alter()` in
+`web/modules/custom/dem_site/dem_site.module` (it already handled the
 manufacturer/doc filters), plus a `taxonomy_term_list:product_category` cache
-tag in `psm_site_views_pre_render()` (re-parenting a term must invalidate the
+tag in `dem_site_views_pre_render()` (re-parenting a term must invalidate the
 listing).
 
 **Gotcha discovered during implementation:** the exposed taxonomy filter's
@@ -209,7 +209,7 @@ nothing. The working approach (what the code now does): read the selected tids
 from `$view->getExposedInput()['category']`, expand each with
 `loadTree('product_category', $tid)` descendants, **remove** every where
 condition whose field string contains `field_product_category_target_id`, and
-`addWhere('psm_products', 'node__field_product_category.field_product_category_target_id', $tids, 'IN')`
+`addWhere('dem_products', 'node__field_product_category.field_product_category_target_id', $tids, 'IN')`
 (the filter already ensured that join). Exposed input itself is never mutated —
 the theme preprocess reads it for checkbox/chip selected state, and only the
 explicitly checked parent should show there.
@@ -229,12 +229,12 @@ empty input, and HTTP `GET /products?category[]=2` (200) all behave.
 
 Three files changed:
 
-1. `psmhydraulics.theme`, `psmhydraulics_preprocess_views_view()`: the flat
+1. `demhydraulics.theme`, `demhydraulics_preprocess_views_view()`: the flat
    `loadTree('product_category', 0, 1, TRUE)` is replaced by a full-depth load
    grouped into a `$tree_children` map (keyed by first parent tid, **and by tid
    inside** so a multi-parent term renders once), then a recursive closure
    emits options depth-first with `depth` + **subtree count** (own count from
-   `_psmhydraulics_product_counts()` plus all descendants — cardinality 1 means
+   `_demhydraulics_product_counts()` plus all descendants — cardinality 1 means
    plain summation cannot double-count). A term renders only if its subtree
    count > 0, so a parent with no direct products but stocked children still
    appears — which is exactly the "Specific brand components" case.
@@ -287,7 +287,7 @@ subtree.**
 - A covered child renders `checked disabled`. Disabled inputs are not
   submitted, so the query string stays `category[]=<parent>` — exactly the one
   term, with the subtree expansion still happening server-side in
-  `psm_site_views_query_alter()`. Chips and the group badge count only
+  `dem_site_views_query_alter()`. Chips and the group badge count only
   *explicit* selections, via a flat `$selected_categories` list collected during
   the recursion (`pv.category_active`).
 - `products.js`: `cascadeCategory()` mirrors a ticked parent onto its subtree
@@ -333,7 +333,7 @@ a long listing. Filtering, sorting, paging, chips and reset now update in place.
 
 **Why not Views' built-in AJAX:** this listing does not use the Views exposed
 form at all — it is a hand-built GET form, and `manufacturer[]` / `doc` are read
-straight off the request in `psm_site_views_query_alter()`. Views' AJAX
+straight off the request in `dem_site_views_query_alter()`. Views' AJAX
 serialises `form.views-exposed-form`, so it would simply not see these inputs.
 
 **The approach instead:** fetch the target URL, lift the already-correct
@@ -393,11 +393,11 @@ column per top-level category, its subcategories listed beneath, everything
 clickable, with a foot bar showing the catalogue size and a link to the full
 listing.
 
-- Built in `psmhydraulics_preprocess_menu()`, which finds the menu item routed
+- Built in `demhydraulics_preprocess_menu()`, which finds the menu item routed
   to `view.products.page_1` and hangs synthetic children off it from the
   taxonomy — **no menu links are created**, so editors never have to mirror
-  the category tree by hand. `_psmhydraulics_category_menu_columns()` builds
-  them from the same `_psmhydraulics_product_category_tree()` helper as the
+  the category tree by hand. `_demhydraulics_category_menu_columns()` builds
+  them from the same `_demhydraulics_product_category_tree()` helper as the
   sidebar and the browse strip, so counts and visibility rules agree
   everywhere (categories with no published products stay out).
 - The synthetic items only need `title`, `url` (a `Url` object — the template
@@ -413,7 +413,7 @@ listing.
   and About us panels — with it, five columns overflowed the shell and wrapped
   to 4 + 1.
 - A column is never left as a bare heading: more subcategories than fit
-  (`PSMHYDRAULICS_MENU_LINKS`, 6) ends with a "View all (N)" link, and a
+  (`DEMHYDRAULICS_MENU_LINKS`, 6) ends with a "View all (N)" link, and a
   category with no subcategories shows "N products" instead.
 - Cache: the panel depends on terms and a product count, which the menu's own
   cache metadata does not cover, so `taxonomy_term_list:product_category` and
@@ -435,15 +435,15 @@ per page for a small visual gain.
 **Products** column between Name and Status, so editors can see what a category
 holds before renaming, re-parenting or deleting it.
 
-- `psm_site_form_taxonomy_overview_terms_alter()` in the psm_site module —
+- `dem_site_form_taxonomy_overview_terms_alter()` in the dem_site module —
   **not** the theme, since the admin theme is Gin and theme form hooks would
   never fire there.
 - Scoped to the `product_category` vocabulary via the form's build args
   (`$form_state->getBuildInfo()['args'][0]`), which is populated both from the
   route and when the form is built directly — more reliable than the route
   match.
-- Two counting queries, not one per row: `_psm_site_product_category_counts()`
-  does a single grouped query, `_psm_site_product_category_subtree_counts()`
+- Two counting queries, not one per row: `_dem_site_product_category_counts()`
+  does a single grouped query, `_dem_site_product_category_subtree_counts()`
   rolls it up the tree. A parent shows `0 (2 with subcategories)` when it holds
   nothing directly, which is otherwise very misleading now that the vocabulary
   is nested. Non-zero counts link through to the filtered listing.
@@ -467,14 +467,14 @@ level; our richer listing is worth keeping visible). See open question 4.
 
 Files changed:
 
-1. `psmhydraulics.theme`:
+1. `demhydraulics.theme`:
    - the Phase 3 tree walker now also records `$subtree_counts[tid]`, which the
      strip reuses — no second counting pass;
    - `pv.browse` is built from the depth-0 terms with a non-zero subtree count,
      each `{label, count, url, image_url, glyph}`. `url` is
      `$term->toUrl()->toString()` so it picks up the pathauto alias, and the
      term is run through `getTranslationFromContext()` first;
-   - new helper `_psmhydraulics_category_image_url(TermInterface $term)`:
+   - new helper `_demhydraulics_category_image_url(TermInterface $term)`:
      `field_category_image` → media → `field_media_image` → file → image style
      `large` (same style the product cards use), NULL when unset.
 2. `templates/includes/category-card.html.twig` — **new, and Phase 5 reuses it
@@ -512,7 +512,7 @@ pattern existed had no alias and linked to `/taxonomy/term/N`. Ran
 nested terms alias correctly as
 `/products/<parent>/<child>` (verified).
 
-**Known caching limitation:** the view carries `config:psm_site.settings` and
+**Known caching limitation:** the view carries `config:dem_site.settings` and
 `taxonomy_term_list:product_category`, so term edits (including swapping a
 category's image) refresh the strip. Replacing the *file* on an existing media
 entity without touching the term will not, until a cache clear. The head band's
@@ -549,13 +549,13 @@ products.
    `title_enable: false` and the argument's `default_action` is `not found` —
    so nothing is lost; Drupal dropped it because the source key no longer
    exists.
-2. **Vocabulary-specific template:** in `psmhydraulics.theme` add
+2. **Vocabulary-specific template:** in `demhydraulics.theme` add
    `hook_theme_suggestions_views_view_alter()`: if view id `taxonomy_term` and
    the raw term (from `$view->args[0]` → load term) is bundle
    `product_category`, add suggestion `views_view__taxonomy_term__product_category`.
    Create `templates/views/views-view--taxonomy-term--product-category.html.twig`.
 3. **Preprocess** (same guard as suggestion hook — extend
-   `psmhydraulics_preprocess_views_view()` with a second branch): build
+   `demhydraulics_preprocess_views_view()` with a second branch): build
    `category_view` with:
    - `head`: term label, term description, parents chain for crumbs
      (`$storage->loadAllParents($tid)` — returns term-first order, reverse it,
@@ -565,7 +565,7 @@ products.
      with subtree counts/images/urls — build them in the **same shape as
      `pv.browse`** (`{label, count, url, image_url, glyph}`) and render with the
      existing `templates/includes/category-card.html.twig`, which Phase 4
-     already created for this purpose. `_psmhydraulics_category_image_url()` is
+     already created for this purpose. `_demhydraulics_category_image_url()` is
      the ready-made helper for `image_url`.
    - `refine_url`: `/products?category[]=<tid>`
      (`Url::fromRoute('view.products.page_1', [], ['query' => ['category' => [$tid]]])`).
@@ -586,9 +586,9 @@ products.
 quote-cta include (same as products page, pass quote var)
 ```
 
-5. Duplicate page title: nothing to do — `block.block.psmhydraulics_page_title`
+5. Duplicate page title: nothing to do — `block.block.demhydraulics_page_title`
    is `status: false` site-wide, so only the band's H1 renders.
-6. Breadcrumb dedup: done. `psmhydraulics_preprocess_page()` already dropped
+6. Breadcrumb dedup: done. `demhydraulics_preprocess_page()` already dropped
    `page.breadcrumb` for the products listing and product nodes; product
    category term pages were added to the same condition (route
    `entity.taxonomy_term.canonical` + bundle check). Other vocabularies keep
@@ -601,11 +601,11 @@ to the other variants in `src/tailwind.pcss`; reuse it rather than inventing
 another light-background button.
 
 **Refactor note:** the Phase 3/4 tree walking moved out of the products branch
-into two shared helpers, `_psmhydraulics_product_category_tree()` (returns
+into two shared helpers, `_demhydraulics_product_category_tree()` (returns
 `[$children_by_parent, $subtree_counts]`) and
-`_psmhydraulics_category_card($term, $count)`. Both the products page and the
+`_demhydraulics_category_card($term, $count)`. Both the products page and the
 category page build their cards through them, so counts can never drift apart.
-`_psmhydraulics_category_image_url()` gained an image-style argument (`large`
+`_demhydraulics_category_image_url()` gained an image-style argument (`large`
 for cards, `wide` for the band background).
 
 Verified with a three-level fixture (parent with three children — one of them
@@ -626,10 +626,10 @@ horizontal overflow at 1440px or 390px. Fixtures were rolled back.
   colour-only — the amber rule before the label shifts to ink, nothing moves.
 - The product detail breadcrumb now carries the **full category chain**:
   Home / Products / …ancestors… / Category / Product.
-- New shared helper `_psmhydraulics_category_trail($term)` returns the trail
+- New shared helper `_demhydraulics_category_trail($term)` returns the trail
   root-first with the term last; the category landing page uses it too (it pops
   the last entry, since it renders itself as the current page).
-- `_psmhydraulics_preprocess_product_full()` and the teaser preprocess now run
+- `_demhydraulics_preprocess_product_full()` and the teaser preprocess now run
   the category term through `getTranslationFromContext()`, which they did not
   do before — category labels on product pages were previously always in the
   default language.

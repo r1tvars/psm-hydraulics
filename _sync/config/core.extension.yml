@@ -16,6 +16,7 @@ module:
   custom: 0
   datetime: 0
   dblog: 0
+  dem_site: 0
   dynamic_page_cache: 0
   easy_breadcrumb: 0
   editor: 0
@@ -46,7 +47,6 @@ module:
   paragraphs_asymmetric_translation_widgets: 0
   path: 0
   path_alias: 0
-  psm_site: 0
   role_delegation: 0
   search: 0
   shortcut: 0
@@ -69,5 +69,5 @@ theme:
   claro: 0
   stable9: 0
   gin: 0
-  psmhydraulics: 0
+  demhydraulics: 0
 profile: standard

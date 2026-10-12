@@ -1,0 +1,15 @@
+dem_site.settings:
+  path: '/admin/config/system/dem-site'
+  defaults:
+    _form: '\Drupal\dem_site\Form\SiteSettingsForm'
+    _title: 'DEM site settings'
+  requirements:
+    _permission: 'administer dem site settings+administer site configuration'
+
+dem_site.search_suggest:
+  path: '/dem-site/search-suggest'
+  defaults:
+    _controller: '\Drupal\dem_site\Controller\SearchSuggestController::suggest'
+    _title: 'Search suggestions'
+  requirements:
+    _access: 'TRUE'

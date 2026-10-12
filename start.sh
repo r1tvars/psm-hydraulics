@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# PSM Hydraulics — one-command local setup.
+# DEM Hydraulics — one-command local setup.
 #
 #   ./start.sh          start (and update) the site
 #   ./start.sh --fresh  reset the database + files back to the demo seed
@@ -10,7 +10,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-SITE_URL="http://psmhydraulics.local"
+SITE_URL="http://demhydraulics.local"
 
 say()  { printf '\n\033[1;33m▶ %s\033[0m\n' "$*"; }
 ok()   { printf '\033[0;32m✔ %s\033[0m\n' "$*"; }
@@ -38,7 +38,7 @@ fi
 
 # .env cannot be sourced directly (it sets the readonly UID variable).
 env_val() { grep -E "^$1=" .env 2>/dev/null | tail -1 | cut -d= -f2-; }
-PROJECT="$(env_val COMPOSE_PROJECT_NAME)"; PROJECT="${PROJECT:-psm-hydraulics}"
+PROJECT="$(env_val COMPOSE_PROJECT_NAME)"; PROJECT="${PROJECT:-dem-hydraulics}"
 
 # ── Latest code ───────────────────────────────────────────────────────
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -51,17 +51,17 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
 fi
 
 # ── Hosts entry ───────────────────────────────────────────────────────
-if ! grep -qE '(^|\s)psmhydraulics\.local(\s|$)' /etc/hosts; then
-  say "Adding psmhydraulics.local to /etc/hosts (may ask for your computer password)"
-  if echo "127.0.0.1 psmhydraulics.local" | sudo tee -a /etc/hosts >/dev/null; then
+if ! grep -qE '(^|\s)demhydraulics\.local(\s|$)' /etc/hosts; then
+  say "Adding demhydraulics.local to /etc/hosts (may ask for your computer password)"
+  if echo "127.0.0.1 demhydraulics.local" | sudo tee -a /etc/hosts >/dev/null; then
     ok "Hosts entry added"
   else
-    warn "Could not edit /etc/hosts — add this line yourself: 127.0.0.1 psmhydraulics.local"
+    warn "Could not edit /etc/hosts — add this line yourself: 127.0.0.1 demhydraulics.local"
   fi
 fi
 if grep -qi microsoft /proc/version 2>/dev/null; then
   warn "You appear to be on WSL: also make sure the Windows hosts file"
-  warn "(C:\\Windows\\System32\\drivers\\etc\\hosts) contains: 127.0.0.1 psmhydraulics.local"
+  warn "(C:\\Windows\\System32\\drivers\\etc\\hosts) contains: 127.0.0.1 demhydraulics.local"
   warn "(Notepad must be run as Administrator to edit it.)"
 fi
 
@@ -115,6 +115,11 @@ if [ ! -d web/sites/default/files ] && [ -f scripts/seed/files.tar.gz ]; then
   docker compose exec -T app chown -R www-data:www-data /var/www/html/web/sites/default/files
   ok "Files restored"
 fi
+
+# ── One-off: databases from before the PSM → DEM rebrand ──────────────
+# Must run before config:import, which would otherwise try to swap the
+# (now missing) psm_site module/psmhydraulics theme for the DEM ones.
+./scripts/rename-psm-to-dem.sh
 
 # ── Updates: database, config, caches ─────────────────────────────────
 say "Applying updates"

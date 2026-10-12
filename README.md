@@ -1,4 +1,4 @@
-# PSM Hydraulics Drupal 11
+# DEM Hydraulics Drupal 11
 
 Drupal 11 project scaffolded for local development with Docker Compose and for production deployment without Docker.
 
@@ -8,17 +8,17 @@ Drupal 11 project scaffolded for local development with Docker Compose and for p
 - Gin admin theme enabled
 - Gin Login module enabled
 - Tailwind CSS starter kit package
-- Custom frontend theme at `web/themes/custom/psmhydraulics`
+- Custom frontend theme at `web/themes/custom/demhydraulics`
 - Docker Compose services for Traefik, Nginx, PHP-FPM 8.3, MariaDB, and Composer
 - Drush installed for container-based Drupal administration
 
 ## Local development
 
 1. Review `.env` and adjust values if needed.
-2. Add a hosts entry for `psmhydraulics.local` on the machine running your browser:
-   `127.0.0.1 psmhydraulics.local`
+2. Add a hosts entry for `demhydraulics.local` on the machine running your browser:
+   `127.0.0.1 demhydraulics.local`
 3. Build and start the stack: `docker compose up -d --build`
-4. Open `http://psmhydraulics.local`
+4. Open `http://demhydraulics.local`
 
 Database connection values during Drupal install:
 
@@ -29,7 +29,7 @@ Database connection values during Drupal install:
 
 ## Container layout
 
-- `traefik`: local reverse proxy that listens on port `80` and routes `psmhydraulics.local`
+- `traefik`: local reverse proxy that listens on port `80` and routes `demhydraulics.local`
 - `nginx`: web server serving Drupal from `web/`
 - `app`: PHP-FPM container used by Nginx and for Drush commands
 - `db`: MariaDB database
@@ -60,7 +60,7 @@ docker compose exec app drush cim -y
 
 ## Frontend theme workflow
 
-The active frontend theme is `psmhydraulics` in `web/themes/custom/psmhydraulics`.
+The active frontend theme is `demhydraulics` in `web/themes/custom/demhydraulics`.
 
 The Node container starts with the normal stack and runs the Tailwind watcher:
 
@@ -83,12 +83,12 @@ docker compose run --rm node sh -lc "npm install && npm run build"
 If you prefer running Node directly in WSL instead of Docker, the same commands work from:
 
 ```bash
-web/themes/custom/psmhydraulics
+web/themes/custom/demhydraulics
 ```
 
 ## Notes
 
 - This repo is set up for Composer-managed Drupal modules and themes.
-- `gin` is the active admin theme and `psmhydraulics` is the active default theme.
+- `gin` is the active admin theme and `demhydraulics` is the active default theme.
 - `gin_login` is enabled and uses the current admin theme for the login experience.
 - Production can deploy the same codebase without Docker as long as the target service provides compatible PHP, database, and web server configuration.

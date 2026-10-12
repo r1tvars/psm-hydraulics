@@ -1,0 +1,22 @@
+uuid: 287ee9f6-86fa-4177-bc96-a62c511c146e
+langcode: en-gb
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - demhydraulics
+_core:
+  default_config_hash: eYL19CLDyinGTWYQfBD1DswWzglEotE_kHnHx3AxTXM
+id: demhydraulics_powered
+theme: demhydraulics
+region: header
+weight: 0
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  label_display: '0'
+  provider: system
+visibility: {  }

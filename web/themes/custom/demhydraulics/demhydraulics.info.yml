@@ -1,0 +1,14 @@
+name: DEM Hydraulics
+description: Custom Tailwind CSS theme for DEM Hydraulics.
+core_version_requirement: ^10 || ^11
+type: theme
+base theme: stable9
+libraries:
+  - demhydraulics/global-styling
+regions:
+  header: Header
+  primary_menu: Primary Menu
+  secondary_menu: Secondary Menu
+  breadcrumb: Breadcrumb
+  content: Content
+  footer: Footer

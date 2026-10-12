@@ -1,13 +1,13 @@
 http:
   routers:
-    psmhydraulics:
+    demhydraulics:
       entryPoints:
         - web
-      rule: Host(`psmhydraulics.local`)
-      service: psmhydraulics
+      rule: Host(`demhydraulics.local`)
+      service: demhydraulics
 
   services:
-    psmhydraulics:
+    demhydraulics:
       loadBalancer:
         servers:
           - url: http://nginx:80

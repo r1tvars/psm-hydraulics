@@ -1,0 +1,5 @@
+dem_site.settings:
+  title: 'DEM site settings'
+  description: 'Manage contact details shown in the frontend header.'
+  route_name: dem_site.settings
+  parent: system.admin_config_system
