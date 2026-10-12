@@ -10,63 +10,65 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Engineering-schematic palette. Amber = pressurised/active accent.
+        // "Modern & Minimal" palette: primary #1F2937, secondary #64748B,
+        // accent #F97316, dark #374151, light #F3F4F6. Token names kept
+        // (ink/slate/amber/panel/paper) so templates need no changes.
         ink: {
-          DEFAULT: "#0C1A29",
-          soft: "#0F2233",
-          deep: "#08131E",
+          DEFAULT: "#1F2937",
+          soft: "#263241",
+          deep: "#161E2A",
         },
         panel: {
-          DEFAULT: "#16293B",
-          light: "#1B3147",
+          DEFAULT: "#374151",
+          light: "#414B5C",
         },
         amber: {
-          DEFAULT: "#F7A21B",
-          deep: "#D8870C",
-          // Small amber text on white/paper: #D8870C only reaches 2.8:1.
+          DEFAULT: "#F97316",
+          deep: "#EA580C",
+          // Small amber text on white/paper: #EA580C only reaches 3.6:1.
           // This clears 4.5:1 on both while holding the brand hue.
-          text: "#A06308",
+          text: "#C2410C",
         },
         paper: {
-          DEFAULT: "#F4F6F8",
-          line: "#E2E7EC",
+          DEFAULT: "#F3F4F6",
+          line: "#E5E7EB",
         },
         slate: {
-          DEFAULT: "#566472",
-          soft: "#7A8896",
+          DEFAULT: "#64748B",
+          soft: "#94A3B8",
         },
-        steelgray: "#7E909F",
-        // Muted greys that still clear 4.5:1 — #7A8896 falls to 3.4:1 on
-        // paper and 4.1:1 on the panel band.
-        "mute-light": "#566472",
-        "mute-dark": "#8C9CAA",
+        steelgray: "#64748B",
+        // Muted greys that still clear 4.5:1 — #64748B falls to 4.3:1 on
+        // paper and #9CA3AF to 4.1:1 on the panel band.
+        "mute-light": "#475569",
+        "mute-dark": "#AAB2BF",
         "line-dark": "rgba(255,255,255,0.09)",
         "line-dark-2": "rgba(255,255,255,0.16)",
         // Legacy aliases used by existing templates (catalogue, nodes, …).
         brand: {
-          DEFAULT: "#F7A21B",
-          dark: "#D8870C",
-          ink: "#0C1A29",
+          DEFAULT: "#F97316",
+          dark: "#EA580C",
+          ink: "#1F2937",
         },
         steel: {
-          50: "#F4F6F8",
-          100: "#EDF0F3",
-          200: "#E2E7EC",
-          300: "#C9D4DE",
-          400: "#7A8896",
-          500: "#566472",
-          700: "#243647",
-          900: "#0C1A29",
+          50: "#F3F4F6",
+          100: "#ECEEF1",
+          200: "#E5E7EB",
+          300: "#D1D5DB",
+          400: "#94A3B8",
+          500: "#475569",
+          700: "#374151",
+          900: "#1F2937",
         },
       },
       boxShadow: {
-        panel: "0 24px 60px rgba(8, 18, 28, 0.18)",
-        mega: "0 30px 60px rgba(8, 18, 28, 0.5)",
-        chip: "0 18px 40px rgba(12, 26, 41, 0.28)",
+        panel: "0 24px 60px rgba(22, 30, 42, 0.18)",
+        mega: "0 30px 60px rgba(22, 30, 42, 0.5)",
+        chip: "0 18px 40px rgba(31, 41, 55, 0.28)",
       },
       backgroundImage: {
         "statistics-fallback":
-          "radial-gradient(circle at top left, rgba(247, 162, 27, 0.14), transparent 32%), linear-gradient(135deg, #16293B 0%, #0C1A29 60%, #0A1622 100%)",
+          "radial-gradient(circle at top left, rgba(249, 115, 22, 0.14), transparent 32%), linear-gradient(135deg, #374151 0%, #1F2937 60%, #161E2A 100%)",
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],

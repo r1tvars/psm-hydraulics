@@ -120,7 +120,7 @@
   }
 
   .btn--amber {
-    @apply bg-amber text-ink hover:bg-amber-deep;
+    @apply bg-amber text-white hover:bg-amber-deep;
   }
 
   .btn--ghost {
@@ -197,7 +197,7 @@
   }
 
   .site-header.is-scrolled {
-    box-shadow: 0 8px 30px rgba(12, 26, 41, 0.12);
+    box-shadow: 0 8px 30px rgba(31, 41, 55, 0.12);
   }
 
   .hbar {
@@ -265,7 +265,7 @@
 
   .header-search__box:focus-within {
     @apply border-amber;
-    box-shadow: 0 0 0 3px rgba(247, 162, 27, 0.16);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.16);
   }
 
   .header-search__input {
@@ -273,7 +273,7 @@
   }
 
   .header-search__btn {
-    @apply flex items-center gap-2 bg-amber px-4 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-ink transition-colors duration-200 hover:bg-amber-deep;
+    @apply flex items-center gap-2 bg-amber px-4 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:bg-amber-deep;
   }
 
   .header-search__btn-label {
@@ -366,7 +366,7 @@
   }
 
   .navbar .nav-menu__link {
-    @apply relative flex h-full items-center px-4 font-display text-[15px] font-medium uppercase tracking-[0.06em] text-[#E7ECF1];
+    @apply relative flex h-full items-center px-4 font-display text-[15px] font-medium uppercase tracking-[0.06em] text-[#E5E7EB];
   }
 
   .navbar .nav-menu__link::after {
@@ -446,7 +446,7 @@
      panel, sweeping the cursor down a padding-animated list reflows every
      link it touches. */
   .navbar .mega__link {
-    @apply block py-1.5 text-sm text-[#9FACB8] transition-[color,transform] duration-150 hover:translate-x-1.5 hover:text-amber;
+    @apply block py-1.5 text-sm text-[#9CA3AF] transition-[color,transform] duration-150 hover:translate-x-1.5 hover:text-amber;
   }
 
   .navbar .mega__link.is-active {
@@ -536,7 +536,7 @@
   }
 
   .nav-drawer__contact li {
-    @apply mb-3.5 flex items-start gap-3 text-sm text-[#9FACB8];
+    @apply mb-3.5 flex items-start gap-3 text-sm text-[#9CA3AF];
   }
 
   .nav-drawer__contact i {
@@ -544,7 +544,7 @@
   }
 
   .nav-drawer__contact a {
-    @apply text-[#9FACB8] hover:text-white;
+    @apply text-[#9CA3AF] hover:text-white;
   }
 
   .nav-drawer__socials {
@@ -552,7 +552,7 @@
   }
 
   .nav-drawer__socials a {
-    @apply flex h-9 w-9 items-center justify-center rounded-brand border border-line-dark text-sm text-[#C9D4DE] hover:border-amber hover:text-amber;
+    @apply flex h-9 w-9 items-center justify-center rounded-brand border border-line-dark text-sm text-[#D1D5DB] hover:border-amber hover:text-amber;
   }
 
   /* Drawer menu: nested accordions (same markup as the mega menu) */
@@ -629,7 +629,7 @@
   }
 
   .nav-drawer .mega__heading {
-    @apply flex-1 py-3 pl-3.5 font-display text-[15px] uppercase tracking-[0.04em] text-[#C9D4DE];
+    @apply flex-1 py-3 pl-3.5 font-display text-[15px] uppercase tracking-[0.04em] text-[#D1D5DB];
   }
 
   .nav-drawer .mega__heading.is-active {
@@ -645,7 +645,7 @@
   }
 
   .nav-drawer .mega__link {
-    @apply flex items-center gap-2.5 py-2.5 pl-7 text-sm text-[#93A1AC] hover:text-amber;
+    @apply flex items-center gap-2.5 py-2.5 pl-7 text-sm text-[#9CA3AF] hover:text-amber;
   }
 
   .nav-drawer .mega__link::before {
@@ -693,7 +693,7 @@
   }
 
   .language-switcher__link {
-    @apply flex-1 text-left text-sm text-[#C9D4DE] hover:text-white;
+    @apply flex-1 text-left text-sm text-[#D1D5DB] hover:text-white;
   }
 
   .language-switcher__item.is-active .language-switcher__link {
@@ -727,7 +727,7 @@
   }
 
   .nav-drawer .language-switcher__link {
-    @apply flex-none font-mono text-xs tracking-[0.06em] text-[#C9D4DE];
+    @apply flex-none font-mono text-xs tracking-[0.06em] text-[#D1D5DB];
   }
 
   .nav-drawer .language-switcher__item.is-active .language-switcher__link {
@@ -757,10 +757,13 @@
     @apply relative flex h-full items-center overflow-hidden bg-ink text-white;
   }
 
+  /* :not(.contextual) — for editors the media's pencil wrapper sits in this
+     chain; stretched full-bleed (with its z-index:500) it swallows every
+     click on the slide, including the CTA link. */
   .carousel-slide__media,
-  .carousel-slide__media > div,
-  .carousel-slide__media > div > div,
-  .carousel-slide__media > div > div > div,
+  .carousel-slide__media > div:not(.contextual),
+  .carousel-slide__media > div > div:not(.contextual),
+  .carousel-slide__media > div > div > div:not(.contextual),
   .carousel-slide__media .field,
   .carousel-slide__media .field__item,
   .carousel-slide__media .media,
@@ -779,14 +782,14 @@
     @apply absolute inset-0;
     background: linear-gradient(
         180deg,
-        rgba(12, 26, 41, 0.25) 55%,
-        rgba(12, 26, 41, 0.85) 100%
+        rgba(31, 41, 55, 0.25) 55%,
+        rgba(31, 41, 55, 0.85) 100%
       ),
       linear-gradient(
         90deg,
-        rgba(12, 26, 41, 0.92) 0%,
-        rgba(12, 26, 41, 0.68) 46%,
-        rgba(12, 26, 41, 0.3) 100%
+        rgba(31, 41, 55, 0.92) 0%,
+        rgba(31, 41, 55, 0.68) 46%,
+        rgba(31, 41, 55, 0.3) 100%
       );
   }
 
@@ -801,7 +804,7 @@
 
   .carousel-slide__glow {
     @apply pointer-events-none absolute -right-40 -top-52 h-[680px] w-[680px];
-    background: radial-gradient(circle, rgba(247, 162, 27, 0.16), transparent 62%);
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.16), transparent 62%);
   }
 
   .carousel-slide__content {
@@ -825,7 +828,7 @@
   }
 
   .carousel-slide__description {
-    @apply max-w-[46ch] text-base leading-7 text-[#B9C5CF] sm:text-lg sm:leading-8;
+    @apply max-w-[46ch] text-base leading-7 text-[#C4CAD3] sm:text-lg sm:leading-8;
   }
 
   .carousel-slide__description p {
@@ -833,7 +836,7 @@
   }
 
   .carousel-slide__link a {
-    @apply inline-flex items-center gap-3 rounded-brand bg-amber px-6 py-4 font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors duration-200 hover:bg-amber-deep;
+    @apply inline-flex items-center gap-3 rounded-brand bg-amber px-6 py-4 font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-white transition-colors duration-200 hover:bg-amber-deep;
   }
 
   .carousel-slide__link a::after {
@@ -880,7 +883,7 @@
   .carousel-block .splide__pagination {
     @apply absolute inset-x-0 bottom-0 z-20 m-0 flex items-center justify-end gap-2 border-t border-line-dark;
     height: 62px;
-    background: rgba(9, 18, 28, 0.5);
+    background: rgba(22, 30, 42, 0.5);
     backdrop-filter: blur(2px);
     padding-inline: max(1.25rem, calc((100% - 77.5rem) / 2 + 2rem));
   }
@@ -1052,9 +1055,9 @@
     @apply absolute inset-0;
     background-image: linear-gradient(
       90deg,
-      rgba(12, 26, 41, 0.92) 0%,
-      rgba(12, 26, 41, 0.8) 50%,
-      rgba(12, 26, 41, 0.9) 100%
+      rgba(31, 41, 55, 0.92) 0%,
+      rgba(31, 41, 55, 0.8) 50%,
+      rgba(31, 41, 55, 0.9) 100%
     );
   }
 
@@ -1106,11 +1109,11 @@
   }
 
   .statistics-bar--has-image .statistics-bar-item {
-    background-color: rgba(12, 26, 41, 0.88);
+    background-color: rgba(31, 41, 55, 0.88);
   }
 
   .statistics-bar--has-image .statistics-bar-item:hover {
-    background-color: rgba(22, 41, 59, 0.92);
+    background-color: rgba(55, 65, 81, 0.92);
   }
 
   .statistics-bar-item__tick {
@@ -1160,7 +1163,7 @@
   }
 
   .statistics-bar-item:hover .statistics-bar-item__indicator {
-    @apply border-amber bg-amber text-ink;
+    @apply border-amber bg-amber text-white;
   }
 
   .statistics-bar-item:hover .statistics-bar-item__indicator::before {
@@ -1216,9 +1219,9 @@
     z-index: -1;
     background-image: linear-gradient(
       90deg,
-      rgba(12, 26, 41, 0.93) 0%,
-      rgba(12, 26, 41, 0.82) 50%,
-      rgba(12, 26, 41, 0.91) 100%
+      rgba(31, 41, 55, 0.93) 0%,
+      rgba(31, 41, 55, 0.82) 50%,
+      rgba(31, 41, 55, 0.91) 100%
     );
   }
 
@@ -1328,7 +1331,7 @@
   }
 
   .section-band.is-dark .history__btn:hover:not(:disabled) {
-    @apply border-amber bg-amber text-ink;
+    @apply border-amber bg-amber text-white;
   }
 
   .section-band.is-dark .partner-logos__rule {
@@ -1575,7 +1578,7 @@
   }
 
   .history__btn:hover:not(:disabled) {
-    @apply border-amber bg-amber text-ink;
+    @apply border-amber bg-amber text-white;
   }
 
   .history__btn:disabled {
@@ -1665,7 +1668,7 @@
 
   .history-item.is-live .history-item__card {
     @apply border-steel-300;
-    box-shadow: 0 14px 34px rgba(12, 26, 41, 0.09);
+    box-shadow: 0 14px 34px rgba(31, 41, 55, 0.09);
   }
 
   .history-item__axis {
@@ -2016,8 +2019,9 @@
     @apply absolute inset-0 z-0 overflow-hidden;
   }
 
-  /* Stable9 renders field/media wrappers as classless divs — stretch them all. */
-  .segment-card__media div,
+  /* Stable9 renders field/media wrappers as classless divs — stretch them all
+     (except the editor pencil wrapper, which must stay small). */
+  .segment-card__media div:not(.contextual),
   .segment-card__media picture,
   .segment-card__media article {
     @apply absolute inset-0;
@@ -2032,7 +2036,7 @@
   .segment-card__media::before {
     @apply absolute inset-0 z-[1];
     content: '';
-    background: linear-gradient(180deg, transparent 45%, rgba(12, 26, 41, 0.5) 100%);
+    background: linear-gradient(180deg, transparent 45%, rgba(31, 41, 55, 0.5) 100%);
   }
 
   /* Auto-numbered code badge */
@@ -2053,10 +2057,10 @@
     @apply pointer-events-none absolute inset-0 z-[1] opacity-0;
     background: linear-gradient(
       180deg,
-      rgba(12, 26, 41, 0.5) 0%,
-      rgba(12, 26, 41, 0.25) 30%,
-      rgba(12, 26, 41, 0.6) 60%,
-      rgba(12, 26, 41, 0.9) 100%
+      rgba(31, 41, 55, 0.5) 0%,
+      rgba(31, 41, 55, 0.25) 30%,
+      rgba(31, 41, 55, 0.6) 60%,
+      rgba(31, 41, 55, 0.9) 100%
     );
     transition: opacity 0.5s ease;
   }
@@ -2090,7 +2094,7 @@
   }
 
   .segment-card__desc {
-    @apply text-sm leading-6 text-[#AEB9C3];
+    @apply text-sm leading-6 text-[#ADB4BF];
   }
 
   .segment-card__desc p {
@@ -2116,8 +2120,8 @@
   }
 
   .segment-card__preview-inner p {
-    @apply m-0 text-sm leading-6 text-[#E2E8EE];
-    text-shadow: 0 1px 10px rgba(12, 26, 41, 0.65);
+    @apply m-0 text-sm leading-6 text-[#E5E7EB];
+    text-shadow: 0 1px 10px rgba(31, 41, 55, 0.65);
   }
 
   .segment-card__link {
@@ -2135,7 +2139,7 @@
   /* Reveal on keyboard focus — any device */
   .segment-card:focus-within {
     transform: translateY(-4px);
-    box-shadow: 0 26px 50px rgba(12, 26, 41, 0.22);
+    box-shadow: 0 26px 50px rgba(31, 41, 55, 0.22);
   }
 
   .segment-card:focus-within .segment-card__media img {
@@ -2160,7 +2164,7 @@
   @media (hover: hover) and (pointer: fine) {
     .segment-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 26px 50px rgba(12, 26, 41, 0.22);
+      box-shadow: 0 26px 50px rgba(31, 41, 55, 0.22);
     }
 
     .segment-card:hover .segment-card__media img {
@@ -2224,7 +2228,7 @@
   }
 
   .partner-logo {
-    @apply flex items-center gap-2.5 whitespace-nowrap font-display text-[22px] font-semibold uppercase tracking-[0.08em] text-[#5E6C7A] opacity-[0.85] transition-all duration-300;
+    @apply flex items-center gap-2.5 whitespace-nowrap font-display text-[22px] font-semibold uppercase tracking-[0.08em] text-[#64748B] opacity-[0.85] transition-all duration-300;
   }
 
   .partner-logo:hover {
@@ -2268,8 +2272,8 @@
   .cta-strip::before {
     @apply absolute inset-0 opacity-[0.14];
     content: '';
-    background-image: linear-gradient(rgba(12, 26, 41, 0.6) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(12, 26, 41, 0.6) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(31, 41, 55, 0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(31, 41, 55, 0.6) 1px, transparent 1px);
     background-size: 30px 30px;
     -webkit-mask-image: linear-gradient(90deg, #000, transparent 70%);
     mask-image: linear-gradient(90deg, #000, transparent 70%);
@@ -2313,7 +2317,7 @@
   /* ── Footer ──────────────────────────────────────── */
 
   .footer {
-    @apply relative bg-ink text-[#9FACB8];
+    @apply relative bg-ink text-[#9CA3AF];
   }
 
   .footer::before {
@@ -2368,7 +2372,7 @@
   }
 
   .footer__socials a {
-    @apply flex h-9 w-9 items-center justify-center rounded-brand border border-line-dark text-sm text-[#C9D4DE] hover:border-amber hover:text-amber;
+    @apply flex h-9 w-9 items-center justify-center rounded-brand border border-line-dark text-sm text-[#D1D5DB] hover:border-amber hover:text-amber;
   }
 
   .footer__heading {
@@ -2384,11 +2388,11 @@
   }
 
   .footer__links a {
-    @apply text-sm text-[#9FACB8] transition-all duration-150 hover:pl-1 hover:text-amber;
+    @apply text-sm text-[#9CA3AF] transition-all duration-150 hover:pl-1 hover:text-amber;
   }
 
   .footer__col--blocks a {
-    @apply text-sm text-[#9FACB8] hover:text-amber;
+    @apply text-sm text-[#9CA3AF] hover:text-amber;
   }
 
   .footer__contact li {
@@ -2400,7 +2404,7 @@
   }
 
   .footer__contact a {
-    @apply text-[#9FACB8] hover:text-white;
+    @apply text-[#9CA3AF] hover:text-white;
   }
 
   .footer__quote {
@@ -2440,7 +2444,7 @@
     z-index: 1;
     pointer-events: none;
     background:
-      radial-gradient(circle at 82% 0%, rgba(247, 162, 27, 0.10), transparent 42%),
+      radial-gradient(circle at 82% 0%, rgba(249, 115, 22, 0.10), transparent 42%),
       repeating-linear-gradient(0deg, transparent 0 55px, rgba(255, 255, 255, 0.045) 55px 56px),
       repeating-linear-gradient(90deg, transparent 0 55px, rgba(255, 255, 255, 0.045) 55px 56px);
   }
@@ -2455,8 +2459,8 @@
      readable regardless of the image. */
   .products-head--image::before {
     background:
-      linear-gradient(90deg, rgba(12, 26, 41, 0.78), rgba(12, 26, 41, 0.2) 62%),
-      radial-gradient(circle at 82% 0%, rgba(247, 162, 27, 0.10), transparent 42%),
+      linear-gradient(90deg, rgba(31, 41, 55, 0.78), rgba(31, 41, 55, 0.2) 62%),
+      radial-gradient(circle at 82% 0%, rgba(249, 115, 22, 0.10), transparent 42%),
       repeating-linear-gradient(0deg, transparent 0 55px, rgba(255, 255, 255, 0.045) 55px 56px),
       repeating-linear-gradient(90deg, transparent 0 55px, rgba(255, 255, 255, 0.045) 55px 56px);
   }
@@ -2820,7 +2824,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 100% 0, rgba(247, 162, 27, 0.16), transparent 55%);
+    background: radial-gradient(circle at 100% 0, rgba(249, 115, 22, 0.16), transparent 55%);
   }
 
   .products-promo > * {
@@ -3010,14 +3014,14 @@
 
   .product-card:hover,
   .product-card:focus-within {
-    @apply border-steel-300 shadow-[0_14px_34px_rgba(12,26,41,0.10)];
+    @apply border-steel-300 shadow-[0_14px_34px_rgba(31,41,55,0.10)];
   }
 
   .product-card__media {
     @apply relative block aspect-[4/3] bg-paper;
     background-image:
-      repeating-linear-gradient(0deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px),
-      repeating-linear-gradient(90deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px);
+      repeating-linear-gradient(0deg, transparent 0 27px, rgba(31, 41, 55, 0.035) 27px 28px),
+      repeating-linear-gradient(90deg, transparent 0 27px, rgba(31, 41, 55, 0.035) 27px 28px);
   }
 
   .product-card__media::before,
@@ -3245,7 +3249,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 12% 120%, rgba(247, 162, 27, 0.14), transparent 45%);
+    background: radial-gradient(circle at 12% 120%, rgba(249, 115, 22, 0.14), transparent 45%);
   }
 
   .products-cta__in {
@@ -3290,8 +3294,8 @@
   .pgallery__main {
     @apply relative overflow-hidden rounded-brand border border-paper-line bg-paper;
     background-image:
-      repeating-linear-gradient(0deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px),
-      repeating-linear-gradient(90deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px);
+      repeating-linear-gradient(0deg, transparent 0 27px, rgba(31, 41, 55, 0.035) 27px 28px),
+      repeating-linear-gradient(90deg, transparent 0 27px, rgba(31, 41, 55, 0.035) 27px 28px);
   }
 
   .pgallery__main::before,
@@ -3332,7 +3336,7 @@
   }
 
   .pgallery .splide__arrow:hover {
-    @apply bg-amber text-ink opacity-100;
+    @apply bg-amber text-white opacity-100;
   }
 
   .pgallery .splide__arrow svg {
@@ -3370,8 +3374,8 @@
   .pgallery__placeholder {
     @apply relative flex aspect-[4/3] items-center justify-center rounded-brand border border-paper-line bg-paper;
     background-image:
-      repeating-linear-gradient(0deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px),
-      repeating-linear-gradient(90deg, transparent 0 27px, rgba(12, 26, 41, 0.035) 27px 28px);
+      repeating-linear-gradient(0deg, transparent 0 27px, rgba(31, 41, 55, 0.035) 27px 28px),
+      repeating-linear-gradient(90deg, transparent 0 27px, rgba(31, 41, 55, 0.035) 27px 28px);
   }
 
   .pgallery__placeholder .product-card__glyph {
@@ -3584,7 +3588,7 @@
      these variables; defining them here makes those rules resolve to our
      palette instead of transparent. */
   --gin-bg-layer: #ffffff;
-  --gin-bg-app: #f4f6f8;
+  --gin-bg-app: #f3f4f6;
   @apply z-[110] overflow-hidden rounded-brand border-0 bg-white p-0 font-sans shadow-panel;
   border-top: 3px solid theme('colors.amber.DEFAULT');
   max-width: min(46rem, calc(100vw - 2rem));
@@ -3605,7 +3609,7 @@
 
 .ui-dialog.quote-modal .ui-dialog-buttonpane button,
 .ui-dialog.quote-modal .ui-dialog-buttonpane .ui-dialog-buttonset button.ui-button {
-  @apply m-0 inline-flex cursor-pointer items-center justify-center gap-3 rounded-brand border-0 bg-amber font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors duration-200 hover:bg-amber-deep;
+  @apply m-0 inline-flex cursor-pointer items-center justify-center gap-3 rounded-brand border-0 bg-amber font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-white transition-colors duration-200 hover:bg-amber-deep;
   padding: 0.875rem 1.5rem;
 }
 
@@ -3686,7 +3690,7 @@
 .webform-submission-form textarea:focus,
 .webform-submission-form select:focus {
   @apply border-amber bg-white;
-  box-shadow: 0 0 0 3px rgba(247, 162, 27, 0.16);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.16);
 }
 
 .webform-submission-form .form-actions {
@@ -3694,7 +3698,7 @@
 }
 
 .webform-submission-form .webform-button--submit {
-  @apply inline-flex cursor-pointer items-center justify-center gap-3 rounded-brand border-0 bg-amber px-6 py-3.5 font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors duration-200 hover:bg-amber-deep;
+  @apply inline-flex cursor-pointer items-center justify-center gap-3 rounded-brand border-0 bg-amber px-6 py-3.5 font-mono text-[13px] font-semibold uppercase tracking-[0.14em] text-white transition-colors duration-200 hover:bg-amber-deep;
 }
 
 .webform-confirmation__message {
@@ -3723,12 +3727,12 @@
 
 .fcheck__dot--request,
 .product-card__status--on-request i {
-  background: #f7a21b;
+  background: #f97316;
 }
 
 .fcheck__dot--custom,
 .product-card__status--custom-order i {
-  background: #7a8896;
+  background: #94a3b8;
 }
 
 /* ── Product gallery: Splide runtime classes ──────── */
@@ -3737,7 +3741,7 @@
    Splide's default 3px black active border. */
 
 .pgallery__thumbs.splide--nav > .splide__track > .splide__list > .splide__slide.is-active {
-  border: 1.5px solid #f7a21b;
+  border: 1.5px solid #f97316;
   opacity: 1;
 }
 
