@@ -222,12 +222,11 @@
             {% if dem_site_footer.logo %}
               <img src="{{ dem_site_footer.logo }}" alt="{{ 'Home'|t }}" loading="lazy">
             {% endif %}
-            <span class="footer__logo-text">
-              <span class="footer__wordmark">{{ dem_site_footer.site_name }}</span>
-              {% if dem_site_footer.slogan %}
+            {% if dem_site_footer.slogan %}
+              <span class="footer__logo-text">
                 <span class="footer__slogan">{{ dem_site_footer.slogan }}</span>
-              {% endif %}
-            </span>
+              </span>
+            {% endif %}
           </a>
           {% if dem_site_footer.text %}
             <p class="footer__text">{{ dem_site_footer.text }}</p>
